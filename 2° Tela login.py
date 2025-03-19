@@ -21,19 +21,8 @@ class LoginWindow(QWidget):
         # Frame principal
         frame = QFrame()
         frame_layout = QVBoxLayout(frame)
-        frame_layout.setSpacing(15)
+        frame_layout.setSpacing(20)
         frame_layout.setContentsMargins(40, 40, 40, 40)
-
-        # Títulos dos campos
-        lbl_titulo_usuario = QLabel("Nome de Usuário")
-        lbl_titulo_senha = QLabel("Senha")
-
-        # Configurar estilo dos títulos
-        font_titulos = QFont()
-        font_titulos.setBold(True)
-        font_titulos.setPointSize(12)
-        lbl_titulo_usuario.setFont(font_titulos)
-        lbl_titulo_senha.setFont(font_titulos)
 
         # Campos de entrada
         self.txt_usuario = QLineEdit()
@@ -43,19 +32,20 @@ class LoginWindow(QWidget):
         # Estilização dos campos
         campo_style = """
             QLineEdit {
-                padding: 12px;
-                font-size: 12pt;
+                padding: 16px;
+                font-size: 18px;
                 border: 2px solid #ddd;
-                border-radius: 6px;
-                margin-top: 5px;
+                border-radius: 20px;
+                margin: 12px 0;
             }
         """
         self.txt_usuario.setStyleSheet(campo_style)
         self.txt_senha.setStyleSheet(campo_style)
+        self.txt_usuario.setPlaceholderText("Nome de Usuário")
+        self.txt_senha.setPlaceholderText("Senha")
 
         # Link de recuperação
-        link_senha = QLabel('Esqueceu sua senha? <a href="#" style="color: blue; text-decoration: none;">Clique Aqui</a>')
-        link_senha.setFont(QFont("Arial", 10))
+        link_senha = QLabel('Esqueceu sua senha? <a href="#" style="color: blue; text-decoration: none; font-size: 12px;">Clique Aqui</a>')
         link_senha.setOpenExternalLinks(False)
         link_senha.linkActivated.connect(self.esqueceu_senha)
         link_senha.setCursor(QCursor(Qt.PointingHandCursor))
@@ -64,44 +54,43 @@ class LoginWindow(QWidget):
         btn_cadastrar = QPushButton('FAÇA SEU CADASTRO')
         btn_acessar = QPushButton('ACESSAR')
 
-        # Estilização dos botões
-        btn_style_cadastro = """
-            QPushButton {
-                background-color: #4CAF50;
-                color: white;
-                padding: 12px 25px;
-                border-radius: 6px;
+        # Estilo dos botões
+        btn_style = """
+            QPushButton {{
+                padding: 15px 30px;
+                border-radius: 8px;
                 font-weight: bold;
-                font-size: 11pt;
-            }
-            QPushButton:hover { background-color: #45a049; }
-        """
-        
-        btn_style_acesso = """
-            QPushButton {
-                background-color: #2196F3;
-                color: white;
-                padding: 12px 35px;
-                border-radius: 6px;
-                font-weight: bold;
-                font-size: 11pt;
-            }
-            QPushButton:hover { background-color: #1e88e5; }
+                font-size: 16px;
+                min-width: 180px;
+                {0}
+            }}
+            QPushButton:hover {{
+                {1}
+            }}
         """
 
-        btn_cadastrar.setStyleSheet(btn_style_cadastro)
-        btn_acessar.setStyleSheet(btn_style_acesso)
+        estilo_cadastro = btn_style.format(
+            "background-color: #4CAF50; color: white;",
+            "background-color: #45a049;"
+        )
+
+        estilo_acesso = btn_style.format(
+            "background-color: #2196F3; color: white;",
+            "background-color: #1976D2;"
+        )
+
+        btn_cadastrar.setStyleSheet(estilo_cadastro)
+        btn_acessar.setStyleSheet(estilo_acesso)
 
         # Layout dos botões
         btn_container = QHBoxLayout()
-        btn_container.setSpacing(15)
+        btn_container.setSpacing(20)
         btn_container.addWidget(btn_cadastrar)
         btn_container.addWidget(btn_acessar)
 
-        # Adicionar elementos ao layout
-        frame_layout.addWidget(lbl_titulo_usuario)
+        # Adicionar elementos
+        
         frame_layout.addWidget(self.txt_usuario)
-        frame_layout.addWidget(lbl_titulo_senha)
         frame_layout.addWidget(self.txt_senha)
         frame_layout.addWidget(link_senha, alignment=Qt.AlignCenter)
         frame_layout.addLayout(btn_container)
