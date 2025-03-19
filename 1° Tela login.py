@@ -1,48 +1,112 @@
-#Tela Login
-
+# Tela Login com Placeholders Centralizados (Senha Corrigida)
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 
 def criar_tela_login():
-    # Configuração da janela principal
     janela = tk.Tk()
     janela.title("Sistema de Login")
-    janela.configure(bg="#f0f0f0")
-    
-    # Centralizar elementos
-    frame = tk.Frame(janela, bg="#f0f0f0")
-    frame.pack(padx=20, pady=20)
+    janela.configure(bg="white")
+    janela.geometry("400x400")
 
-    # Componentes da interface
-    tk.Label(frame, text="Nome de Usuário", bg="#f0f0f0").grid(row=0, column=0, sticky="w", pady=5)
-    entrada_usuario = tk.Entry(frame, width=25)
-    entrada_usuario.grid(row=0, column=1, pady=5)
+    # Variável para armazenar a senha real
+    senha_real = tk.StringVar()
 
-    tk.Label(frame, text="Senha", bg="#f0f0f0").grid(row=1, column=0, sticky="w", pady=5)
-    entrada_senha = tk.Entry(frame, width=25, show="*")
-    entrada_senha.grid(row=1, column=1, pady=5)
+    # Estilo para campos de entrada
+    estilo = ttk.Style()
+    estilo.configure("Placeholder.TEntry", foreground="#808080", justify="center")
 
-    # Link 'Esqueceu a senha'
+    # Frame principal centralizado
+    frame_principal = tk.Frame(janela, bg="white")
+    frame_principal.place(relx=0.5, rely=0.5, anchor="center")
+
+    # Função para gerenciar placeholders
+    def config_placeholder(entry, texto, is_password=False):
+        entry.insert(0, texto)
+        entry.config(style="Placeholder.TEntry")
+        if is_password:
+            entry.config(show="")
+        entry.bind("<FocusIn>", lambda e: remover_placeholder(entry, texto, is_password))
+        entry.bind("<FocusOut>", lambda e: restaurar_placeholder(entry, texto, is_password))
+
+    def remover_placeholder(entry, texto, is_password):
+        if entry.get() == texto:
+            entry.delete(0, tk.END)
+            entry.config(style="TEntry", foreground="black", justify="left")
+            if is_password:
+                entry.config(show="*")
+
+    def restaurar_placeholder(entry, texto, is_password):
+        if not entry.get():
+            entry.insert(0, texto)
+            entry.config(style="Placeholder.TEntry", justify="center")
+            if is_password:
+                entry.config(show="")
+
+    # Campo de Usuário
+    entrada_usuario = ttk.Entry(frame_principal, width=30, font=("Arial", 10))
+    entrada_usuario.pack(pady=15, ipady=8)
+    config_placeholder(entrada_usuario, "Nome de Usuário")
+
+    # Campo de Senha
+    entrada_senha = ttk.Entry(
+        frame_principal,
+        width=30,
+        font=("Arial", 10),
+        textvariable=senha_real
+    )
+    entrada_senha.pack(pady=15, ipady=8)
+    config_placeholder(entrada_senha, "Senha", is_password=True)
+
+    # Link "Esqueceu a senha"
     def esqueceu_senha():
         messagebox.showinfo("Recuperação", "Entre em contato com o suporte")
-        
-    link_senha = tk.Label(frame, text="Esqueceu sua senha? Clique Aqui", fg="blue", cursor="hand2", bg="#f0f0f0")
-    link_senha.grid(row=2, columnspan=2, pady=5)
+
+    link_senha = tk.Label(
+        frame_principal,
+        text="Esqueceu sua senha? Clique Aqui",
+        fg="blue",
+        cursor="hand2",
+        bg="white"
+    )
+    link_senha.pack(pady=10)
     link_senha.bind("<Button-1>", lambda e: esqueceu_senha())
 
     # Botões
-    def cadastrar():
-        messagebox.showinfo("Cadastro", "Redirecionando para cadastro...")
-        
-    tk.Button(frame, text="FAÇA SEU CADASTRO", command=cadastrar, bg="#4CAF50", fg="white").grid(row=3, column=0, pady=10, padx=5)
+    frame_botoes = tk.Frame(frame_principal, bg="white")
+    frame_botoes.pack(pady=20)
 
-    def acessar():
-        if entrada_usuario.get() and entrada_senha.get():
+    btn_cadastrar = tk.Button(
+        frame_botoes,
+        text="FAÇA SEU CADASTRO",
+        command=lambda: messagebox.showinfo("Cadastro", "Redirecionando..."),
+        bg="#4CAF50",
+        fg="white",
+        padx=20
+    )
+    btn_cadastrar.pack(side=tk.LEFT, padx=10)
+
+    def validar_login():
+        usuario = entrada_usuario.get()
+        senha = senha_real.get()  # Usa a variável que armazena o valor real
+        
+        # Verifica se os valores não são placeholders
+        usuario_valido = usuario not in ["", "Nome de Usuário"]
+        senha_valida = senha not in ["", "Senha"]
+        
+        if usuario_valido and senha_valida:
             messagebox.showinfo("Sucesso", "Login realizado!")
         else:
             messagebox.showerror("Erro", "Preencha todos os campos!")
-    
-    tk.Button(frame, text="ACESSAR", command=acessar, bg="#2196F3", fg="white").grid(row=3, column=1, pady=10, padx=5)
+
+    btn_acessar = tk.Button(
+        frame_botoes,
+        text="ACESSAR",
+        command=validar_login,
+        bg="#2196F3",
+        fg="white",
+        padx=30
+    )
+    btn_acessar.pack(side=tk.LEFT, padx=10)
 
     janela.mainloop()
 
