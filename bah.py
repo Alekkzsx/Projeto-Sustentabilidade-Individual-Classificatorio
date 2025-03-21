@@ -11,7 +11,6 @@ class CustomLineEdit(QLineEdit):
         self.setPlaceholderText(placeholder_text)
 
     def focusOutEvent(self, event):
-        # Restaura o texto placeholder se o campo estiver vazio
         if not self.text().strip():
             self.setPlaceholderText(self.placeholderText())
         super().focusOutEvent(event)
@@ -23,7 +22,7 @@ class LoginWindow(QWidget):
         
     def initUI(self):
         self.setWindowTitle('Sistema de Login')
-        self.setGeometry(100, 100, 400, 400)
+        self.setGeometry(100, 100, 500, 600)
         self.setStyleSheet("background-color: white;")
         
         layout = QVBoxLayout()
@@ -44,17 +43,13 @@ class LoginWindow(QWidget):
         self.txt_usuario.setAlignment(Qt.AlignCenter)
         self.txt_senha.setAlignment(Qt.AlignCenter)
 
-        # Remover foco inicial dos campos
-        self.txt_usuario.clearFocus()
-        self.txt_senha.clearFocus()
-
         # Estilização dos campos
         campo_style = """
             QLineEdit {
                 padding: 16px;
                 font-size: 18px;
                 border: 2px solid #ddd;
-                border-radius: 20px;
+                border-radius: 30%;
                 margin: 12px 0;
             }
         """
@@ -117,6 +112,9 @@ class LoginWindow(QWidget):
 
         layout.addWidget(frame)
         self.setLayout(layout)
+        
+        # Forçar o foco na janela principal
+        self.setFocus()
 
     def validar_login(self):
         usuario = self.txt_usuario.text().strip()
