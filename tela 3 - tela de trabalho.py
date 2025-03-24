@@ -25,40 +25,25 @@ def main():
                     agua = float(input("CONSUMO DE ÁGUA (EM LITROS): "))
                     energia = float(input("CONSUMO DE ENERGIA (EM KWh): "))
                     
-                    transporte_opcoes = [
-                        "carro", "CARRO", "Carro",
+                    transporte_meio_ambiente_agradece = [
                         "bicicleta", "BICICLETA", "Bicicleta",
-                        "ônibus", "ÔNIBUS", "Onibus", "ONIBUS", "onibus",
-                        "moto", "MOTO", "Moto",
                         "a pé", "A PÉ", "A pé", "a pe", "A PE", "A pe",
-                        "trem", "TREM", "Trem",
-                        "metrô", "METRÔ", "Metro", "METRO", "metro",
-                        "avião", "AVIÃO", "Aviao", "AVIAO", "aviao",
-                        "barco", "BARCO", "Barco",
-                        "navio", "NAVIO", "Navio",
                         "patinete", "PATINETE", "Patinete",
-                        "skate", "SKATE", "Skate",
-                        "triciclo", "TRICICLO", "Triciclo",
-                        "quadriciclo", "QUADRICICLO", "Quadriciclo",
-                        "helicóptero", "HELICÓPTERO", "Helicoptero", "HELICOPTERO", "helicoptero",
-                        "balão", "BALÃO", "Balao", "BALAO", "balao",
-                        "segway", "SEGWAY", "Segway",
-                        "hoverboard", "HOVERBOARD", "Hoverboard",
-                        "carroça", "CARROÇA", "Carroca", "CARROCA", "carroca",
-                        "carruagem", "CARRUAGEM", "Carruagem",
-                        "caminhão", "CAMINHÃO", "Caminhao", "CAMINHAO", "caminhao",
-                        "van", "VAN", "Van",
-                        "micro-ônibus", "MICRO-ÔNIBUS", "Micro-Onibus", "MICRO-ONIBUS", "micro-onibus",
-                        "táxi", "TÁXI", "Taxi", "TAXI", "taxi",
-                        "uber", "UBER", "Uber",
-                        "lyft", "LYFT", "Lyft",
-                        "carona", "CARONA", "Carona",
+                        "skate", "SKATE", "Skate"
+                    ]
+                    
+                    transporte_sustentavel = [
+                        "ônibus", "ÔNIBUS", "Onibus", "ONIBUS", "onibus",
+                        "metrô", "METRÔ", "Metro", "METRO", "metro",
+                        "trem", "TREM", "Trem",
                         "carro elétrico", "CARRO ELÉTRICO", "Carro Eletrico", "CARRO ELETRICO", "carro eletrico",
                         "carro híbrido", "CARRO HÍBRIDO", "Carro Hibrido", "CARRO HIBRIDO", "carro hibrido",
-                        "carro a gás", "CARRO A GÁS", "Carro a Gas", "CARRO A GAS", "carro a gas",
-                        "carro a diesel", "CARRO A DIESEL", "Carro a Diesel", "carro a diesel",
-                        "carro a etanol", "CARRO A ETANOL", "Carro a Etanol", "carro a etanol",
-                        "carro a hidrogênio", "CARRO A HIDROGÊNIO", "Carro a Hidrogenio", "CARRO A HIDROGENIO", "carro a hidrogenio",
+                        "uber", "UBER", "Uber",
+                        "lyft", "LYFT", "Lyft",
+                        "carona", "CARONA", "Carona"
+                    ]
+                    
+                    transporte_baixo_nivel_sustentabilidade = [
                         "bicicleta elétrica", "BICICLETA ELÉTRICA", "Bicicleta Eletrica", "BICICLETA ELETRICA", "bicicleta eletrica",
                         "bicicleta compartilhada", "BICICLETA COMPARTILHADA", "Bicicleta Compartilhada",
                         "bicicleta dobrável", "BICICLETA DOBRÁVEL", "Bicicleta Dobrável", "BICICLETA DOBRAVEL", "bicicleta dobravel",
@@ -70,14 +55,34 @@ def main():
                         "monociclo elétrico", "MONOCICLO ELÉTRICO", "Monociclo Eletrico", "MONOCICLO ELETRICO", "monociclo eletrico",
                         "triciclo elétrico", "TRICICLO ELÉTRICO", "Triciclo Eletrico", "TRICICLO ELETRICO", "triciclo eletrico",
                         "quadriciclo elétrico", "QUADRICICLO ELÉTRICO", "Quadriciclo Eletrico", "QUADRICICLO ELETRICO", "quadriciclo eletrico",
-                        "scooter", "SCOOTER", "Scooter",
                         "scooter elétrica", "SCOOTER ELÉTRICA", "Scooter Eletrica", "SCOOTER ELETRICA", "scooter eletrica",
-                        "moto elétrica", "MOTO ELÉTRICA", "Moto Eletrica", "MOTO ELETRICA", "moto eletrica",
+                        "moto elétrica", "MOTO ELÉTRICA", "Moto Eletrica", "MOTO ELETRICA", "moto eletrica"
+                    ]
+                    
+                    transporte_desperdicio = [
+                        "carro", "CARRO", "Carro",
+                        "moto", "MOTO", "Moto",
+                        "avião", "AVIÃO", "Aviao", "AVIAO", "aviao",
+                        "barco", "BARCO", "Barco",
+                        "navio", "NAVIO", "Navio",
+                        "helicóptero", "HELICÓPTERO", "Helicoptero", "HELICOPTERO", "helicoptero",
+                        "balão", "BALÃO", "Balao", "BALAO", "balao",
+                        "segway", "SEGWAY", "Segway",
+                        "hoverboard", "HOVERBOARD", "Hoverboard",
+                        "carroça", "CARROÇA", "Carroca", "CARROCA", "carroca",
+                        "carruagem", "CARRUAGEM", "Carruagem",
+                        "caminhão", "CAMINHÃO", "Caminhao", "CAMINHAO", "caminhao",
+                        "van", "VAN", "Van",
+                        "micro-ônibus", "MICRO-ÔNIBUS", "Micro-Onibus", "MICRO-ONIBUS", "micro-onibus",
+                        "táxi", "TÁXI", "Taxi", "TAXI", "taxi",
+                        "carro a gás", "CARRO A GÁS", "Carro a Gas", "CARRO A GAS", "carro a gas",
+                        "carro a diesel", "CARRO A DIESEL", "Carro a Diesel", "carro a diesel",
+                        "carro a etanol", "CARRO A ETANOL", "Carro a Etanol", "carro a etanol",
+                        "carro a hidrogênio", "CARRO A HIDROGÊNIO", "Carro a Hidrogenio", "CARRO A HIDROGENIO", "carro a hidrogenio",
                         "moto a gasolina", "MOTO A GASOLINA", "Moto a Gasolina",
                         "moto a diesel", "MOTO A DIESEL", "Moto a Diesel",
                         "moto a etanol", "MOTO A ETANOL", "Moto a Etanol",
                         "moto a hidrogênio", "MOTO A HIDROGÊNIO", "Moto a Hidrogenio", "MOTO A HIDROGENIO", "moto a hidrogenio",
-                        "moto compartilhada", "MOTO COMPARTILHADA", "Moto Compartilhada",
                         "moto de carga", "MOTO DE CARGA", "Moto de Carga",
                         "moto de corrida", "MOTO DE CORRIDA", "Moto de Corrida",
                         "moto de trilha", "MOTO DE TRILHA", "Moto de Trilha",
@@ -129,12 +134,21 @@ def main():
                     transportes = []
                     while True:
                         transporte = input("TIPO DE TRANSPORTE UTILIZADO (carro, bicicleta, ônibus, etc.): ").lower()
-                        if transporte not in transporte_opcoes:
+                        categoria = None
+                        if transporte in transporte_meio_ambiente_agradece:
+                            categoria = "Meio ambiente agradece (alta sustentabilidade)"
+                        elif transporte in transporte_sustentavel:
+                            categoria = "Sustentabilidade"
+                        elif transporte in transporte_baixo_nivel_sustentabilidade:
+                            categoria = "Baixo nível de sustentabilidade"
+                        elif transporte in transporte_desperdicio:
+                            categoria = "Desperdício"
+                        else:
                             print("Opção de transporte inválida. Tente novamente.")
                             continue
                         
                         vezes_transporte = int(input(f"QUANTIDADE DE VEZES QUE UTILIZOU {transporte.upper()}: "))
-                        transportes.append((transporte, vezes_transporte))
+                        transportes.append((transporte, vezes_transporte, categoria))
                         
                         mais_transporte = input("Deseja adicionar outro tipo de transporte? (s/n): ").lower()
                         if mais_transporte != 's':
