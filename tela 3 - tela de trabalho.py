@@ -28,7 +28,7 @@ def main():
                   residuos = float(input("GERAÇÃO DE RESÍDUOS NÃO RECICLAVEIS (EM %): "))
                   print("Registrando...")
                   # Aqui você pode adicionar código para salvar os dados em um arquivo ou banco de dados
-                  break #sai do loop
+                  break #sai do loop se os dados inseridos estiverem corretos
               except ValueError:
                 print("\n                  ERROR!!          ")
                 print("OS DADOS INSERIDOS DEVEM SER VALORES NUMERICOS")
