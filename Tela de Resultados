@@ -1,0 +1,70 @@
+ # Tela principal
+        self.menu_principal()
+
+    def menu_principal(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+        # Botões para as opções do menu
+        tk.Button(self.root, text="Gráficos", command=self.exibir_graficos).pack(pady=10)
+        tk.Button(self.root, text="Relatórios Semanais", command=self.exibir_relatorios).pack(pady=10)
+        tk.Button(self.root, text="Revisar Informações", command=self.revisar_informacoes).pack(pady=10)
+        tk.Button(self.root, text="Configurações", command=self.configuracoes).pack(pady=10)
+        tk.Button(self.root, text="Logout", command=self.logout).pack(pady=10)
+
+    def exibir_graficos(self):
+        messagebox.showinfo("Gráficos", "Aqui você verá os gráficos de consumo!")
+        # A implementação dos gráficos pode ser feita aqui, usando bibliotecas como matplotlib
+
+    def exibir_relatorios(self):
+        messagebox.showinfo("Relatórios Semanais", "Aqui serão exibidos seus relatórios semanais!")
+        # Os relatórios semanais podem ser gerados com base nos dados inseridos
+
+    def revisar_informacoes(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+        tk.Label(self.root, text="Consumo de Água (litros):").pack(pady=5)
+        self.input_agua = tk.Entry(self.root)
+        self.input_agua.pack(pady=5)
+
+        tk.Label(self.root, text="Consumo de Energia (kWh):").pack(pady=5)
+        self.input_energia = tk.Entry(self.root)
+        self.input_energia.pack(pady=5)
+
+        tk.Label(self.root, text="Uso de Transporte (%):").pack(pady=5)
+        self.input_transporte = tk.Entry(self.root)
+        self.input_transporte.pack(pady=5)
+
+        tk.Label(self.root, text="Resíduos Não Recicláveis (%):").pack(pady=5)
+        self.input_residuos = tk.Entry(self.root)
+        self.input_residuos.pack(pady=5)
+
+        # Botões para salvar e voltar
+        tk.Button(self.root, text="Salvar", command=self.salvar_informacoes).pack(pady=10)
+        tk.Button(self.root, text="Voltar", command=self.menu_principal).pack(pady=10)
+
+    def salvar_informacoes(self):
+        try:
+            self.data['consumo_agua'] = float(self.input_agua.get())
+            self.data['consumo_energia'] = float(self.input_energia.get())
+            self.data['uso_transporte'] = float(self.input_transporte.get())
+            self.data['residuos_nao_reciclaveis'] = float(self.input_residuos.get())
+
+            messagebox.showinfo("Informações Salvas", "Suas informações foram salvas com sucesso!")
+        except ValueError:
+            messagebox.showerror("Erro", "Por favor, insira valores válidos!")
+
+    def configuracoes(self):
+        messagebox.showinfo("Configurações", "Aqui você pode ajustar suas configurações!")
+        # Implementação das configurações pode ser adicionada aqui
+
+    def logout(self):
+        resposta = messagebox.askyesno("Logout", "Você tem certeza que deseja sair?")
+        if resposta:
+            self.root.quit()
+
+# Criando a janela principal
+root = tk.Tk()
+app = SistemaInterativo(root)
+root.mainloop()
