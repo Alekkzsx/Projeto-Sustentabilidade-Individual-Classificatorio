@@ -25,37 +25,125 @@ def main():
                     agua = float(input("CONSUMO DE ÁGUA (EM LITROS): "))
                     energia = float(input("CONSUMO DE ENERGIA (EM KWh): "))
                     
-                    
-                    wefewf
-                    
                     transporte_opcoes = [
-                        "carro", "bicicleta", "ônibus", "moto", "a pé", "trem", "metrô", "avião", "barco", "navio",
-                        "patinete", "skate", "triciclo", "quadriciclo", "helicóptero", "balão", "segway", "hoverboard",
-                        "carroça", "carruagem", "caminhão", "van", "micro-ônibus", "táxi", "uber", "lyft", "carona",
-                        "carro elétrico", "carro híbrido", "carro a gás", "carro a diesel", "carro a etanol", "carro a hidrogênio",
-                        "bicicleta elétrica", "bicicleta compartilhada", "bicicleta dobrável", "bicicleta de carga", "bicicleta tandem",
-                        "patins", "patins elétrico", "monociclo", "monociclo elétrico", "triciclo elétrico", "quadriciclo elétrico",
-                        "scooter", "scooter elétrica", "moto elétrica", "moto a gasolina", "moto a diesel", "moto a etanol",
-                        "moto a hidrogênio", "moto compartilhada", "moto de carga", "moto de corrida", "moto de trilha",
-                        "moto de passeio", "moto de turismo", "moto de aventura", "moto de enduro", "moto de motocross",
-                        "moto de trial", "moto de velocidade", "moto de estrada", "moto de cidade", "moto de trabalho",
-                        "moto de luxo", "moto de custom", "moto de chopper", "moto de cruiser", "moto de naked",
-                        "moto de sport", "moto de touring", "moto de dual-sport", "moto de supermoto", "moto de café racer",
-                        "moto de bobber", "moto de scrambler", "moto de tracker", "moto de flat track", "moto de dirt bike",
-                        "moto de pit bike", "moto de pocket bike", "moto de mini bike", "moto de maxi scooter", "moto de scooter",
-                        "moto de vespa", "moto de lambreta", "moto de ciclomotor", "moto de motoneta", "moto de quadriciclo",
-                        "moto de triciclo", "moto de sidecar", "moto de quadriciclo esportivo", "moto de quadriciclo utilitário",
-                        "moto de quadriciclo recreativo", "moto de quadriciclo infantil", "moto de quadriciclo adulto", "moto de quadriciclo profissional"
+                        "carro", "CARRO", "Carro",
+                        "bicicleta", "BICICLETA", "Bicicleta",
+                        "ônibus", "ÔNIBUS", "Onibus", "ONIBUS", "onibus",
+                        "moto", "MOTO", "Moto",
+                        "a pé", "A PÉ", "A pé", "a pe", "A PE", "A pe",
+                        "trem", "TREM", "Trem",
+                        "metrô", "METRÔ", "Metro", "METRO", "metro",
+                        "avião", "AVIÃO", "Aviao", "AVIAO", "aviao",
+                        "barco", "BARCO", "Barco",
+                        "navio", "NAVIO", "Navio",
+                        "patinete", "PATINETE", "Patinete",
+                        "skate", "SKATE", "Skate",
+                        "triciclo", "TRICICLO", "Triciclo",
+                        "quadriciclo", "QUADRICICLO", "Quadriciclo",
+                        "helicóptero", "HELICÓPTERO", "Helicoptero", "HELICOPTERO", "helicoptero",
+                        "balão", "BALÃO", "Balao", "BALAO", "balao",
+                        "segway", "SEGWAY", "Segway",
+                        "hoverboard", "HOVERBOARD", "Hoverboard",
+                        "carroça", "CARROÇA", "Carroca", "CARROCA", "carroca",
+                        "carruagem", "CARRUAGEM", "Carruagem",
+                        "caminhão", "CAMINHÃO", "Caminhao", "CAMINHAO", "caminhao",
+                        "van", "VAN", "Van",
+                        "micro-ônibus", "MICRO-ÔNIBUS", "Micro-Onibus", "MICRO-ONIBUS", "micro-onibus",
+                        "táxi", "TÁXI", "Taxi", "TAXI", "taxi",
+                        "uber", "UBER", "Uber",
+                        "lyft", "LYFT", "Lyft",
+                        "carona", "CARONA", "Carona",
+                        "carro elétrico", "CARRO ELÉTRICO", "Carro Eletrico", "CARRO ELETRICO", "carro eletrico",
+                        "carro híbrido", "CARRO HÍBRIDO", "Carro Hibrido", "CARRO HIBRIDO", "carro hibrido",
+                        "carro a gás", "CARRO A GÁS", "Carro a Gas", "CARRO A GAS", "carro a gas",
+                        "carro a diesel", "CARRO A DIESEL", "Carro a Diesel", "carro a diesel",
+                        "carro a etanol", "CARRO A ETANOL", "Carro a Etanol", "carro a etanol",
+                        "carro a hidrogênio", "CARRO A HIDROGÊNIO", "Carro a Hidrogenio", "CARRO A HIDROGENIO", "carro a hidrogenio",
+                        "bicicleta elétrica", "BICICLETA ELÉTRICA", "Bicicleta Eletrica", "BICICLETA ELETRICA", "bicicleta eletrica",
+                        "bicicleta compartilhada", "BICICLETA COMPARTILHADA", "Bicicleta Compartilhada",
+                        "bicicleta dobrável", "BICICLETA DOBRÁVEL", "Bicicleta Dobrável", "BICICLETA DOBRAVEL", "bicicleta dobravel",
+                        "bicicleta de carga", "BICICLETA DE CARGA", "Bicicleta de Carga",
+                        "bicicleta tandem", "BICICLETA TANDEM", "Bicicleta Tandem",
+                        "patins", "PATINS", "Patins",
+                        "patins elétrico", "PATINS ELÉTRICO", "Patins Eletrico", "PATINS ELETRICO", "patins eletrico",
+                        "monociclo", "MONOCICLO", "Monociclo",
+                        "monociclo elétrico", "MONOCICLO ELÉTRICO", "Monociclo Eletrico", "MONOCICLO ELETRICO", "monociclo eletrico",
+                        "triciclo elétrico", "TRICICLO ELÉTRICO", "Triciclo Eletrico", "TRICICLO ELETRICO", "triciclo eletrico",
+                        "quadriciclo elétrico", "QUADRICICLO ELÉTRICO", "Quadriciclo Eletrico", "QUADRICICLO ELETRICO", "quadriciclo eletrico",
+                        "scooter", "SCOOTER", "Scooter",
+                        "scooter elétrica", "SCOOTER ELÉTRICA", "Scooter Eletrica", "SCOOTER ELETRICA", "scooter eletrica",
+                        "moto elétrica", "MOTO ELÉTRICA", "Moto Eletrica", "MOTO ELETRICA", "moto eletrica",
+                        "moto a gasolina", "MOTO A GASOLINA", "Moto a Gasolina",
+                        "moto a diesel", "MOTO A DIESEL", "Moto a Diesel",
+                        "moto a etanol", "MOTO A ETANOL", "Moto a Etanol",
+                        "moto a hidrogênio", "MOTO A HIDROGÊNIO", "Moto a Hidrogenio", "MOTO A HIDROGENIO", "moto a hidrogenio",
+                        "moto compartilhada", "MOTO COMPARTILHADA", "Moto Compartilhada",
+                        "moto de carga", "MOTO DE CARGA", "Moto de Carga",
+                        "moto de corrida", "MOTO DE CORRIDA", "Moto de Corrida",
+                        "moto de trilha", "MOTO DE TRILHA", "Moto de Trilha",
+                        "moto de passeio", "MOTO DE PASSEIO", "Moto de Passeio",
+                        "moto de turismo", "MOTO DE TURISMO", "Moto de Turismo",
+                        "moto de aventura", "MOTO DE AVENTURA", "Moto de Aventura",
+                        "moto de enduro", "MOTO DE ENDURO", "Moto de Enduro",
+                        "moto de motocross", "MOTO DE MOTOCROSS", "Moto de Motocross",
+                        "moto de trial", "MOTO DE TRIAL", "Moto de Trial",
+                        "moto de velocidade", "MOTO DE VELOCIDADE", "Moto de Velocidade",
+                        "moto de estrada", "MOTO DE ESTRADA", "Moto de Estrada",
+                        "moto de cidade", "MOTO DE CIDADE", "Moto de Cidade",
+                        "moto de trabalho", "MOTO DE TRABALHO", "Moto de Trabalho",
+                        "moto de luxo", "MOTO DE LUXO", "Moto de Luxo",
+                        "moto de custom", "MOTO DE CUSTOM", "Moto de Custom",
+                        "moto de chopper", "MOTO DE CHOPPER", "Moto de Chopper",
+                        "moto de cruiser", "MOTO DE CRUISER", "Moto de Cruiser",
+                        "moto de naked", "MOTO DE NAKED", "Moto de Naked",
+                        "moto de sport", "MOTO DE SPORT", "Moto de Sport",
+                        "moto de touring", "MOTO DE TOURING", "Moto de Touring",
+                        "moto de dual-sport", "MOTO DE DUAL-SPORT", "Moto de Dual-Sport",
+                        "moto de supermoto", "MOTO DE SUPERMOTO", "Moto de Supermoto",
+                        "moto de café racer", "MOTO DE CAFÉ RACER", "Moto de Café Racer", "MOTO DE CAFE RACER", "Moto de Cafe Racer",
+                        "moto de bobber", "MOTO DE BOBBER", "Moto de Bobber",
+                        "moto de scrambler", "MOTO DE SCRAMBLER", "Moto de Scrambler",
+                        "moto de tracker", "MOTO DE TRACKER", "Moto de Tracker",
+                        "moto de flat track", "MOTO DE FLAT TRACK", "Moto de Flat Track",
+                        "moto de dirt bike", "MOTO DE DIRT BIKE", "Moto de Dirt Bike",
+                        "moto de pit bike", "MOTO DE PIT BIKE", "Moto de Pit Bike",
+                        "moto de pocket bike", "MOTO DE POCKET BIKE", "Moto de Pocket Bike",
+                        "moto de mini bike", "MOTO DE MINI BIKE", "Moto de Mini Bike",
+                        "moto de maxi scooter", "MOTO DE MAXI SCOOTER", "Moto de Maxi Scooter",
+                        "moto de scooter", "MOTO DE SCOOTER", "Moto de Scooter",
+                        "moto de vespa", "MOTO DE VESPA", "Moto de Vespa",
+                        "moto de lambreta", "MOTO DE LAMBRETA", "Moto de Lambreta",
+                        "moto de ciclomotor", "MOTO DE CICLOMOTOR", "Moto de Ciclomotor",
+                        "moto de motoneta", "MOTO DE MOTONETA", "Moto de Motoneta",
+                        "moto de quadriciclo", "MOTO DE QUADRICICLO", "Moto de Quadriciclo",
+                        "moto de triciclo", "MOTO DE TRICICLO", "Moto de Triciclo",
+                        "moto de sidecar", "MOTO DE SIDECAR", "Moto de Sidecar",
+                        "moto de quadriciclo esportivo", "MOTO DE QUADRICICLO ESPORTIVO", "Moto de Quadriciclo Esportivo",
+                        "moto de quadriciclo utilitário", "MOTO DE QUADRICICLO UTILITÁRIO", "Moto de Quadriciclo Utilitário", "MOTO DE QUADRICICLO UTILITARIO", "Moto de Quadriciclo Utilitario",
+                        "moto de quadriciclo recreativo", "MOTO DE QUADRICICLO RECREATIVO", "Moto de Quadriciclo Recreativo",
+                        "moto de quadriciclo infantil", "MOTO DE QUADRICICLO INFANTIL", "Moto de Quadriciclo Infantil",
+                        "moto de quadriciclo adulto", "MOTO DE QUADRICICLO ADULTO", "Moto de Quadriciclo Adulto",
+                        "moto de quadriciclo profissional", "MOTO DE QUADRICICLO PROFISSIONAL", "Moto de Quadriciclo Profissional"
                     ]
                     
-                    transporte = input("VEZES QUE UTILIZOU TRANSPORTE PRIVADO (carro, bicicleta, ônibus, etc.): ").lower()
-                    if transporte not in transporte_opcoes:
-                        print("Opção de transporte inválida. Tente novamente.")
-                        continue
+                    transportes = []
+                    while True:
+                        transporte = input("TIPO DE TRANSPORTE UTILIZADO (carro, bicicleta, ônibus, etc.): ").lower()
+                        if transporte not in transporte_opcoes:
+                            print("Opção de transporte inválida. Tente novamente.")
+                            continue
+                        
+                        vezes_transporte = int(input(f"QUANTIDADE DE VEZES QUE UTILIZOU {transporte.upper()}: "))
+                        transportes.append((transporte, vezes_transporte))
+                        
+                        mais_transporte = input("Deseja adicionar outro tipo de transporte? (s/n): ").lower()
+                        if mais_transporte != 's':
+                            break
                     
                     residuos = float(input("GERAÇÃO DE RESÍDUOS NÃO RECICLAVEIS (EM %): "))
                     print("Registrando...")
                     # Aqui você pode adicionar código para salvar os dados em um arquivo ou banco de dados
+                    print(f"Água: {agua} litros, Energia: {energia} KWh, Transportes: {transportes}, Resíduos: {residuos}%")
                     break  # Sai do loop se todos os dados forem válidos
                 except ValueError:
                     print("\n                  ERROR!!          ")
