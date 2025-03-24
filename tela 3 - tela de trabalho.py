@@ -25,6 +25,9 @@ def main():
                     agua = float(input("CONSUMO DE ÁGUA (EM LITROS): "))
                     energia = float(input("CONSUMO DE ENERGIA (EM KWh): "))
                     
+                    
+                    wefewf
+                    
                     transporte_opcoes = [
                         "carro", "bicicleta", "ônibus", "moto", "a pé", "trem", "metrô", "avião", "barco", "navio",
                         "patinete", "skate", "triciclo", "quadriciclo", "helicóptero", "balão", "segway", "hoverboard",
