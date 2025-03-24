@@ -1,15 +1,32 @@
-#Banco de dados de usuários cadastrados
 from BancoDados_UsuarioSenha import database_usuarios
 
-#Boas vindas ao usuário
 print("="*48)
 print("\tBem Vindo - Faça Seu Login")
 print("="*48)
 
+# Verificação do usuário primeiro
+while True:
+    NomeDeUsuario = input("\t\tNome de Usuário: ")
+    
+    # Verifica imediatamente se o usuário existe
+    if NomeDeUsuario in database_usuarios:
+        break  # Sai do loop se usuário for válido
+    else:
+        print("\n\t❌ Usuário não cadastrado! Tente novamente.\n")
+        print("-"*48)
 
-#Entrada de nome de Usuário e Senha
-NomeDeUsuario = input("\t\tNome de Usuário: ")
+# Agora verifica a senha
+tentativas = 3
+while tentativas > 0:
+    SenhaDoUsuario = input("\t\tSenha: ")
+    
+    if database_usuarios[NomeDeUsuario]["senha"] == SenhaDoUsuario:
+        print("\n\t✅ Login bem-sucedido!")
+        break
+    else:
+        tentativas -= 1
+        print(f"\n\t❌ Senha incorreta! Tentativas restantes: {tentativas}")
+        print("-"*48)
 
-#Repetição para caso usuário não cadastrado
-while NomeDeUsuario != database_usuarios
-SenhaDoUsuario = input("\t\tSenha: ")
+if tentativas == 0:
+    print("\n\t🚫 Acesso bloqueado! Tente novamente mais tarde.")
