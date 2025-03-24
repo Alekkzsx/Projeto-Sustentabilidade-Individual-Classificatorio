@@ -34,7 +34,7 @@ def main():
                 print("OS DADOS INSERIDOS DEVEM SER VALORES NUMERICOS")
                 print("              TENTE NOVAMENTE       ")
                 print("  ") 
-            break
+            break #sai do loop principal após registrar os dados
         else:
             print("Opção inválida. Tente novamente.")
         
