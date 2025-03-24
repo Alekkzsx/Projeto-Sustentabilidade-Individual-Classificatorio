@@ -1,70 +1,85 @@
- # Tela principal
-        self.menu_principal()
+def mostrar_menu():
+    """Exibe o menu principal de opções"""
+    print("\nMENU PRINCIPAL:")
+    print("1. Relatórios Semanais")
+    print("2. Revisar Informações Enviadas")
+    print("3. Configurações")
+    print("4. Logout")
+    print("5. Sair do Programa")
 
-    def menu_principal(self):
-        for widget in self.root.winfo_children():
-            widget.destroy()
+def relatorio_semanal(dados):
+    """Exibe o relatório semanal com base nas informações inseridas"""
+    print("\nRelatório Semanal:")
+    print(f"Consumo de Água: {dados['consumo_agua']} litros")
+    print(f"Consumo de Energia: {dados['consumo_energia']} kWh")
+    print(f"Uso de Transporte: {dados['uso_transporte']} %")
+    print(f"Resíduos Não Recicláveis: {dados['residuos_nao_reciclaveis']} %")
 
-        # Botões para as opções do menu
-        tk.Button(self.root, text="Gráficos", command=self.exibir_graficos).pack(pady=10)
-        tk.Button(self.root, text="Relatórios Semanais", command=self.exibir_relatorios).pack(pady=10)
-        tk.Button(self.root, text="Revisar Informações", command=self.revisar_informacoes).pack(pady=10)
-        tk.Button(self.root, text="Configurações", command=self.configuracoes).pack(pady=10)
-        tk.Button(self.root, text="Logout", command=self.logout).pack(pady=10)
+def revisar_informacoes(dados):
+    """Permite o usuário revisar e atualizar as informações"""
+    while True:
+        print("\nRevisar Informações Enviadas:")
+        print(f"1. Consumo de Água: {dados['consumo_agua']} litros")
+        print(f"2. Consumo de Energia: {dados['consumo_energia']} kWh")
+        print(f"3. Uso de Transporte: {dados['uso_transporte']} %")
+        print(f"4. Resíduos Não Recicláveis: {dados['residuos_nao_reciclaveis']} %")
+        print("5. Voltar ao Menu Principal")
+        
+        opcao = input("\nEscolha a opção para editar (1-4) ou 5 para voltar: ")
 
-    def exibir_graficos(self):
-        messagebox.showinfo("Gráficos", "Aqui você verá os gráficos de consumo!")
-        # A implementação dos gráficos pode ser feita aqui, usando bibliotecas como matplotlib
-
-    def exibir_relatorios(self):
-        messagebox.showinfo("Relatórios Semanais", "Aqui serão exibidos seus relatórios semanais!")
-        # Os relatórios semanais podem ser gerados com base nos dados inseridos
-
-    def revisar_informacoes(self):
-        for widget in self.root.winfo_children():
-            widget.destroy()
-
-        tk.Label(self.root, text="Consumo de Água (litros):").pack(pady=5)
-        self.input_agua = tk.Entry(self.root)
-        self.input_agua.pack(pady=5)
-
-        tk.Label(self.root, text="Consumo de Energia (kWh):").pack(pady=5)
-        self.input_energia = tk.Entry(self.root)
-        self.input_energia.pack(pady=5)
-
-        tk.Label(self.root, text="Uso de Transporte (%):").pack(pady=5)
-        self.input_transporte = tk.Entry(self.root)
-        self.input_transporte.pack(pady=5)
-
-        tk.Label(self.root, text="Resíduos Não Recicláveis (%):").pack(pady=5)
-        self.input_residuos = tk.Entry(self.root)
-        self.input_residuos.pack(pady=5)
-
-        # Botões para salvar e voltar
-        tk.Button(self.root, text="Salvar", command=self.salvar_informacoes).pack(pady=10)
-        tk.Button(self.root, text="Voltar", command=self.menu_principal).pack(pady=10)
-
-    def salvar_informacoes(self):
         try:
-            self.data['consumo_agua'] = float(self.input_agua.get())
-            self.data['consumo_energia'] = float(self.input_energia.get())
-            self.data['uso_transporte'] = float(self.input_transporte.get())
-            self.data['residuos_nao_reciclaveis'] = float(self.input_residuos.get())
-
-            messagebox.showinfo("Informações Salvas", "Suas informações foram salvas com sucesso!")
+            if opcao == '1':
+                dados['consumo_agua'] = float(input("Digite o novo valor para o consumo de água (em litros): "))
+            elif opcao == '2':
+                dados['consumo_energia'] = float(input("Digite o novo valor para o consumo de energia (em kWh): "))
+            elif opcao == '3':
+                dados['uso_transporte'] = float(input("Digite o novo valor para o uso de transporte (%): "))
+            elif opcao == '4':
+                dados['residuos_nao_reciclaveis'] = float(input("Digite o novo valor para resíduos não recicláveis (%): "))
+            elif opcao == '5':
+                break
+            else:
+                print("Opção inválida! Tente novamente.")
         except ValueError:
-            messagebox.showerror("Erro", "Por favor, insira valores válidos!")
+            print("Erro! Por favor, insira um valor numérico válido.")
 
-    def configuracoes(self):
-        messagebox.showinfo("Configurações", "Aqui você pode ajustar suas configurações!")
-        # Implementação das configurações pode ser adicionada aqui
+def configuracoes():
+    """Exibe as configurações do sistema (simuladas)"""
+    print("\nConfigurações: Você pode alterar preferências do sistema.")
+    print("Esta funcionalidade ainda não foi implementada.\n")
 
-    def logout(self):
-        resposta = messagebox.askyesno("Logout", "Você tem certeza que deseja sair?")
-        if resposta:
-            self.root.quit()
+def logout():
+    """Simula o logout do usuário"""
+    print("\nVocê foi deslogado com sucesso!")
 
-# Criando a janela principal
-root = tk.Tk()
-app = SistemaInterativo(root)
-root.mainloop()
+def main():
+    """Função principal que controla o fluxo do programa"""
+    dados = {
+        'consumo_agua': 0.0,
+        'consumo_energia': 0.0,
+        'uso_transporte': 0.0,
+        'residuos_nao_reciclaveis': 0.0
+    }
+
+    while True:
+        mostrar_menu()
+        
+        opcao = input("\nEscolha uma opção (1-5): ")
+
+        if opcao == '1':
+            relatorio_semanal(dados)
+        elif opcao == '2':
+            revisar_informacoes(dados)
+        elif opcao == '3':
+            configuracoes()
+        elif opcao == '4':
+            logout()
+            break
+        elif opcao == '5':
+            print("Saindo do programa...")
+            break
+        else:
+            print("Opção inválida! Tente novamente.")
+
+if __name__ == "__main__":
+    main()
