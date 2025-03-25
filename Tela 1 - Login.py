@@ -1,8 +1,8 @@
 from BancoDados_UsuarioSenha import database_usuarios
 
-print("="*48)
-print("\tBem Vindo - Faça Seu Login")
-print("="*48)
+print("="*70)
+print("\tBem Vindo ao Sistema de Sustentabilidade Individual - Faça Seu Login")
+print("="*70)
 
 # Verificação do usuário primeiro
 while True:
