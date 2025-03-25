@@ -22,6 +22,9 @@ def grafico_consumo_agua():
         'Transporte': '%'
     }
 
+    # Limite máximo para os valores de consumo
+    limite_valor = 10000
+
     # Loop principal para solicitar entradas do usuário
     while True:
         try:
@@ -35,8 +38,13 @@ def grafico_consumo_agua():
 
                 # Solicita os valores de consumo para cada período
                 for periodo in periodos[periodo_tempo]:
-                    valor = int(input(f"Valor para {periodo} ({unidades[tipo_consumo]}): "))
-                    consumos[tipo_consumo].append(valor)
+                    while True:
+                        valor = int(input(f"Valor para {periodo} ({unidades[tipo_consumo]}): "))
+                        if valor <= limite_valor:
+                            consumos[tipo_consumo].append(valor)
+                            break
+                        else:
+                            print(f"Valor excede o limite de {limite_valor}. Por favor, insira um valor menor ou igual a {limite_valor}.")
 
                 # Exibe o gráfico de consumo no terminal
                 print(f"\nGráfico sobre o consumo de {tipo_consumo} - {periodo_tempo}:\n")
