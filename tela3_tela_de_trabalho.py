@@ -1,8 +1,8 @@
 import datetime
 
-def main():
+def main(usuario_logado):
     print("="*80)
-    print("                       BEM-VINDO", "*nome*!")
+    print(f"                       BEM-VINDO {usuario_logado.upper()}!")
     print("                     O QUE GOSTARIA DE VER?                ")
     print("="*80)
     print("CONSUMO DE ÁGUA (EM LITROS):________________________")
@@ -135,13 +135,13 @@ def main():
                     while True:
                         transporte = input("TIPO DE TRANSPORTE UTILIZADO (carro, bicicleta, ônibus, etc.): ").lower()
                         categoria = None
-                        if transporte in transporte_meio_ambiente_agradece:
+                        if transporte in [item.lower() for item in transporte_meio_ambiente_agradece]:
                             categoria = "Meio ambiente agradece (alta sustentabilidade)"
-                        elif transporte in transporte_sustentavel:
+                        elif transporte in [item.lower() for item in transporte_sustentavel]:
                             categoria = "Sustentabilidade"
-                        elif transporte in transporte_baixo_nivel_sustentabilidade:
+                        elif transporte in [item.lower() for item in transporte_baixo_nivel_sustentabilidade]:
                             categoria = "Baixo nível de sustentabilidade"
-                        elif transporte in transporte_desperdicio:
+                        elif transporte in [item.lower() for item in transporte_desperdicio]:
                             categoria = "Desperdício"
                         else:
                             print("Opção de transporte inválida. Tente novamente.")
@@ -156,17 +156,16 @@ def main():
                     
                     residuos = float(input("GERAÇÃO DE RESÍDUOS NÃO RECICLAVEIS (EM %): "))
                     print("Registrando...")
-                    # Aqui você pode adicionar código para salvar os dados em um arquivo ou banco de dados
                     print(f"Água: {agua} litros, Energia: {energia} KWh, Transportes: {transportes}, Resíduos: {residuos}%")
-                    break  # Sai do loop se todos os dados forem válidos
+                    break
                 except ValueError:
                     print("\n                  ERROR!!          ")
                     print("OS DADOS INSERIDOS DEVEM SER VALORES NUMERICOS")
                     print("              TENTE NOVAMENTE       ")
                     print("  ") 
-            break  # Sai do loop principal após o registro dos dados
+            break
         else:
             print("Opção inválida. Tente novamente.")
         
 if __name__ == "__main__":
-    main()
+    main("teste")
