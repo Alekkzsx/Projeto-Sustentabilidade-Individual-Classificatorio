@@ -1,81 +1,60 @@
 def mostrar_menu():
-    print("\n" + "="*28)
-    print("=== MENU DE CATEGORIAS ===".center(28))
-    print("="*28)
-    print("1. Água".ljust(26) + " ")
-    print("2. Energia".ljust(26) + " ")
-    print("3. Transporte".ljust(26) + " ")
-    print("4. Reciclável".ljust(26) + " ")
-    print("5. Sair".ljust(26) + " ")
-    print("="*28)
+    """Exibe o menu principal para escolha de históricos"""
+    print("\n" + "═" * 40)
+    print(f"{' MENU DE HISTÓRICOS ':=^40}")
+    print("═" * 40)
+    print(f"{'1. Histórico de Água':<38} ")
+    print(f"{'2. Histórico de Energia':<38} ")
+    print(f"{'3. Histórico de Transporte':<38} ")
+    print(f"{'4. Histórico de Resíduos':<38} ") 
+    print(f"{'5. Todas as Categorias':<38} ")  # Nova opção
+    print(f"{'6. Sair do Sistema':<38} ")      # Opção de saída ajustada
+    print("═" * 40)
 
-def menu_agua():
-    print("\n" + "-"*30)
-    print(" SUBCATEGORIAS DE ÁGUA ".center(30, '-'))
-    print("-"*30)
-    print("1. Consumo residencial".ljust(28) + " ")
-    print("2. Consumo comercial".ljust(28) + " ")
-    print("3. Dicas de economia".ljust(28) + " ")
-    print("4. Voltar ao menu principal".ljust(28) + " ")
-    opcao = input("\nEscolha uma opção: ").strip()
-    # Lógica permanece a mesma
+def exibir_historico(tipo):
+    """Exibe mensagem de implementação para os históricos"""
+    print("\n" + "═" * 40)
+    print(f" HISTÓRICO DE {tipo.upper()} ".center(40, '─'))
+    print("\n  🔨 Esta funcionalidade está em desenvolvimento!")
+    print("  📅 Previsão de implementação: versão 2.0\n")
+    print("═" * 40)
+    input("Pressione Enter para voltar...")
 
-def menu_energia():
-    print("\n" + "-"*32)
-    print(" SUBCATEGORIAS DE ENERGIA ".center(32, '-'))
-    print("-"*32)
-    print("1. Energia elétrica".ljust(30) + " ")
-    print("2. Energia solar".ljust(30) + " ")
-    print("3. Energia eólica".ljust(30) + " ")
-    print("4. Dicas de economia".ljust(30) + " ")
-    print("5. Voltar ao menu principal".ljust(30) + " ")
-    opcao = input("\nEscolha uma opção: ").strip()
-    # Lógica permanece a mesma
-
-def menu_transporte():
-    print("\n" + "-"*34)
-    print(" SUBCATEGORIAS DE TRANSPORTE ".center(34, '-'))
-    print("-"*34)
-    print("1. Transporte público".ljust(32) + " ")
-    print("2. Transporte individual".ljust(32) + " ")
-    print("3. Transporte sustentável".ljust(32) + " ")
-    print("4. Voltar ao menu principal".ljust(32) + " ")
-    opcao = input("\nEscolha uma opção: ").strip()
-    # Lógica permanece a mesma
-
-def menu_reciclavel():
-    print("\n" + "-"*34)
-    print(" SUBCATEGORIAS DE RECICLÁVEL ".center(34, '-'))
-    print("-"*34)
-    print("1. Plástico".ljust(32) + " ")
-    print("2. Papel".ljust(32) + " ")
-    print("3. Vidro".ljust(32) + " ")
-    print("4. Metal".ljust(32) + " ")
-    print("5. Orgânicos".ljust(32) + " ")
-    print("6. Voltar ao menu principal".ljust(32) + " ")
-    opcao = input("\nEscolha uma opção: ").strip()
-    # Lógica permanece a mesma
+def exibir_todas_categorias():
+    """Exibe mensagem unificada para todas as categorias"""
+    print("\n" + "═" * 40)
+    print(" VISUALIZAÇÃO INTEGRADA ".center(40, '─'))
+    print("\n  🌐 Carregando dados combinados...")
+    print("  ⚙️  Processando todas as categorias")
+    print("\n  🔧 Funcionalidade em desenvolvimento")
+    print("  🚀 Lançamento previsto: versão 3.0\n")
+    print("═" * 40)
+    input("Pressione Enter para continuar...")
 
 def main():
+    """Função principal com nova opção integrada"""
     while True:
         mostrar_menu()
-        opcao = input("\nEscolha uma categoria (1-5): ").strip()
+        opcao = input("\nEscolha o histórico desejado (1-6): ").strip()  # Ajustado para 6 opções
         
         if opcao == "1":
-            menu_agua()
+            exibir_historico('Água')
         elif opcao == "2":
-            menu_energia()
+            exibir_historico('Energia')
         elif opcao == "3":
-            menu_transporte()
+            exibir_historico('Transporte')
         elif opcao == "4":
-            menu_reciclavel()
-        elif opcao == "5":
-            print("\n" + "="*28)
-            print(" Saindo do programa... ".center(28))
-            print("="*28 + "\n")
+            exibir_historico('Resíduos')
+        elif opcao == "5":  # Nova opção
+            exibir_todas_categorias()
+        elif opcao == "6":
+            print("\n" + "═" * 40)
+            print(f"{' OBRIGADO POR USAR O SISTEMA! ':=^40}")
+            print("═" * 40 + "\n")
             break
         else:
-            print("\nOpção inválida. Por favor, escolha uma opção de 1 a 5.")
+            print("\n⚠ Opção inválida! Use valores de 1 a 6.")  # Mensagem atualizada
+            input("Pressione Enter para tentar novamente...")
 
 if __name__ == "__main__":
     main()
