@@ -2,61 +2,52 @@ import json
 import os
 from datetime import datetime
 
-def carregar_gastos():
-    arquivo = 'gastos_usuarios.json'
-    if not os.path.exists(arquivo):
-        with open(arquivo, 'w') as f:
-            json.dump({"usuarios": {}}, f)
+# Configuração do arquivo JSON
+ARQUIVO_GASTOS = 'gastos_usuarios.json'
+
+def carregar_historico():
+    """Carrega os dados do arquivo JSON"""
+    if not os.path.exists(ARQUIVO_GASTOS):
+        return {"usuarios": {}}
     
-    with open(arquivo, 'r') as f:
+    with open(ARQUIVO_GASTOS, 'r') as f:
         return json.load(f)
 
-def verificar_usuario(usuario, dados):
-    return usuario.lower() in dados['usuarios']
-
-def obter_dados_usuario(usuario, dados):
-    return dados['usuarios'].get(usuario.lower(), None)
-
-def classificar_sustentabilidade(total_gasto):
-    if total_gasto <= 50:
-        return "Meio ambiente agradece !!! 🌱"
-    elif total_gasto <= 100:
-        return "Sustentável ✅"
-    elif total_gasto <= 200:
-        return "Baixo nível de sustentabilidade ⚠️"
-    else:
-        return "Desperdício !!! 💸"
-
-def exibir_resultado(dados):
-    print("\n" + "═" * 40)
-    print("*** HISTÓRICO DO USUÁRIO ***".center(40))
-    print("═" * 40)
-    print(f"Última atualização: {dados['data_registro']} ⏰")
-    print(f"Água: {dados['agua']} litros 💧")
-    print(f"Energia: {dados['energia']} kWh ⚡")
-    print(f"Uso de Transporte: {dados['transporte']}% 🚌")
-    print(f"Resíduos Não Recicláveis: {dados['reciclavel']}% ♻️")
-    
-    total = dados['agua'] + dados['energia'] + dados['transporte'] + dados['reciclavel']
-    print("═" * 40)
-    print(f"Total combinado: {total} 📊")
-    print(f"Classificação: {classificar_sustentabilidade(total)} 🏷️")
-    print("═" * 40 + "\n")
-
-def main():
-    dados = carregar_gastos()
+def exibir_historico(usuario):
+    """Exibe o histórico de um usuário"""
+    dados = carregar_historico()
+    usuario = usuario.lower()
     
     print("\n" + "═" * 40)
-    usuario = input("Digite seu nome de usuário: ").strip()
+    print(f"{' HISTÓRICO ':=^40}")
     
-    if verificar_usuario(usuario, dados):
-        dados_usuario = obter_dados_usuario(usuario, dados)
-        if dados_usuario:
-            exibir_resultado(dados_usuario)
-        else:
-            print("\n⚠️  Usuário sem informações registradas ⚠️\n")
-    else:
-        print("\n🔍  Usuário não encontrado no sistema 🔍\n")
+    if usuario not in dados['usuarios']:
+        print("\n🔍 Usuário não encontrado")
+        print("═" * 40)
+        return
+    
+    registros = dados['usuarios'][usuario]
+    
+    if not registros:
+        print("\n📭 Nenhum registro encontrado para este usuário")
+        print("═" * 40)
+        return
+    
+    print(f"\nUsuário: {usuario.capitalize()}")
+    print(f"Total de registros: {len(registros)}")
+    print("═" * 40)
+    
+    for idx, registro in enumerate(registros, 1):
+        print(f"\n📅 Registro #{idx} - {registro.get('data', 'Sem data')}")
+        print(f"💧 Água: {registro.get('agua', 0)} litros")
+        print(f"⚡ Energia: {registro.get('energia', 0)} kWh")
+        print(f"🚌 Transporte: {registro.get('transporte', 0)}%")
+        print(f"♻️ Resíduos: {registro.get('residuos', 0)}%")
+    
+    print("\n" + "═" * 40)
 
+# Exemplo de uso
 if __name__ == "__main__":
-    main()
+    print("Sistema de Histórico - Versão Simplificada")
+    usuario = input("\nDigite o nome do usuário: ").strip()
+    exibir_historico(usuario)
