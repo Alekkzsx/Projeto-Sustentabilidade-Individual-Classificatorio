@@ -22,58 +22,68 @@ def validar_cpf(cpf):
 
 def main():
     limpar_tela()
-    print("="*40)
-    print("\t\tFAÇA O SEU REGISTRO!")
-    print("="*40)
+    print("╔" + "═" * 38 + "╗")
+    print("║" + "🌟  REGISTRO DE USUÁRIO  🌟".center(38) + "║")
+    print("╚" + "═" * 38 + "╝")
     
     try:
+        # Seção de cadastro
+        print("\n\033[1mDados Pessoais\033[0m".center(40))
+        print("─" * 40)
+        
         # Validação do username
         while True:
-            username = input("Nome de Usuário: ").strip()
+            username = input("│ ► Nome de Usuário: ").strip()
             if username in database_usuarios:
-                print("❌ Usuário já existe! Tente outro nome.")
+                print("│ ⚠️  \033[31mUsuário já existe! Tente outro.\033[0m")
+                print("├" + "─" * 38)
                 continue
             if len(username) < 3:
-                print("❌ Nome deve ter pelo menos 3 caracteres!")
+                print("│ ⚠️  \033[31mNome deve ter pelo menos 3 caracteres!\033[0m")
+                print("├" + "─" * 38)
                 continue
             break
 
         # Validação do e-mail
         while True:
-            email = input("E-mail: ").strip()
+            email = input("\n│ ► E-mail: ").strip()
             if not re.match(r'^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$', email):
-                print("❌ Formato de e-mail inválido!")
+                print("│ ⚠️  \033[31mFormato de e-mail inválido! Ex: user@exemplo.com\033[0m")
+                print("├" + "─" * 38)
                 continue
             break
 
         # Validação do CPF
         while True:
-            cpf = input("CPF (apenas números): ").strip()
+            cpf = input("\n│ ► CPF (apenas números): ").strip()
             if not validar_cpf(cpf):
-                print("❌ CPF inválido! Digite novamente.")
+                print("│ ⚠️  \033[31mCPF inválido! Digite 11 números válidos.\033[0m")
+                print("├" + "─" * 38)
                 continue
             break
 
         # Validação da senha
         while True:
-            senha = input("Senha (mínimo 6 caracteres): ").strip()
+            senha = input("\n│ ► Senha (mínimo 6 caracteres): ").strip()
             if len(senha) < 6:
-                print("❌ Senha muito curta!")
+                print("│ ⚠️  \033[31mSenha muito curta! Use mais caracteres.\033[0m")
+                print("├" + "─" * 38)
                 continue
             break
 
         # Confirmação final
         limpar_tela()
-        print("="*40)
-        print("\tCONFIRME SEUS DADOS")
-        print("="*40)
-        print(f"Usuário: {username}")
-        print(f"E-mail: {email}")
-        print(f"CPF: {cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}")
-        print("="*40)
+        print("╔" + "═" * 38 + "╗")
+        print("║" + "🔍  CONFIRA SEUS DADOS  🔍".center(38) + "║")
+        print("╟" + "─" * 38 + "╢")
+        print(f"│ ► Usuário: \033[34m{username}\033[0m")
+        print(f"│ ► E-mail: \033[34m{email}\033[0m")
+        print(f"│ ► CPF: \033[34m{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}\033[0m")
+        print("╚" + "═" * 38 + "╝")
         
-        if input("Confirmar cadastro? (S/N): ").upper() != 'S':
-            print("\n❌ Cadastro cancelado!")
+        confirmacao = input("\n│ ❓ Confirmar cadastro? (S/N): ").upper()
+        if confirmacao != 'S':
+            print("\n\033[31m✖  Cadastro cancelado!\033[0m")
             return False
 
         # Salva no banco de dados
@@ -85,11 +95,13 @@ def main():
         }
         salvar_dados()
         
-        print("\n✅ Cadastro realizado com sucesso!")
+        print("\n\033[32m╔══════════════════════════════════════╗")
+        print("║ ✅  CADASTRO REALIZADO COM SUCESSO!  ║")
+        print("╚══════════════════════════════════════╝\033[0m")
         return True
 
     except KeyboardInterrupt:
-        print("\n⚠️ Operação cancelada pelo usuário!")
+        print("\n\033[33m⚠️  Operação interrompida pelo usuário!\033[0m")
         return False
 
 if __name__ == "__main__":
