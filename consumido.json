@@ -1,0 +1,18 @@
+[
+    {
+        "data": "27/03/2025 19:57",
+        "periodo": "Mensal",
+        "consumo": {
+            "agua": 50.0,
+            "energia": 10.0,
+            "residuos": 50.0,
+            "transporte": "bicicleta"
+        },
+        "classificacoes": {
+            "\u00c1gua": "Meio Ambiente Agradece",
+            "Energia": "Moderada Sustentabilidade",
+            "Res\u00edduos": "Alta Sustentabilidade",
+            "Transporte": "Meio Ambiente Agradece"
+        }
+    }
+]
