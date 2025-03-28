@@ -69,6 +69,8 @@ def salvar_gastos(usuario, agua, energia, residuos, transportes):
     with open(GASTOS_JSON, 'w') as f:
         json.dump(dados, f, indent=4)
 
+# ...existing code...
+
 def main(usuario_logado):
     while True:
         limpar_tela()
@@ -86,14 +88,22 @@ def main(usuario_logado):
                 energia = float(input("► Consumo de energia (kWh/dia): "))
                 residuos = float(input("► Resíduos não recicláveis (%): "))
                 
+                # ...dentro da função main, na opção '1' de registrar novos dados...
                 transportes = []
                 while True:
                     transporte = input("\n► Transporte utilizado (deixe em branco para sair): ").lower().strip()
-                    if not transporte:
+                    if not transporte:  # Se o transporte estiver vazio, sai do loop
                         break
-                    vezes = int(input(f"► Quantidade de viagens com {transporte}: "))
-                    transportes.append((transporte, vezes))
-                
+                    vezes_input = input(f"► Quantidade de viagens com {transporte} (deixe em branco para pular): ").strip()
+                    if not vezes_input:
+                        print("Registro de transporte ignorado. Prosseguindo...")
+                        continue
+                    try:
+                        vezes = int(vezes_input)
+                        transportes.append((transporte, vezes))
+                    except ValueError:
+                        print("ERRO: Entrada inválida para a quantidade de viagens. Tente novamente.")
+
                 agua_cat, energia_cat, residuos_cat, transportes_cat = classificar_consumo(agua, energia, residuos, transportes)
                 salvar_gastos(usuario_logado, agua, energia, residuos, transportes)
                 
