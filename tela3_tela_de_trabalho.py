@@ -175,7 +175,6 @@ def main(usuario_logado):
             
         elif choice == '4':
             limpar_tela()
-            tela6_gráficos_verticais.main(usuario_logado)
         else:
             print("Opção inválida! Tente novamente.")
             input("Pressione Enter para continuar...")
