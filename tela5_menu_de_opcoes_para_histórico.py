@@ -1,14 +1,16 @@
-def mostrar_menu():
+
+
+def mostrar_menu(usuario_logado):
     """Exibe o menu principal para escolha de históricos"""
     print("\n" + "═" * 40)
-    print(f"{' MENU DE HISTÓRICOS ':=^40}")
+    print(f"SEUS HISTÓRICOS, ",{usuario_logado})
     print("═" * 40)
     print(f"{'1. Histórico de Água':<38} ")
     print(f"{'2. Histórico de Energia':<38} ")
     print(f"{'3. Histórico de Transporte':<38} ")
     print(f"{'4. Histórico de Resíduos':<38} ") 
-    print(f"{'5. Todas as Categorias':<38} ")  # Nova opção
-    print(f"{'6. Sair do Sistema':<38} ")      # Opção de saída ajustada
+    print(f"{'5. Todas as Categorias':<38} ") 
+    print(f"{'6. Sair do Sistema':<38} ")      
     print("═" * 40)
 
 def exibir_historico(tipo):

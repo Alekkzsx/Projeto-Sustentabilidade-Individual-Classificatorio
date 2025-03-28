@@ -1,6 +1,9 @@
 import datetime
 import os
 import json
+import tela4_relatório_boas_práticas
+import tela5_menu_de_opcoes_para_histórico
+import tela6_gráficos_verticais
 
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -54,7 +57,9 @@ def main(usuario_logado):
 
         print("\t\t\t    [1] Registrar novos dados")
         print("\t\t\t    [2] Acessar Histórico")
-        print("\t\t\t    [3] Sair")
+        print("\t\t\t    [3] Relatório de boas práticas")
+        print("\t\t\t    [4] Acessar Gráficos")
+        print("\t\t\t    [5] Sair do sistema")
         print("─" * 79)
 
         choice = input("▶ Escolha uma opção (1/2/3): ")
@@ -147,27 +152,30 @@ def main(usuario_logado):
             print("\n╔" + "═" * 78 + "╗")
             print("║" + " DADOS REGISTRADOS ".center(78, '─') + "║")
             print(f"║ 📅 Data/hora: {data_hora}".ljust(79) + "║")
-            print(f"║ 🌊 Água: {agua}L".ljust(79) + "║")
-            print(f"║ 💡 Energia: {energia}KWh".ljust(79) + "║")
-            print(f"║ 🚦 Transportes registrados: {len(transportes)}".ljust(79) + "║")
-            print(f"║ ♻️ Resíduos: {residuos}%".ljust(79) + "║")
+            print(f"║ 🌊 Água: {agua}L - {classificacoes['agua']}".ljust(79) + "║")
+            print(f"║ 💡 Energia: {energia}KWh - {classificacoes['energia']}".ljust(79) + "║")
+            # Exibe a classificação dos transportes
+            if transportes:
+                transportes_classificacao = ", ".join([f"{t[0]} ({t[2]})" for t in transportes])
+                print(f"║ 🚦 Transportes registrados: {len(transportes)} - {transportes_classificacao}".ljust(79) + "║")
+            else:
+                print(f"║ 🚦 Transportes registrados: Nenhum".ljust(79) + "║")
+
+            print(f"║ ♻️ Resíduos: {residuos}% - {classificacoes['residuos']}".ljust(79) + "║")
             print("╚" + "═" * 78 + "╝")
             input("\nPressione Enter para continuar...")
         
         elif choice == '2':
             limpar_tela()
-            print("\n╔" + "═" * 78 + "╗")
-            print("║" + " HISTÓRICO (EM DESENVOLVIMENTO) ".center(78, '~') + "║")
-            print("╚" + "═" * 78 + "╝")
-            input("\nPressione Enter para voltar...")
+            tela5_menu_de_opcoes_para_histórico(usuario_logado)
         
         elif choice == '3':
             limpar_tela()
-            print("\n╔" + "═" * 78 + "╗")
-            print("║" + " OBRIGADO POR UTILIZAR NOSSO SISTEMA! ".center(78) + "║")
-            print("╚" + "═" * 78 + "╝")
-            break
-        
+            tela4_relatório_boas_práticas.main(usuario_logado)
+            
+        elif choice == '4':
+            limpar_tela()
+            tela6_gráficos_verticais.main(usuario_logado)
         else:
             print("Opção inválida! Tente novamente.")
             input("Pressione Enter para continuar...")
