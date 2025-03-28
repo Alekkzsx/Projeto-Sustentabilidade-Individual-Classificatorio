@@ -8,6 +8,7 @@ def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def classificar_consumo(agua, energia, residuos, transportes):
+    # Classificação do consumo de água
     if agua < 100:
         agua_cat = "🟢 Meio Ambiente Agradece"
     elif agua < 150:
@@ -17,6 +18,7 @@ def classificar_consumo(agua, energia, residuos, transportes):
     else:
         agua_cat = "🔴 Baixa Sustentabilidade"
     
+    # Classificação do consumo de energia
     if energia < 2.5:
         energia_cat = "🟢 Meio Ambiente Agradece"
     elif energia < 5:
@@ -26,6 +28,7 @@ def classificar_consumo(agua, energia, residuos, transportes):
     else:
         energia_cat = "🔴 Baixa Sustentabilidade"
     
+    # Classificação da geração de resíduos
     if residuos < 20:
         residuos_cat = "🟢 Meio Ambiente Agradece"
     elif residuos < 50:
@@ -35,18 +38,20 @@ def classificar_consumo(agua, energia, residuos, transportes):
     else:
         residuos_cat = "🔴 Baixa Sustentabilidade"
     
+    # Classificação do uso de transporte
+    # Inicialmente assume baixa sustentabilidade
     transportes_cat = "🔴 Baixa Sustentabilidade"
-    for t, _, _ in transportes:
+    for t, _ in transportes:
         if t in ["bicicleta", "a pé"]:
             transportes_cat = "🟢 Meio Ambiente Agradece"
         elif t in ["bicicleta elétrica", "patins elétrico"]:
             transportes_cat = "🟡 Alta Sustentabilidade"
         elif t in ["ônibus", "metrô", "trem"]:
             transportes_cat = "🟠 Moderada Sustentabilidade"
-    
     return agua_cat, energia_cat, residuos_cat, transportes_cat
 
-def salvar_gastos(usuario, agua, energia, residuos, transportes):
+def salvar_gastos(usuario, agua, energia, residuos, transportes, agua_cat, energia_cat, residuos_cat, transportes_cat):
+    # Cria o arquivo JSON caso não exista
     if not os.path.exists(GASTOS_JSON):
         with open(GASTOS_JSON, 'w') as f:
             json.dump({}, f)
@@ -60,16 +65,18 @@ def salvar_gastos(usuario, agua, energia, residuos, transportes):
     registro = {
         "data_hora": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         "agua": agua,
+        "agua_classificacao": agua_cat,
         "energia": energia,
+        "energia_classificacao": energia_cat,
         "residuos": residuos,
-        "transportes": transportes
+        "residuos_classificacao": residuos_cat,
+        "transportes": transportes,
+        "transportes_classificacao": transportes_cat
     }
     dados[usuario].append(registro)
     
     with open(GASTOS_JSON, 'w') as f:
         json.dump(dados, f, indent=4)
-
-# ...existing code...
 
 def main(usuario_logado):
     while True:
@@ -88,24 +95,30 @@ def main(usuario_logado):
                 energia = float(input("► Consumo de energia (kWh/dia): "))
                 residuos = float(input("► Resíduos não recicláveis (%): "))
                 
-                # ...dentro da função main, na opção '1' de registrar novos dados...
+                # Cadastro de transportes
                 transportes = []
                 while True:
-                    transporte = input("\n► Transporte utilizado (deixe em branco para sair): ").lower().strip()
-                    if not transporte:  # Se o transporte estiver vazio, sai do loop
-                        break
-                    vezes_input = input(f"► Quantidade de viagens com {transporte} (deixe em branco para pular): ").strip()
-                    if not vezes_input:
-                        print("Registro de transporte ignorado. Prosseguindo...")
-                        continue
-                    try:
-                        vezes = int(vezes_input)
+                    opcao = input("\nDeseja adicionar um meio de transporte? [1] Sim [2] Não: ").strip()
+                    if opcao == '1':
+                        transporte = input("► Informe o transporte utilizado: ").lower().strip()
+                        if transporte == "":
+                            print("Transporte inválido. Tente novamente.")
+                            continue
+                        try:
+                            vezes = int(input(f"► Quantidade de viagens com {transporte}: ").strip())
+                        except ValueError:
+                            print("Entrada inválida para quantidade de viagens. Tente novamente.")
+                            continue
                         transportes.append((transporte, vezes))
-                    except ValueError:
-                        print("ERRO: Entrada inválida para a quantidade de viagens. Tente novamente.")
-
+                    elif opcao == '2':
+                        break
+                    else:
+                        print("Opção inválida! Informe 1 ou 2.")
+                
+                # Classifica os consumos
                 agua_cat, energia_cat, residuos_cat, transportes_cat = classificar_consumo(agua, energia, residuos, transportes)
-                salvar_gastos(usuario_logado, agua, energia, residuos, transportes)
+                # Salva os dados junto com as classificações
+                salvar_gastos(usuario_logado, agua, energia, residuos, transportes, agua_cat, energia_cat, residuos_cat, transportes_cat)
                 
                 limpar_tela()
                 print("\nDADOS REGISTRADOS COM SUCESSO!")
