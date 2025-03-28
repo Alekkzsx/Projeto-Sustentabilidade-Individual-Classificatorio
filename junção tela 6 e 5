@@ -8,10 +8,18 @@ ARQUIVO_GASTOS = 'gastos_usuarios.json'
 def carregar_historico():
     """Carrega os dados do arquivo JSON"""
     if not os.path.exists(ARQUIVO_GASTOS):
+        print(f"⚠️ O arquivo {ARQUIVO_GASTOS} não foi encontrado. Criando um novo arquivo...")
         return {"usuarios": {}}
-    
-    with open(ARQUIVO_GASTOS, 'r') as f:
-        return json.load(f)
+
+    try:
+        with open(ARQUIVO_GASTOS, 'r') as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        print("⚠️ O arquivo JSON está corrompido. Criando um novo arquivo...")
+        return {"usuarios": {}}
+    except Exception as e:
+        print(f"Erro ao carregar o arquivo: {e}")
+        return {"usuarios": {}}
 
 def exibir_historico_categoria(usuario, tipo):
     """Exibe o histórico de uma categoria específica"""
@@ -77,7 +85,7 @@ def exibir_todas_categorias():
             print(f"💧 Água: {registro['agua']['valor']} litros - {registro['agua']['classificacao']}")
             print(f"⚡ Energia: {registro['energia']['valor']} kWh - {registro['energia']['classificacao']}")
             print(f"♻️ Resíduos: {registro['residuos']['valor']}% - {registro['residuos']['classificacao']}")
-            print(f"🚌 Transportes:")
+            print(f"🚌 Transportes: ")
             for transporte in registro['transportes']:
                 print(f"  Meio: {transporte['meio']} | Viagens: {transporte['viagens']} | Classificação: {transporte['classificacao']}")
             print("═" * 40)
