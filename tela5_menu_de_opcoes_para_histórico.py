@@ -1,62 +1,131 @@
+import json
+import os
 
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def carregar_dados_usuario(usuario):
+    """
+    Carrega os dados do usuário do arquivo JSON.
+    """
+    arquivo_json = "gastos_usuarios.json"
+    if not os.path.exists(arquivo_json):
+        print("Nenhum dado encontrado para o usuário.")
+        return None
+
+    with open(arquivo_json, 'r') as f:
+        dados = json.load(f)
+    
+    return dados.get(usuario, [])
+
+def exibir_tabela(categoria, dados):
+    """
+    Exibe os dados do usuário em formato de tabela para a categoria escolhida.
+    """
+    limpar_tela()
+    print("\n" + "═" * 50)
+    print(f" HISTÓRICO DE {categoria.upper()} ".center(50, '─'))
+    print("═" * 50)
+    print(f"{'Categoria':<15}{'Data e Hora':<20}{'Classificação':<15}")
+    print("─" * 50)
+
+    encontrou_dados = False
+    for registro in dados:
+        if categoria == "água":
+            print(f"{'Água':<15}{registro['data_hora']:<20}{registro['agua']['classificacao']:<15}")
+            encontrou_dados = True
+        elif categoria == "energia":
+            print(f"{'Energia':<15}{registro['data_hora']:<20}{registro['energia']['classificacao']:<15}")
+            encontrou_dados = True
+        elif categoria == "resíduos":
+            print(f"{'Resíduos':<15}{registro['data_hora']:<20}{registro['residuos']['classificacao']:<15}")
+            encontrou_dados = True
+        elif categoria == "transporte":
+            for transporte in registro["transportes"]:
+                print(f"{'Transporte':<15}{registro['data_hora']:<20}{transporte['classificacao']:<15}")
+                encontrou_dados = True
+
+    if not encontrou_dados:
+        print(f"\nNenhum dado encontrado para a categoria {categoria.capitalize()}.")
+
+    print("═" * 50)
+    input("\nPressione Enter para voltar ao menu...")
+
+def exibir_todas_categorias(dados):
+    """
+    Exibe os dados de todas as categorias em formato de tabela.
+    """
+    limpar_tela()
+    print("\n" + "═" * 70)
+    print(" HISTÓRICO DE TODAS AS CATEGORIAS ".center(70, '─'))
+    print("═" * 70)
+    print(f"{'Categoria':<15}{'Data e Hora':<20}{'Classificação':<15}")
+    print("─" * 70)
+
+    encontrou_dados = False
+    for registro in dados:
+        # Água
+        print(f"{'Água':<15}{registro['data_hora']:<20}{registro['agua']['classificacao']:<15}")
+        encontrou_dados = True
+        # Energia
+        print(f"{'Energia':<15}{registro['data_hora']:<20}{registro['energia']['classificacao']:<15}")
+        encontrou_dados = True
+        # Resíduos
+        print(f"{'Resíduos':<15}{registro['data_hora']:<20}{registro['residuos']['classificacao']:<15}")
+        encontrou_dados = True
+        # Transportes
+        for transporte in registro["transportes"]:
+            print(f"{'Transporte':<15}{registro['data_hora']:<20}{transporte['classificacao']:<15}")
+            encontrou_dados = True
+
+    if not encontrou_dados:
+        print("\nNenhum dado encontrado para o usuário.")
+
+    print("═" * 70)
+    input("\nPressione Enter para voltar ao menu...")
 
 def mostrar_menu(usuario_logado):
-    """Exibe o menu principal para escolha de históricos"""
-    print("\n" + "═" * 40)
-    print(f"SEUS HISTÓRICOS, ",{usuario_logado})
-    print("═" * 40)
-    print(f"{'1. Histórico de Água':<38} ")
-    print(f"{'2. Histórico de Energia':<38} ")
-    print(f"{'3. Histórico de Transporte':<38} ")
-    print(f"{'4. Histórico de Resíduos':<38} ") 
-    print(f"{'5. Todas as Categorias':<38} ") 
-    print(f"{'6. Sair do Sistema':<38} ")      
-    print("═" * 40)
-
-def exibir_historico(tipo):
-    """Exibe mensagem de implementação para os históricos"""
-    print("\n" + "═" * 40)
-    print(f" HISTÓRICO DE {tipo.upper()} ".center(40, '─'))
-    print("\n  🔨 Esta funcionalidade está em desenvolvimento!")
-    print("  📅 Previsão de implementação: versão 2.0\n")
-    print("═" * 40)
-    input("Pressione Enter para voltar...")
-
-def exibir_todas_categorias():
-    """Exibe mensagem unificada para todas as categorias"""
-    print("\n" + "═" * 40)
-    print(" VISUALIZAÇÃO INTEGRADA ".center(40, '─'))
-    print("\n  🌐 Carregando dados combinados...")
-    print("  ⚙️  Processando todas as categorias")
-    print("\n  🔧 Funcionalidade em desenvolvimento")
-    print("  🚀 Lançamento previsto: versão 3.0\n")
-    print("═" * 40)
-    input("Pressione Enter para continuar...")
-
-def main():
-    """Função principal com nova opção integrada"""
+    """
+    Exibe o menu principal para escolha de históricos.
+    """
     while True:
-        mostrar_menu()
-        opcao = input("\nEscolha o histórico desejado (1-6): ").strip()  # Ajustado para 6 opções
-        
+        limpar_tela()
+        print("\n" + "═" * 50)
+        print(f" HISTÓRICO DO USUÁRIO: {usuario_logado.upper()} ".center(50, '─'))
+        print("═" * 50)
+        print(f"{'1. Histórico de Água':<38}")
+        print(f"{'2. Histórico de Energia':<38}")
+        print(f"{'3. Histórico de Transporte':<38}")
+        print(f"{'4. Histórico de Resíduos':<38}")
+        print(f"{'5. Todas as Categorias':<38}")
+        print(f"{'6. Sair':<38}")
+        print("═" * 50)
+
+        opcao = input("Escolha o histórico desejado (1-6): ").strip()
+
+        dados = carregar_dados_usuario(usuario_logado)
+        if not dados:
+            print("\nNenhum dado encontrado para o usuário.")
+            input("Pressione Enter para voltar...")
+            return
+
         if opcao == "1":
-            exibir_mensagem('Água')
+            exibir_tabela("água", dados)
         elif opcao == "2":
-            exibir_mensagem('Energia')
+            exibir_tabela("energia", dados)
         elif opcao == "3":
-            exibir_mensagem('Transporte')
+            exibir_tabela("transporte", dados)
         elif opcao == "4":
-            exibir_mensagem('Resíduos')
-        elif opcao == "5":  # Nova opção
-            exibir_todas_categorias()
+            exibir_tabela("resíduos", dados)
+        elif opcao == "5":
+            exibir_todas_categorias(dados)
         elif opcao == "6":
-            print("\n" + "═" * 40)
-            print(f"{' OBRIGADO POR USAR O SISTEMA! ':=^40}")
-            print("═" * 40 + "\n")
+            print("\nSaindo do histórico...")
             break
         else:
-            print("\n⚠ Opção inválida! Use valores de 1 a 6.") 
-            input("Pressione Enter para tentar novamente...")
+            print("\n⚠ Opção inválida! Tente novamente.")
+            input("Pressione Enter para continuar...")
 
 if __name__ == "__main__":
-    main()
+    usuario_logado = input("Digite o nome do usuário logado: ").strip()
+    mostrar_menu(usuario_logado)
