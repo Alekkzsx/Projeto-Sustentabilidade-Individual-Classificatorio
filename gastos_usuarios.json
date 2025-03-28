@@ -1,0 +1,26 @@
+{
+    "Usu\u00e1rio": [
+        {
+            "data_hora": "28/03/2025 16:16",
+            "agua": {
+                "valor": 10.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+            },
+            "energia": {
+                "valor": 10.0,
+                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+            },
+            "residuos": {
+                "valor": 50.0,
+                "classificacao": "\ud83d\udfe0 Moderada Sustentabilidade"
+            },
+            "transportes": [
+                {
+                    "meio": "a p\u00e9",
+                    "viagens": 5.0,
+                    "classificacao": "\ud83d\udfe2"
+                }
+            ]
+        }
+    ]
+}
