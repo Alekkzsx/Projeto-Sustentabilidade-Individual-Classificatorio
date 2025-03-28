@@ -1,102 +1,122 @@
 import datetime
 import os
+import json
+
+GASTOS_JSON = "gastos_usuarios.json"
 
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def main():
+def classificar_consumo(agua, energia, residuos, transportes):
+    if agua < 100:
+        agua_cat = "🟢 Meio Ambiente Agradece"
+    elif agua < 150:
+        agua_cat = "🟡 Alta Sustentabilidade"
+    elif agua < 200:
+        agua_cat = "🟠 Moderada Sustentabilidade"
+    else:
+        agua_cat = "🔴 Baixa Sustentabilidade"
+    
+    if energia < 2.5:
+        energia_cat = "🟢 Meio Ambiente Agradece"
+    elif energia < 5:
+        energia_cat = "🟡 Alta Sustentabilidade"
+    elif energia < 10:
+        energia_cat = "🟠 Moderada Sustentabilidade"
+    else:
+        energia_cat = "🔴 Baixa Sustentabilidade"
+    
+    if residuos < 20:
+        residuos_cat = "🟢 Meio Ambiente Agradece"
+    elif residuos < 50:
+        residuos_cat = "🟡 Alta Sustentabilidade"
+    elif residuos < 60:
+        residuos_cat = "🟠 Moderada Sustentabilidade"
+    else:
+        residuos_cat = "🔴 Baixa Sustentabilidade"
+    
+    transportes_cat = "🔴 Baixa Sustentabilidade"
+    for t, _, _ in transportes:
+        if t in ["bicicleta", "a pé"]:
+            transportes_cat = "🟢 Meio Ambiente Agradece"
+        elif t in ["bicicleta elétrica", "patins elétrico"]:
+            transportes_cat = "🟡 Alta Sustentabilidade"
+        elif t in ["ônibus", "metrô", "trem"]:
+            transportes_cat = "🟠 Moderada Sustentabilidade"
+    
+    return agua_cat, energia_cat, residuos_cat, transportes_cat
+
+def salvar_gastos(usuario, agua, energia, residuos, transportes):
+    if not os.path.exists(GASTOS_JSON):
+        with open(GASTOS_JSON, 'w') as f:
+            json.dump({}, f)
+    
+    with open(GASTOS_JSON, 'r') as f:
+        dados = json.load(f)
+    
+    if usuario not in dados:
+        dados[usuario] = []
+    
+    registro = {
+        "data_hora": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+        "agua": agua,
+        "energia": energia,
+        "residuos": residuos,
+        "transportes": transportes
+    }
+    dados[usuario].append(registro)
+    
+    with open(GASTOS_JSON, 'w') as f:
+        json.dump(dados, f, indent=4)
+
+def main(usuario_logado):
     while True:
         limpar_tela()
-        print("\n╔" + "═" * 78 + "╗")
-        print("║" + " BEM-VINDO AO SISTEMA DE SUSTENTABILIDADE ".center(78, '─') + "║")
-        print("╠" + "═" * 78 + "╣")
-        print("║" + "O QUE VOCÊ GOSTARIA DE FAZER HOJE?".center(78) + "║")
-        print("╚" + "═" * 78 + "╝")
-
-        print("\t\t\t    [1] Registrar novos dados")
-        print("\t\t\t    [2] Acessar Histórico")
-        print("\t\t\t    [3] Sair")
-        print("─" * 79)
-
-        choice = input("▶ Escolha uma opção (1/2/3): ")
+        print(f"\nBem-vindo(a), {usuario_logado}!")
+        print("\n[1] Registrar novos dados")
+        print("[2] Acessar Histórico")
+        print("[3] Sair")
+        
+        choice = input("▶ Escolha uma opção: ")
         
         if choice == '1':
             limpar_tela()
             try:
-                print("\n" + "═" * 78)
-                print(" NOVO REGISTRO ".center(78, '─'))
-                print("═" * 78)
+                agua = float(input("\n► Consumo de água (litros/dia): "))
+                energia = float(input("► Consumo de energia (kWh/dia): "))
+                residuos = float(input("► Resíduos não recicláveis (%): "))
                 
-                agua = float(input("\n► Consumo de água (litros): "))
-                energia = float(input("► Consumo de energia (KWh): "))
-
-                transporte_categorias = {
-                    'transporte_eco': ["bicicleta", "a pé", "patinete"],
-                    'transporte_sustentavel': ["ônibus", "metrô", "trem"],
-                    'transporte_baixo': ["bicicleta elétrica", "patins elétrico"],
-                    'transporte_poluente': ["carro", "moto", "caminhão"]
-                }
-
                 transportes = []
-                print("\n" + "─" * 78)
-                print(" CATEGORIAS DE TRANSPORTE ".center(78, '─'))
-                print("\t🟢Meio Ambiente Agradece  🟡Sustentável  🟠Baixo  🔴Poluente")
-                print("─" * 78)
-
                 while True:
                     transporte = input("\n► Transporte utilizado (deixe em branco para sair): ").lower().strip()
                     if not transporte:
                         break
-
-                    categoria = None
-                    if transporte in transporte_categorias['transporte_eco']:
-                        categoria = "🟢"
-                    elif transporte in transporte_categorias['transporte_sustentavel']:
-                        categoria = "🟡"
-                    elif transporte in transporte_categorias['transporte_baixo']:
-                        categoria = "🟠"
-                    elif transporte in transporte_categorias['transporte_poluente']:
-                        categoria = "🔴"
-                    else:
-                        print("► Categoria não reconhecida! Use transporte listado.")
-                        continue
-
                     vezes = int(input(f"► Quantidade de viagens com {transporte}: "))
-                    transportes.append((transporte, vezes, categoria))
-
-                residuos = float(input("\n► Resíduos não recicláveis (%): "))
-                limpar_tela()
+                    transportes.append((transporte, vezes))
                 
-                data_hora = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-                print("\n╔" + "═" * 78 + "╗")
-                print("║" + " DADOS REGISTRADOS ".center(78, '─') + "║")
-                print(f"║ 📅 Data/hora: {data_hora}".ljust(79) + "║")
-                print(f"║ 🌊 Água: {agua}L".ljust(79) + "║")
-                print(f"║ 💡 Energia: {energia}KWh".ljust(79) + "║")
-                print(f"║ 🚦 Transportes registrados: {len(transportes)}".ljust(79) + "║")
-                print(f"║ ♻️ Resíduos: {residuos}%".ljust(79) + "║")
-                print("╚" + "═" * 78 + "╝")
-                input("\nPressione Enter para continuar...")
-
-            except ValueError:
+                agua_cat, energia_cat, residuos_cat, transportes_cat = classificar_consumo(agua, energia, residuos, transportes)
+                salvar_gastos(usuario_logado, agua, energia, residuos, transportes)
+                
                 limpar_tela()
-                print("\n╔" + "═" * 78 + "╗")
-                print("║" + " ERRO: VALOR INVÁLIDO! ".center(78, '!') + "║")
-                print("╚" + "═" * 78 + "╝")
-                input("Pressione Enter para tentar novamente...")
+                print("\nDADOS REGISTRADOS COM SUCESSO!")
+                print(f"🌊 Água: {agua}L - {agua_cat}")
+                print(f"💡 Energia: {energia}kWh - {energia_cat}")
+                print(f"♻️ Resíduos: {residuos}% - {residuos_cat}")
+                print(f"🚦 Transportes: {transportes_cat}")
+                input("\nPressione Enter para continuar...")
+            
+            except ValueError:
+                print("\nERRO: Entrada inválida! Tente novamente.")
+                input("Pressione Enter para continuar...")
         
         elif choice == '2':
             limpar_tela()
-            print("\n╔" + "═" * 78 + "╗")
-            print("║" + " HISTÓRICO (EM DESENVOLVIMENTO) ".center(78, '~') + "║")
-            print("╚" + "═" * 78 + "╝")
+            print("\nHISTÓRICO (EM DESENVOLVIMENTO)")
             input("\nPressione Enter para voltar...")
         
         elif choice == '3':
             limpar_tela()
-            print("\n╔" + "═" * 78 + "╗")
-            print("║" + " OBRIGADO POR UTILIZAR NOSSO SISTEMA! ".center(78) + "║")
-            print("╚" + "═" * 78 + "╝")
+            print("\nOBRIGADO POR UTILIZAR O SISTEMA!")
             break
         
         else:
@@ -104,4 +124,4 @@ def main():
             input("Pressione Enter para continuar...")
 
 if __name__ == "__main__":
-    main()
+    main("Usuário")
