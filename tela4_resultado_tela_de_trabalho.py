@@ -99,7 +99,7 @@ def main():
         elif opcao == '2':
             revisar_informacoes(dados)
         elif opcao == '3':
-            configuracoes()
+            tela de trabalho()
         elif opcao == '4':
             logout()
             break
