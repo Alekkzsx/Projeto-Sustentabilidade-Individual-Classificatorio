@@ -54,7 +54,7 @@ def main(usuario_logado):
 
         print("\t\t\t    [1] Registrar novos dados")
         print("\t\t\t    [2] Acessar Histórico")
-        print("\t\t\t    [3] ")
+        print("\t\t\t    [3] Sair")
         print("─" * 79)
 
         choice = input("▶ Escolha uma opção (1/2/3): ")
