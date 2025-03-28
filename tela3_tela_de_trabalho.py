@@ -4,6 +4,12 @@ import json
 
 GASTOS_JSON = "gastos_usuarios.json"
 
+# Modelos de transportes reconhecidos
+modelos_transportes_meio_ambiente = ["bicicleta", "a pé", "caminhada"]
+modelos_transportes_alta = ["bicicleta elétrica", "patins elétrico", "veículo elétrico", "veículos elétricos"]
+modelos_transportes_moderada = ["ônibus", "metrô", "trem", "veículo público", "veículos públicos"]
+modelos_transportes_baixa = ["carro", "moto", "caminhão", "veículo movido a fósseis", "veículos movidos a fósseis"]
+
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -38,17 +44,26 @@ def classificar_consumo(agua, energia, residuos, transportes):
     else:
         residuos_cat = "🔴 Baixa Sustentabilidade"
     
-    # Classificação do uso de transporte
-    # Inicialmente assume baixa sustentabilidade
-    transportes_cat = "🔴 Baixa Sustentabilidade"
-    for t, _ in transportes:
-        if t in ["bicicleta", "a pé"]:
-            transportes_cat = "🟢 Meio Ambiente Agradece"
-        elif t in ["bicicleta elétrica", "patins elétrico"]:
-            transportes_cat = "🟡 Alta Sustentabilidade"
-        elif t in ["ônibus", "metrô", "trem"]:
-            transportes_cat = "🟠 Moderada Sustentabilidade"
+    # Classificação do uso de transporte com base no melhor nível entre os transportes cadastrados
+    transportes_cat = classificar_transportes(transportes)
+    
     return agua_cat, energia_cat, residuos_cat, transportes_cat
+
+def classificar_transportes(transportes):
+    # Define ranking: maior valor significa melhor sustentabilidade
+    ranking = {
+        "🟢 Meio Ambiente Agradece": 4,
+        "🟡 Alta Sustentabilidade": 3,
+        "🟠 Moderada Sustentabilidade": 2,
+        "🔴 Baixa Sustentabilidade": 1
+    }
+    if not transportes:
+        return "Sem transporte registrado"
+    melhor = "🔴 Baixa Sustentabilidade"
+    for _, _, cat in transportes:
+        if ranking.get(cat, 0) > ranking.get(melhor, 0):
+            melhor = cat
+    return melhor
 
 def salvar_gastos(usuario, agua, energia, residuos, transportes, agua_cat, energia_cat, residuos_cat, transportes_cat):
     # Cria o arquivo JSON caso não exista
@@ -95,25 +110,39 @@ def main(usuario_logado):
                 energia = float(input("► Consumo de energia (kWh/dia): "))
                 residuos = float(input("► Resíduos não recicláveis (%): "))
                 
-                # Cadastro de transportes
+                # Cadastro de transportes com validação
                 transportes = []
                 while True:
-                    opcao = input("\nDeseja adicionar um meio de transporte? [1] Sim [2] Não: ").strip()
+                    transporte = input("\n► Informe o meio de transporte utilizado: ").lower().strip()
+                    # Verifica se o transporte informado está entre os modelos reconhecidos
+                    if transporte in modelos_transportes_meio_ambiente:
+                        classificacao = "🟢 Meio Ambiente Agradece"
+                    elif transporte in modelos_transportes_alta:
+                        classificacao = "🟡 Alta Sustentabilidade"
+                    elif transporte in modelos_transportes_moderada:
+                        classificacao = "🟠 Moderada Sustentabilidade"
+                    elif transporte in modelos_transportes_baixa:
+                        classificacao = "🔴 Baixa Sustentabilidade"
+                    else:
+                        print("Meio de transporte não reconhecido pelo sistema. Tente novamente.")
+                        continue
+                    
+                    try:
+                        vezes = int(input(f"► Quantidade de vezes que utilizou {transporte}: ").strip())
+                    except ValueError:
+                        print("Entrada inválida para quantidade. Tente novamente.")
+                        continue
+                    
+                    transportes.append((transporte, vezes, classificacao))
+                    
+                    opcao = input("Deseja adicionar outro meio de transporte? [1] Sim [2] Não: ").strip()
                     if opcao == '1':
-                        transporte = input("► Informe o transporte utilizado: ").lower().strip()
-                        if transporte == "":
-                            print("Transporte inválido. Tente novamente.")
-                            continue
-                        try:
-                            vezes = int(input(f"► Quantidade de viagens com {transporte}: ").strip())
-                        except ValueError:
-                            print("Entrada inválida para quantidade de viagens. Tente novamente.")
-                            continue
-                        transportes.append((transporte, vezes))
+                        continue
                     elif opcao == '2':
                         break
                     else:
-                        print("Opção inválida! Informe 1 ou 2.")
+                        print("Opção inválida. Encerrando cadastro de transportes.")
+                        break
                 
                 # Classifica os consumos
                 agua_cat, energia_cat, residuos_cat, transportes_cat = classificar_consumo(agua, energia, residuos, transportes)
