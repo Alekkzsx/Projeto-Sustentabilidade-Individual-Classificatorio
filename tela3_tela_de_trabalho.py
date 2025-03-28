@@ -3,7 +3,6 @@ import os
 import json
 import tela4_relatório_boas_práticas
 import tela5_menu_de_opcoes_para_histórico
-import tela6_gráficos_verticais
 
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
