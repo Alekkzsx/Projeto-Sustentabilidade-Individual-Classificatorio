@@ -38,13 +38,13 @@ def main():
         opcao = input("\nEscolha o histórico desejado (1-6): ").strip()  # Ajustado para 6 opções
         
         if opcao == "1":
-            exibir_historico('Água')
+            exibir_mensagem('Água')
         elif opcao == "2":
-            exibir_historico('Energia')
+            exibir_mensagem('Energia')
         elif opcao == "3":
-            exibir_historico('Transporte')
+            exibir_mensagem('Transporte')
         elif opcao == "4":
-            exibir_historico('Resíduos')
+            exibir_mensagem('Resíduos')
         elif opcao == "5":  # Nova opção
             exibir_todas_categorias()
         elif opcao == "6":
@@ -53,7 +53,7 @@ def main():
             print("═" * 40 + "\n")
             break
         else:
-            print("\n⚠ Opção inválida! Use valores de 1 a 6.")  # Mensagem atualizada
+            print("\n⚠ Opção inválida! Use valores de 1 a 6.") 
             input("Pressione Enter para tentar novamente...")
 
 if __name__ == "__main__":

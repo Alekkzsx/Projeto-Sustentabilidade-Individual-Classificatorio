@@ -1,4 +1,4 @@
-from colorama import Fore, Back, Style, init
+from colorama import Fore,  init
 import os
 
 # Inicializa o colorama e configura auto-reset
@@ -27,17 +27,14 @@ def cabecalho(titulo):
     print(f"│{Style.BRIGHT}{titulo:^40}{Style.NORMAL}{Fore.GREEN}│")
     print(f"└{'─'*40}┘{Style.RESET_ALL}")
 
+# Função para mostrar o relatório semanal
 def relatorio_semanal(dados):
-    """Exibe o relatório semanal com formatação tabelada"""
     cabecalho("RELATÓRIO SEMANAL")
-    print(f"{Fore.BLUE}► {Fore.WHITE}Consumo de Água: {Fore.GREEN}{dados['consumo_agua']} litros")
-    print(f"{Fore.BLUE}► {Fore.WHITE}Consumo de Energia: {Fore.GREEN}{dados['consumo_energia']} kWh")
-    print(f"{Fore.BLUE}► {Fore.WHITE}Uso de Transporte: {Fore.GREEN}{dados['uso_transporte']}%")
-    print(f"{Fore.BLUE}► {Fore.WHITE}Resíduos Não Recicláveis: {Fore.GREEN}{dados['residuos_nao_reciclaveis']}%")
+    for key, value in dados.items():
+    print(f"{Fore.BLUE}► {Fore.WHITE}{key.replace('_', ' ').title()}: {Fore.GREEN}{value}")
     input(f"\n{Fore.YELLOW}Pressione Enter para continuar...")
-
+    
 def revisar_informacoes(dados):
-    """Interface de revisão com highlights"""
     while True:
         cabecalho("REVISAR INFORMAÇÕES")
         print(f"{Fore.MAGENTA}[1]{Fore.WHITE} Água: {Fore.CYAN}{dados['consumo_agua']}L")
@@ -99,7 +96,7 @@ def main():
         elif opcao == '2':
             revisar_informacoes(dados)
         elif opcao == '3':
-            configuracoes()
+            tela de trabalho()
         elif opcao == '4':
             logout()
             break
