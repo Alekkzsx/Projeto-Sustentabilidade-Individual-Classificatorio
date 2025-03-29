@@ -40,7 +40,10 @@ def obter_periodos(dados, periodo):
         periodos = sorted(semanas.keys())
     elif periodo == "mensal":
         # Obter meses únicos
-        periodos = sorted(set(registro["data_hora"].split("/")[1] + "/" + registro["data_hora"].split("/")[2].split(" ")[0] for registro in dados))
+        periodos = sorted(set(
+            registro["data_hora"].split("/")[1] + "/" + registro["data_hora"].split("/")[2].split(" ")[0]
+            for registro in dados
+        ))
 
     return periodos
 
@@ -63,7 +66,7 @@ def exibir_grafico(usuario, categoria, periodo):
 
     # Caso a categoria seja "transporte", exibir uma tabela textual
     if categoria == "transportes":
-        print(f"\n{'Categoria':<15}{'Data':<20}{'Classificação':<20}{'Meio':<15}{'Viagens':<10}")
+        print(f"\n{'Categoria':<15}{'Data':<20}{'Classificação':<30}{'Meio':<15}{'Viagens':<10}")
         print("-" * 80)
 
         for registro in dados:
@@ -72,7 +75,7 @@ def exibir_grafico(usuario, categoria, periodo):
                 meio = transporte["meio"]
                 viagens = transporte["viagens"]
                 classificacao = transporte["classificacao"]
-                print(f"{'Transporte':<15}{data:<20}{classificacao:<20}{meio:<15}{viagens:<10}")
+                print(f"{'Transporte':<15}{data:<20}{classificacao:<30}{meio:<15}{viagens:<10}")
 
         print("-" * 80)
         input("\nPressione Enter para voltar...")
@@ -102,9 +105,9 @@ def exibir_grafico(usuario, categoria, periodo):
             continue
 
         if chave not in acumulados:
-            acumulados[chave] = registro[categoria]["valor"]
+            acumulados[chave] = registro.get(categoria, {}).get("valor", 0)
         else:
-            acumulados[chave] += registro[categoria]["valor"]
+            acumulados[chave] += registro.get(categoria, {}).get("valor", 0)
 
     # Preencher períodos sem dados com valor 0
     valores = [acumulados.get(p, 0) for p in periodos]
@@ -199,4 +202,4 @@ def menu_principal(usuario_logado):
         exibir_grafico(usuario_logado, categoria, periodo)
 
 if __name__ == "__main__":
-    menu_principal(usuario_logado)
+    menu_principal("Usuário")
