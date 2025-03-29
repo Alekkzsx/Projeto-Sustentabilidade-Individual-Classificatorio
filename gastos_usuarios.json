@@ -1,14 +1,14 @@
 {
     "ADM": [
         {
-            "data_hora": "27/03/2025 16:51",
+            "data_hora": "29/03/2025 14:37",
             "agua": {
                 "valor": 10.0,
                 "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
             },
             "energia": {
-                "valor": 20.0,
-                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+                "valor": 2.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
             },
             "residuos": {
                 "valor": 50.0,
@@ -21,18 +21,16 @@
                     "classificacao": "\ud83d\udfe2"
                 }
             ]
-        }
-    ],
-    "ADM": [
+        },
         {
-            "data_hora": "24/03/2025 10:19",
+            "data_hora": "30/03/2025 14:38",
             "agua": {
-                "valor": 7.0,
+                "valor": 29.0,
                 "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
             },
             "energia": {
-                "valor": 2.0,
-                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+                "valor": 10.0,
+                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
             },
             "residuos": {
                 "valor": 40.0,
@@ -40,8 +38,32 @@
             },
             "transportes": [
                 {
+                    "meio": "carro",
+                    "viagens": 6.0,
+                    "classificacao": "\ud83d\udd34"
+                }
+            ]
+        }
+    ],
+    "Usu\u00e1rio": [
+        {
+            "data_hora": "29/03/2025 14:39",
+            "agua": {
+                "valor": 50.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+            },
+            "energia": {
+                "valor": 12.0,
+                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+            },
+            "residuos": {
+                "valor": 70.0,
+                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+            },
+            "transportes": [
+                {
                     "meio": "a p\u00e9",
-                    "viagens": 4.0,
+                    "viagens": 9.0,
                     "classificacao": "\ud83d\udfe2"
                 }
             ]

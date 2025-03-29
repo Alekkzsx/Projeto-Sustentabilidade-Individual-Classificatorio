@@ -4,6 +4,10 @@ import json
 import tela4_relatório_boas_práticas
 import tela5_menu_de_opcoes_para_histórico
 
+def importador():
+    #A tela 6 tem algum erro que não pode ser importada aqui diretamente
+    import tela6_gráficos_verticais
+    
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -14,19 +18,20 @@ def salvar_dados_json(usuario, agua, energia, residuos, transportes, classificac
     """
     arquivo_json = "gastos_usuarios.json"
     
-    # Cria o arquivo JSON se não existir
-    if not os.path.exists(arquivo_json):
-        with open(arquivo_json, 'w') as f:
-            json.dump({}, f)
-    
-    # Carrega os dados existentes do arquivo JSON
-    with open(arquivo_json, 'r') as f:
-        dados = json.load(f)
-    
+    # Carrega os dados existentes do arquivo JSON ou cria um dicionário vazio
+    if os.path.exists(arquivo_json):
+        with open(arquivo_json, 'r') as f:
+            try:
+                dados = json.load(f)
+            except json.JSONDecodeError:
+                dados = {}  # Caso o arquivo esteja vazio ou corrompido
+    else:
+        dados = {}
+
     # Adiciona o usuário se não estiver no arquivo
     if usuario not in dados:
         dados[usuario] = []
-    
+
     # Adiciona o novo registro com data/hora
     registro = {
         "data_hora": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
@@ -166,7 +171,7 @@ def main(usuario_logado):
         
         elif choice == '2':
             limpar_tela()
-            tela5_menu_de_opcoes_para_histórico(usuario_logado)
+            tela5_menu_de_opcoes_para_histórico.mostrar_menu(usuario_logado)
         
         elif choice == '3':
             limpar_tela()
@@ -174,6 +179,7 @@ def main(usuario_logado):
             
         elif choice == '4':
             limpar_tela()
+            importador(usuario_logado)
         else:
             print("Opção inválida! Tente novamente.")
             input("Pressione Enter para continuar...")

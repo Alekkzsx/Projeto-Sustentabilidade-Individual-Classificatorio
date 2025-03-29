@@ -19,7 +19,32 @@ def carregar_dados_usuario(usuario):
     
     return dados.get(usuario, [])
 
-def exibir_grafico(categoria, periodo, dados):
+def obter_periodos(dados, periodo):
+    """
+    Retorna os períodos disponíveis no JSON com base no tipo de período escolhido.
+    """
+    periodos = []
+
+    if periodo == "dias":
+        # Obter todas as datas únicas
+        periodos = sorted(set(registro["data_hora"].split(" ")[0] for registro in dados))
+    elif periodo == "semanas":
+        # Obter semanas únicas
+        semanas = {}
+        for registro in dados:
+            data = datetime.strptime(registro["data_hora"].split(" ")[0], "%d/%m/%Y")
+            semana_inicio = (data - timedelta(days=data.weekday())).strftime("%d/%m/%Y")
+            semana_fim = (data + timedelta(days=6 - data.weekday())).strftime("%d/%m/%Y")
+            chave = f"{semana_inicio} - {semana_fim}"
+            semanas[chave] = True
+        periodos = sorted(semanas.keys())
+    elif periodo == "mensal":
+        # Obter meses únicos
+        periodos = sorted(set(registro["data_hora"].split("/")[1] + "/" + registro["data_hora"].split("/")[2].split(" ")[0] for registro in dados))
+
+    return periodos
+
+def exibir_grafico(usuario, categoria, periodo):
     """
     Exibe o gráfico vertical para a categoria e período escolhidos.
     """
@@ -28,44 +53,49 @@ def exibir_grafico(categoria, periodo, dados):
     print(f" GRÁFICO DE {categoria.upper()} ({periodo.upper()}) ".center(50, '─'))
     print("═" * 50)
 
-    # Dicionário para acumular os valores por período
-    acumulados = {}
-
-    # Determinar os períodos a serem exibidos
-    hoje = datetime.now()
-    if periodo == "diário":
-        periodos = [(hoje - timedelta(days=i)).strftime("%d/%m/%Y") for i in range(6, -1, -1)]  # Últimos 7 dias
-    elif periodo == "mensal":
-        periodos = [(hoje - timedelta(days=30 * i)).strftime("%m/%Y") for i in range(11, -1, -1)]  # Últimos 12 meses
-    elif periodo == "anual":
-        periodos = [(hoje.year - i) for i in range(4, -1, -1)]  # Últimos 5 anos
-    else:
-        print("\n⚠ Período inválido!")
+    # Carregar os dados do usuário
+    dados = carregar_dados_usuario(usuario)
+    if not dados:
+        print("\nNenhum dado encontrado para o usuário.")
+        input("\nPressione Enter para voltar...")
         return
 
+    # Determinar os períodos disponíveis
+    periodos = obter_periodos(dados, periodo)
+
     # Acumular os valores para os períodos
+    acumulados = {}
     for registro in dados:
-        if periodo == "diário":
-            chave = registro["data_hora"].split(" ")[0]  # Apenas a data (ex: "28/03/2025")
+        data_hora = registro["data_hora"]
+        if periodo == "dias":
+            chave = data_hora.split(" ")[0]  # Apenas a data
+        elif periodo == "semanas":
+            data = datetime.strptime(data_hora.split(" ")[0], "%d/%m/%Y")
+            for p in periodos:
+                inicio, fim = p.split(" - ")
+                inicio = datetime.strptime(inicio, "%d/%m/%Y")
+                fim = datetime.strptime(fim, "%d/%m/%Y")
+                if inicio <= data <= fim:
+                    chave = p
+                    break
         elif periodo == "mensal":
-            chave = registro["data_hora"].split("/")[1] + "/" + registro["data_hora"].split("/")[2].split(" ")[0]  # Mês/Ano (ex: "03/2025")
-        elif periodo == "anual":
-            chave = int(registro["data_hora"].split("/")[2].split(" ")[0])  # Apenas o ano (ex: "2025")
+            chave = data_hora.split("/")[1] + "/" + data_hora.split("/")[2].split(" ")[0]  # Mês/Ano
         else:
             continue
 
-        if chave in periodos:
-            if chave not in acumulados:
-                acumulados[chave] = registro[categoria]["valor"]
-            else:
-                acumulados[chave] += registro[categoria]["valor"]
+        if chave not in acumulados:
+            acumulados[chave] = registro[categoria]["valor"]
+        else:
+            acumulados[chave] += registro[categoria]["valor"]
 
     # Preencher períodos sem dados com valor 0
     valores = [acumulados.get(p, 0) for p in periodos]
 
-    # Normalizar os valores para o gráfico
+    # Determinar o maior valor dinamicamente
     max_valor = max(valores) if valores else 1
-    escala = max(10, max_valor // 10)  # Define a escala mínima de 10
+
+    # Normalizar os valores para o gráfico
+    escala = max_valor / 10  # Divide o maior valor em 10 níveis
 
     # Exibir o gráfico
     print(f"\n{'Período':<15}{'Valor':<10}")
@@ -74,17 +104,17 @@ def exibir_grafico(categoria, periodo, dados):
     for i in range(10, 0, -1):  # De cima para baixo
         linha = ''
         for valor in valores:
-            if valor >= (i * escala / 10):
+            if valor >= (i * escala):
                 linha += ' *** '
             else:
                 linha += '     '
-        print(f'{int(i * escala / 10):>4} |{linha}')
+        print(f'{int(i * escala):>4} |{linha}')
     print('     ' + '-' * (len(valores) * 5))
     print('      ' + '  '.join([str(p)[:5] for p in periodos]))  # Exibe os períodos no eixo horizontal
 
     input("\nPressione Enter para voltar...")
 
-def menu_graficos(usuario_logado):
+def menu_principal(usuario_logado):
     """
     Menu principal para exibição de gráficos.
     """
@@ -93,29 +123,25 @@ def menu_graficos(usuario_logado):
         print("\n" + "═" * 50)
         print(f" GRÁFICOS DE CONSUMO - USUÁRIO: {usuario_logado.upper()} ".center(50, '─'))
         print("═" * 50)
-        print(f"{'1. Diário':<38}")
-        print(f"{'2. Mensal':<38}")
-        print(f"{'3. Anual':<38}")
-        print(f"{'4. Voltar':<38}")
-        print(f"{'5. Sair':<38}")
+        print(f"{'1. Últimos 7 Dias':<38}")
+        print(f"{'2. Últimas 4 Semanas':<38}")
+        print(f"{'3. Últimos 12 Meses':<38}")
+        print(f"{'4. Sair':<38}")
         print("═" * 50)
 
-        opcao_periodo = input("Escolha o período desejado (1-5): ").strip()
+        opcao_periodo = input("Escolha o período desejado (1-4): ").strip()
 
         if opcao_periodo == "4":
-            print("\nVoltando ao menu anterior...")
-            break
-        elif opcao_periodo == "5":
             print("\nSaindo do programa...")
             exit()
 
         periodo = None
         if opcao_periodo == "1":
-            periodo = "diário"
+            periodo = "dias"
         elif opcao_periodo == "2":
-            periodo = "mensal"
+            periodo = "semanas"
         elif opcao_periodo == "3":
-            periodo = "anual"
+            periodo = "mensal"
         else:
             print("\n⚠ Opção inválida! Tente novamente.")
             input("Pressione Enter para continuar...")
@@ -125,9 +151,9 @@ def menu_graficos(usuario_logado):
         print("\n" + "═" * 50)
         print(f" CATEGORIAS DISPONÍVEIS ".center(50, '─'))
         print("═" * 50)
-        print(f"{'1. Água':<38}")
-        print(f"{'2. Energia':<38}")
-        print(f"{'3. Resíduos':<38}")
+        print(f"{'1. Consumo de Água':<38}")
+        print(f"{'2. Consumo de Energia':<38}")
+        print(f"{'3. Geração de Resíduos':<38}")
         print(f"{'4. Transporte':<38}")
         print(f"{'5. Voltar':<38}")
         print("═" * 50)
@@ -151,16 +177,8 @@ def menu_graficos(usuario_logado):
             input("Pressione Enter para continuar...")
             continue
 
-        # Carregar os dados do usuário
-        dados = carregar_dados_usuario(usuario_logado)
-        if not dados:
-            print("\nNenhum dado encontrado para o usuário.")
-            input("Pressione Enter para voltar...")
-            continue
-
         # Exibir o gráfico para a categoria e período escolhidos
-        exibir_grafico(categoria, periodo, dados)
+        exibir_grafico(usuario_logado, categoria, periodo)
 
 if __name__ == "__main__":
-    usuario_logado = input("Digite o nome do usuário logado: ").strip()
-    menu_graficos(usuario_logado)
+    menu_principal(usuario_logado)

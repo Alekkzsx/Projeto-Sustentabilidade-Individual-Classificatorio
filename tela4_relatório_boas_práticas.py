@@ -221,4 +221,4 @@ def main(usuario_logado):
         input("\nPressione Enter para continuar...")
         
 if __name__ == "__main__":
-    main(usuario_logado)
+    main()

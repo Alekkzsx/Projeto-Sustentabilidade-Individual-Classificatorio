@@ -127,5 +127,4 @@ def mostrar_menu(usuario_logado):
             input("Pressione Enter para continuar...")
 
 if __name__ == "__main__":
-    usuario_logado = input("Digite o nome do usuário logado: ").strip()
     mostrar_menu(usuario_logado)
