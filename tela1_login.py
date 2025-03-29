@@ -11,8 +11,8 @@ def executar_fluxo_login():
     print("\n" + "=" * 70)
     print("\t\t\tTela Inicial\n\t\tSistema de Sustentabilidade Individual")
     print("=" * 70)
-    print("\t\t\t[1] Fazer Login: ")
-    print("\t\t\t[2] Novo Cadastro': ")
+    print("\t\t\t[1] Fazer Login")
+    print("\t\t\t[2] Novo Cadastro")
     print("=" * 70 + "\n")
     
     # Seleção da opção
@@ -89,6 +89,5 @@ def executar_fluxo_login():
         print("=" * 70 + "\n")
         return None
 
-# Permite que o arquivo seja executado isoladamente para testes 1
 if __name__ == "__main__":
     executar_fluxo_login()

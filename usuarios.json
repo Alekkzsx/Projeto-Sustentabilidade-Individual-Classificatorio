@@ -10,5 +10,11 @@
         "cpf": "469.251.138-97",
         "email": "alek@gmail.com",
         "senha": "123123"
+    },
+    "Davi": {
+        "nome": "Davi",
+        "cpf": "541..04.7.3-48-53",
+        "email": "davi@hotmail.com",
+        "senha": "UmaLigacao"
     }
 }

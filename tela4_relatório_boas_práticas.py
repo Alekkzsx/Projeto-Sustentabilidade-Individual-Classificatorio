@@ -170,7 +170,7 @@ def exibir_boas_praticas(dados):
 
 def exibir_media_geral(dados):
     """
-    Exibe a média geral das classificações do usuário.1
+    Exibe a média geral das classificações do usuário
     """
     media = calcular_media_classificacao(dados)
     if media >= 3.5:

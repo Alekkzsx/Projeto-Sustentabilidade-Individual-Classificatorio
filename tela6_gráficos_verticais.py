@@ -134,7 +134,7 @@ def exibir_grafico(usuario, categoria, periodo):
     
 def menu_principal(usuario_logado):
     """
-    Menu principal para exibição de gráficos.1
+    Menu principal para exibição de gráficos.
     """
     while True:
         limpar_tela()

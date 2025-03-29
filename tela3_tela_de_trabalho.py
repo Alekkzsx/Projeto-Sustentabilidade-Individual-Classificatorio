@@ -94,7 +94,7 @@ def main(usuario_logado):
             transportes = []
             print("\n" + "─" * 78)
             print(" CATEGORIAS DE TRANSPORTE ".center(78, '─'))
-            print("\t🟢Meio Ambiente Agradece  🟡Sustentável  🟠Baixo  🔴Poluente")
+            print("\t🟢 Meio Ambiente Agradece  🟡 Sustentável  🟠 Baixo  🔴 Poluente")
             print("─" * 78)
 
             # Loop para registrar transportes
@@ -116,7 +116,7 @@ def main(usuario_logado):
                     print("► Categoria não reconhecida! Use transporte listado.")
                     continue
 
-                # Validação para a quantidade de viagens1
+                # Validação para a quantidade de viagens
                 while True:
                     try:
                         vezes = float(input(f"► Quantidade de viagens com {transporte}: "))

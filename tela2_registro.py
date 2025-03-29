@@ -10,7 +10,7 @@ def validar_cpf(cpf):
     if len(cpf) != 11 or cpf == cpf[0] * 11:
         return False
     
-    # Cálculo do primeiro dígito1
+    # Cálculo do primeiro dígito
     soma = sum(int(cpf[i]) * (10 - i) for i in range(9))
     digito1 = 11 - (soma % 11) if (soma % 11) > 1 else 0
     
@@ -44,7 +44,7 @@ def main():
                 continue
             break
 
-        # Validação do e-mail
+        # Validação do email
         while True:
             email = input("\n│ ► E-mail: ").strip()
             if not re.match(r'^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$', email):

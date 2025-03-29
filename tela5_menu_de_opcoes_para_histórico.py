@@ -86,7 +86,7 @@ def exibir_todas_categorias(dados):
 
 def mostrar_menu(usuario_logado):
     """
-    Exibe o menu principal para escolha de históricos.
+    Exibe o menu principal para escolha de históricos
     """
     while True:
         limpar_tela()
