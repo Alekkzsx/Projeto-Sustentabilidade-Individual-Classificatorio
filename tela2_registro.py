@@ -10,7 +10,7 @@ def validar_cpf(cpf):
     if len(cpf) != 11 or cpf == cpf[0] * 11:
         return False
     
-    # Cálculo do primeiro dígito
+    # Cálculo do primeiro dígito1
     soma = sum(int(cpf[i]) * (10 - i) for i in range(9))
     digito1 = 11 - (soma % 11) if (soma % 11) > 1 else 0
     

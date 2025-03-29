@@ -9,7 +9,7 @@ def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def mostrar_menu():
-    """Exibe o menu principal de opções com formatação estilizada"""
+    """Exibe o menu principal de opções com formatação estilizada1"""
     limpar_tela()
     print(f"\n{Fore.CYAN}╔{'═'*25}╗")
     print(f"║{Fore.YELLOW}      MENU PRINCIPAL      {Fore.CYAN}║")

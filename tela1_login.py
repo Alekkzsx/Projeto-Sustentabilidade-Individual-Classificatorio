@@ -89,6 +89,6 @@ def executar_fluxo_login():
         print("=" * 70 + "\n")
         return None
 
-# Permite que o arquivo seja executado isoladamente para testes
+# Permite que o arquivo seja executado isoladamente para testes 1
 if __name__ == "__main__":
     executar_fluxo_login()

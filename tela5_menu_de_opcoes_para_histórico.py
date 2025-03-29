@@ -20,7 +20,7 @@ def carregar_dados_usuario(usuario):
 
 def exibir_tabela(categoria, dados):
     """
-    Exibe os dados do usuário em formato de tabela para a categoria escolhida.
+    Exibe os da1dos do usuário em formato de tabela para a categoria escolhida.
     """
     limpar_tela()
     print("\n" + "═" * 50)

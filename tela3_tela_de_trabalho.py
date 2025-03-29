@@ -116,7 +116,7 @@ def main(usuario_logado):
                     print("► Categoria não reconhecida! Use transporte listado.")
                     continue
 
-                # Validação para a quantidade de viagens
+                # Validação para a quantidade de viagens1
                 while True:
                     try:
                         vezes = float(input(f"► Quantidade de viagens com {transporte}: "))
