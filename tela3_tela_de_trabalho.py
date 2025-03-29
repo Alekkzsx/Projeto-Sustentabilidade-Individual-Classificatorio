@@ -3,10 +3,6 @@ import os
 import json
 import tela4_relatório_boas_práticas
 import tela5_menu_de_opcoes_para_histórico
-
-def importador():
-    #A tela 6 tem algum erro que não pode ser importada aqui diretamente
-    import tela6_gráficos_verticais
     
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -52,10 +48,8 @@ def main(usuario_logado):
     while True:
         limpar_tela()
         # Exibe uma mensagem de boas-vindas com o nome do usuário
-        print(f"\nBem-vindo(a), {usuario_logado}!")
         print("\n╔" + "═" * 78 + "╗")
-        print("║" + " BEM-VINDO AO SISTEMA DE SUSTENTABILIDADE ".center(78, '─') + "║")
-        print("╠" + "═" * 78 + "╣")
+        print(f"║" + f" BEM-VINDO, {usuario_logado.upper()} AO SISTEMA DE SUSTENTABILIDADE ".center(78, '─') + "║")
         print("║" + "O QUE VOCÊ GOSTARIA DE FAZER HOJE?".center(78) + "║")
         print("╚" + "═" * 78 + "╝")
 
@@ -66,7 +60,7 @@ def main(usuario_logado):
         print("\t\t\t    [5] Sair do sistema")
         print("─" * 79)
 
-        choice = input("▶ Escolha uma opção (1/2/3): ")
+        choice = input("▶ Escolha uma opção (1/2/3/4/5): ")
         
         if choice == '1':
             limpar_tela()
@@ -111,13 +105,13 @@ def main(usuario_logado):
 
                 categoria = None
                 if transporte in transporte_categorias['transporte_eco']:
-                    categoria = "🟢"
+                    categoria = "🟢 Meio Ambiente Agradece"
                 elif transporte in transporte_categorias['transporte_sustentavel']:
-                    categoria = "🟡"
+                    categoria = "🟡 Sustentável"
                 elif transporte in transporte_categorias['transporte_baixo']:
-                    categoria = "🟠"
+                    categoria = "🟠 Baixa Sustentabilidade"
                 elif transporte in transporte_categorias['transporte_poluente']:
-                    categoria = "🔴"
+                    categoria = "🔴 Poluente"
                 else:
                     print("► Categoria não reconhecida! Use transporte listado.")
                     continue
@@ -172,14 +166,17 @@ def main(usuario_logado):
         elif choice == '2':
             limpar_tela()
             tela5_menu_de_opcoes_para_histórico.mostrar_menu(usuario_logado)
-        
+
         elif choice == '3':
             limpar_tela()
             tela4_relatório_boas_práticas.main(usuario_logado)
-            
+
         elif choice == '4':
             limpar_tela()
-            importador(usuario_logado)
+            import tela6_gráficos_verticais
+            tela6_gráficos_verticais.menu_principal(usuario_logado)
+        elif choice == '5':
+            break
         else:
             print("Opção inválida! Tente novamente.")
             input("Pressione Enter para continuar...")

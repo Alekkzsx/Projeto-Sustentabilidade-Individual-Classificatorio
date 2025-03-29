@@ -32,17 +32,17 @@ def exibir_tabela(categoria, dados):
     encontrou_dados = False
     for registro in dados:
         if categoria == "água":
-            print(f"{'Água':<15}{registro['data_hora']:<20}{registro['agua']['classificacao']:<15}")
+            print(f"{'Água':<15}{registro['data_hora']:<20}{registro['agua']['classificacao']:<25}")
             encontrou_dados = True
         elif categoria == "energia":
-            print(f"{'Energia':<15}{registro['data_hora']:<20}{registro['energia']['classificacao']:<15}")
+            print(f"{'Energia':<15}{registro['data_hora']:<20}{registro['energia']['classificacao']:<25}")
             encontrou_dados = True
         elif categoria == "resíduos":
-            print(f"{'Resíduos':<15}{registro['data_hora']:<20}{registro['residuos']['classificacao']:<15}")
+            print(f"{'Resíduos':<15}{registro['data_hora']:<20}{registro['residuos']['classificacao']:<25}")
             encontrou_dados = True
         elif categoria == "transporte":
             for transporte in registro["transportes"]:
-                print(f"{'Transporte':<15}{registro['data_hora']:<20}{transporte['classificacao']:<15}")
+                print(f"{'Transporte':<15}{registro['data_hora']:<20}{transporte['classificacao']:<25}")
                 encontrou_dados = True
 
     if not encontrou_dados:
@@ -65,17 +65,17 @@ def exibir_todas_categorias(dados):
     encontrou_dados = False
     for registro in dados:
         # Água
-        print(f"{'Água':<15}{registro['data_hora']:<20}{registro['agua']['classificacao']:<15}")
+        print(f"{'Água':<15}{registro['data_hora']:<20}{registro['agua']['classificacao']:<25}")
         encontrou_dados = True
         # Energia
-        print(f"{'Energia':<15}{registro['data_hora']:<20}{registro['energia']['classificacao']:<15}")
+        print(f"{'Energia':<15}{registro['data_hora']:<20}{registro['energia']['classificacao']:<25}")
         encontrou_dados = True
         # Resíduos
-        print(f"{'Resíduos':<15}{registro['data_hora']:<20}{registro['residuos']['classificacao']:<15}")
+        print(f"{'Resíduos':<15}{registro['data_hora']:<20}{registro['residuos']['classificacao']:<25}")
         encontrou_dados = True
         # Transportes
         for transporte in registro["transportes"]:
-            print(f"{'Transporte':<15}{registro['data_hora']:<20}{transporte['classificacao']:<15}")
+            print(f"{'Transporte':<15}{registro['data_hora']:<20}{transporte['classificacao']:<25}")
             encontrou_dados = True
 
     if not encontrou_dados:

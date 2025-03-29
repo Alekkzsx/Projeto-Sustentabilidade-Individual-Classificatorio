@@ -4,5 +4,11 @@
         "cpf": "455.251.987-75",
         "email": "xvidros@email.com",
         "senha": "123"
+    },
+    "ALEK": {
+        "nome": "ALEK",
+        "cpf": "469.251.138-97",
+        "email": "alek@gmail.com",
+        "senha": "123123"
     }
 }

@@ -47,10 +47,11 @@ def obter_periodos(dados, periodo):
 def exibir_grafico(usuario, categoria, periodo):
     """
     Exibe o gráfico vertical para a categoria e período escolhidos.
+    Se a categoria for "transporte", exibe uma tabela textual.
     """
     limpar_tela()
     print("\n" + "═" * 50)
-    print(f" GRÁFICO DE {categoria.upper()} ({periodo.upper()}) ".center(50, '─'))
+    print(f" RELATÓRIO DE {categoria.upper()} ({periodo.upper()}) ".center(50, '─'))
     print("═" * 50)
 
     # Carregar os dados do usuário
@@ -60,7 +61,24 @@ def exibir_grafico(usuario, categoria, periodo):
         input("\nPressione Enter para voltar...")
         return
 
-    # Determinar os períodos disponíveis
+    # Caso a categoria seja "transporte", exibir uma tabela textual
+    if categoria == "transportes":
+        print(f"\n{'Categoria':<15}{'Data':<20}{'Classificação':<20}{'Meio':<15}{'Viagens':<10}")
+        print("-" * 80)
+
+        for registro in dados:
+            data = registro["data_hora"].split(" ")[0]
+            for transporte in registro["transportes"]:
+                meio = transporte["meio"]
+                viagens = transporte["viagens"]
+                classificacao = transporte["classificacao"]
+                print(f"{'Transporte':<15}{data:<20}{classificacao:<20}{meio:<15}{viagens:<10}")
+
+        print("-" * 80)
+        input("\nPressione Enter para voltar...")
+        return
+
+    # Caso contrário, exibir o gráfico vertical
     periodos = obter_periodos(dados, periodo)
 
     # Acumular os valores para os períodos
@@ -113,7 +131,7 @@ def exibir_grafico(usuario, categoria, periodo):
     print('      ' + '  '.join([str(p)[:5] for p in periodos]))  # Exibe os períodos no eixo horizontal
 
     input("\nPressione Enter para voltar...")
-
+    
 def menu_principal(usuario_logado):
     """
     Menu principal para exibição de gráficos.

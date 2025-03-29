@@ -1,36 +1,14 @@
 {
-    "ADM": [
+    "ALEK": [
         {
-            "data_hora": "29/03/2025 14:37",
+            "data_hora": "29/03/2025 15:54",
             "agua": {
-                "valor": 10.0,
-                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
-            },
-            "energia": {
-                "valor": 2.0,
-                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
-            },
-            "residuos": {
                 "valor": 50.0,
-                "classificacao": "\ud83d\udfe0 Moderada Sustentabilidade"
-            },
-            "transportes": [
-                {
-                    "meio": "a p\u00e9",
-                    "viagens": 5.0,
-                    "classificacao": "\ud83d\udfe2"
-                }
-            ]
-        },
-        {
-            "data_hora": "30/03/2025 14:38",
-            "agua": {
-                "valor": 29.0,
                 "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
             },
             "energia": {
-                "valor": 10.0,
-                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+                "valor": 4.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
             },
             "residuos": {
                 "valor": 40.0,
@@ -38,23 +16,26 @@
             },
             "transportes": [
                 {
-                    "meio": "carro",
+                    "meio": "a p\u00e9",
                     "viagens": 6.0,
-                    "classificacao": "\ud83d\udd34"
+                    "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+                },
+                {
+                    "meio": "carro",
+                    "viagens": 2.0,
+                    "classificacao": "\ud83d\udd34 Poluente"
                 }
             ]
-        }
-    ],
-    "Usu\u00e1rio": [
+        },
         {
-            "data_hora": "29/03/2025 14:39",
+            "data_hora": "29/03/2025 15:55",
             "agua": {
-                "valor": 50.0,
+                "valor": 40.0,
                 "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
             },
             "energia": {
-                "valor": 12.0,
-                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+                "valor": 2.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
             },
             "residuos": {
                 "valor": 70.0,
@@ -63,8 +44,32 @@
             "transportes": [
                 {
                     "meio": "a p\u00e9",
-                    "viagens": 9.0,
-                    "classificacao": "\ud83d\udfe2"
+                    "viagens": 4.0,
+                    "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+                }
+            ]
+        }
+    ],
+    "ADM": [
+        {
+            "data_hora": "29/03/2025 15:56",
+            "agua": {
+                "valor": 9.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+            },
+            "energia": {
+                "valor": 5.0,
+                "classificacao": "\ud83d\udfe0 Moderada Sustentabilidade"
+            },
+            "residuos": {
+                "valor": 30.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "transportes": [
+                {
+                    "meio": "a p\u00e9",
+                    "viagens": 7.0,
+                    "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
                 }
             ]
         }

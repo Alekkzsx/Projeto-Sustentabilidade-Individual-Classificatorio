@@ -50,7 +50,7 @@ def executar_fluxo_login():
             limpar_tela()
             print("\n" + "=" * 70)
             print("❌ Usuário não cadastrado!")
-            print("Tentativas restantes: {UserTentativas}")
+            print(f"Tentativas restantes: {UserTentativas}")
             print("=" * 70 + "\n")
 
     if UserTentativas == 0:
@@ -78,7 +78,7 @@ def executar_fluxo_login():
             limpar_tela()
             print("\n" + "=" * 70)
             print("❌ Senha incorreta!")
-            print("Tentativas restantes: {tentativas_senha}")
+            print(f"Tentativas restantes: {tentativas_senha}")
             print("=" * 70 + "\n")
 
     if tentativas_senha == 0:
