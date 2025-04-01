@@ -1,0 +1,201 @@
+{
+    "Usu\u00e1rio": [
+        {
+            "data_hora": "27/03/2025 18:57",
+            "agua": {
+                "valor": 90.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+            },
+            "energia": {
+                "valor": 1.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+            },
+            "residuos": {
+                "valor": 50.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "transportes": [
+                {
+                    "meio": "a p\u00e9",
+                    "viagens": 3.0,
+                    "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+                }
+            ]
+        },
+        {
+            "data_hora": "29/03/2025 19:01",
+            "periodo": "mensal",
+            "agua": {
+                "valor": 150.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "energia": {
+                "valor": 9.0,
+                "classificacao": "\ud83d\udfe0 Moderada Sustentabilidade"
+            },
+            "residuos": {
+                "valor": 60.0,
+                "classificacao": "\ud83d\udfe0 Moderada Sustentabilidade"
+            },
+            "transportes": [
+                {
+                    "meio": "a p\u00e9",
+                    "viagens": 23.0,
+                    "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+                }
+            ]
+        }
+    ],
+    "ADM": [
+        {
+            "data_hora": "27/03/2025 20:35",
+            "periodo": "di\u00e1rio",
+            "agua": {
+                "valor": 30.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+            },
+            "energia": {
+                "valor": 5.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "residuos": {
+                "valor": 40.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "transportes": [
+                {
+                    "meio": "carro",
+                    "viagens": 3.0,
+                    "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+                }
+            ]
+        },
+        {
+            "data_hora": "28/03/2025 20:36",
+            "periodo": "di\u00e1rio",
+            "agua": {
+                "valor": 40.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+            },
+            "energia": {
+                "valor": 30.0,
+                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+            },
+            "residuos": {
+                "valor": 40.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "transportes": [
+                {
+                    "meio": "a p\u00e9",
+                    "viagens": 4.0,
+                    "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+                }
+            ]
+        },
+        {
+            "data_hora": "30/03/2025 09:23",
+            "periodo": "di\u00e1rio",
+            "agua": {
+                "valor": 40.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+            },
+            "energia": {
+                "valor": 12.0,
+                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+            },
+            "residuos": {
+                "valor": 40.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "transportes": [
+                {
+                    "meio": "a p\u00e9",
+                    "viagens": 6.0,
+                    "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+                },
+                {
+                    "meio": "caminhada",
+                    "viagens": 2.0,
+                    "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+                },
+                {
+                    "meio": "carro",
+                    "viagens": 2.0,
+                    "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+                }
+            ]
+        },
+        {
+            "data_hora": "12/04/2025 09:23",
+            "periodo": "mensal",
+            "agua": {
+                "valor": 130.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "energia": {
+                "valor": 25.0,
+                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+            },
+            "residuos": {
+                "valor": 50.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "transportes": [
+                {
+                    "meio": "bicicleta",
+                    "viagens": 4.0,
+                    "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+                }
+            ]
+        }
+    ],
+    "alek": [
+        {
+            "data_hora": "28/03/2025 20:52",
+            "periodo": "di\u00e1rio",
+            "agua": {
+                "valor": 80.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+            },
+            "energia": {
+                "valor": 40.0,
+                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+            },
+            "residuos": {
+                "valor": 40.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "transportes": [
+                {
+                    "meio": "caminhada",
+                    "viagens": 5.0,
+                    "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+                }
+            ]
+        },
+        {
+            "data_hora": "29/03/2025 20:53",
+            "periodo": "di\u00e1rio",
+            "agua": {
+                "valor": 60.0,
+                "classificacao": "\ud83d\udfe2 Meio Ambiente Agradece"
+            },
+            "energia": {
+                "valor": 4.0,
+                "classificacao": "\ud83d\udfe1 Alta Sustentabilidade"
+            },
+            "residuos": {
+                "valor": 70.0,
+                "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+            },
+            "transportes": [
+                {
+                    "meio": "moto",
+                    "viagens": 4.0,
+                    "classificacao": "\ud83d\udd34 Baixa Sustentabilidade"
+                }
+            ]
+        }
+    ]
+}
