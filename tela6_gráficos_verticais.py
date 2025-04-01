@@ -154,7 +154,7 @@ def menu_principal(usuario_logado):
 
         if opcao_periodo == "4":
             print("\nSaindo do programa...")
-            exit()
+            break
 
         periodo = None
         if opcao_periodo == "1":
