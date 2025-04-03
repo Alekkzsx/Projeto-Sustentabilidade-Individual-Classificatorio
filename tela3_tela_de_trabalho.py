@@ -61,7 +61,7 @@ def main(usuario_logado):
         print("\t\t\t    [5] Sair do sistema")
         print("─" * 79)
 
-        choice = input("▶ Escolha uma opção (1/2/3/4/5): ")
+        choice = input("\t\t\t▶ Escolha uma opção (1/2/3/4/5): ")
         
         if choice == '1':
             limpar_tela()
@@ -70,11 +70,11 @@ def main(usuario_logado):
             print("═" * 78)
 
             # Escolha do período
-            print("\nEscolha o período para o registro:")
-            print("[1] Diário")
-            print("[2] Mensal")
-            print("[3] Anual")
-            periodo_opcao = input("▶ Escolha o período (1/2/3): ").strip()
+            print("Escolha o período para o registro".center(80))
+            print("[1] Diário".center(70))
+            print("[2] Mensal".center(70))
+            print("[3] Anual".center(70))
+            periodo_opcao = input("\t\t\t▶ Escolha o período (1/2/3): ").strip()
 
             if periodo_opcao == "1":
                 periodo = "diário"
