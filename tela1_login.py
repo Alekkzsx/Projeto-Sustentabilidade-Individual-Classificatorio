@@ -9,10 +9,10 @@ def executar_fluxo_login():
     # Exibe a tela inicial com as opções de Login ou Novo Cadastro
     limpar_tela()
     print("\n" + "=" * 70)
-    print("\t\t\tTela Inicial\n\t\tSistema de Sustentabilidade Individual")
+    print("\t🌿 Bem Vindo ao Sistema de Sustentabilidade Individual 🌿")
     print("=" * 70)
-    print("\t\t\t[1] Fazer Login")
-    print("\t\t\t[2] Novo Cadastro")
+    print("\t\t\t[1]  Fazer Login ")
+    print("\t\t\t[2]  Novo Cadastro ")
     print("=" * 70 + "\n")
     
     # Seleção da opção
@@ -28,7 +28,7 @@ def executar_fluxo_login():
             limpar_tela()
             # Redisplay da tela inicial após o cadastro
             print("\n" + "=" * 70)
-            print("Faça Seu Login: ")
+            print("🌿 Faça Seu Login 🌿")
             print("=" * 70 + "\n")
         else:
             print("\n⚠ Opção inválida!")
@@ -40,6 +40,8 @@ def executar_fluxo_login():
 
     while UserTentativas > 0:
         print("=" * 70)
+        print("🔒 Autenticação de Usuário 🔒".center(70))
+        print("=" * 70)
         usuario = input("Digite o nome de usuário: ").strip()
         
         if usuario in database_usuarios:
@@ -49,15 +51,14 @@ def executar_fluxo_login():
             UserTentativas -= 1
             limpar_tela()
             print("\n" + "=" * 70)
-            print("❌ Usuário não cadastrado!")
-            print(f"Tentativas restantes: {UserTentativas}")
-            print("=" * 70 + "\n")
+            print("❌ Usuário não cadastrado!".center(70))
+            print(f"Tentativas restantes: {UserTentativas}".center(70))
 
     if UserTentativas == 0:
         limpar_tela()
         print("\n" + "=" * 70)
-        print("🚫 Acesso bloqueado!")
-        print("Tente novamente mais tarde")
+        print("🚫 Acesso bloqueado!".center(70))
+        print("Tente novamente mais tarde".center(70))
         print("=" * 70 + "\n")
         return None
 
@@ -65,6 +66,9 @@ def executar_fluxo_login():
     tentativas_senha = 3
 
     while tentativas_senha > 0:
+        print("=" * 70)
+        print("🔑 Autenticação de Senha 🔑".center(70))
+        print("=" * 70)
         senha = input("Digite sua Senha: ").strip()
         
         if senha == database_usuarios[usuario_correto]["senha"]:
@@ -77,15 +81,14 @@ def executar_fluxo_login():
             tentativas_senha -= 1
             limpar_tela()
             print("\n" + "=" * 70)
-            print("❌ Senha incorreta!")
-            print(f"Tentativas restantes: {tentativas_senha}")
-            print("=" * 70 + "\n")
+            print("❌ Senha incorreta!".center(70))
+            print(f"Tentativas restantes: {tentativas_senha}".center(70))
 
     if tentativas_senha == 0:
         limpar_tela()
         print("\n" + "=" * 70)
-        print("🚫 Acesso bloqueado!")
-        print("Senha incorreta múltiplas vezes")
+        print("🚫 Acesso bloqueado!".center(70))
+        print("Senha incorreta múltiplas vezes".center(70))
         print("=" * 70 + "\n")
         return None
 
