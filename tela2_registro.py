@@ -22,14 +22,14 @@ def validar_cpf(cpf):
 
 def main():
     limpar_tela()
-    print("╔" + "═" * 38 + "╗")
+    print("╔" + "═" * 40 + "╗")
     print("║" + "🌟  REGISTRO DE USUÁRIO  🌟".center(38) + "║")
-    print("╚" + "═" * 38 + "╝")
+    print("╚" + "═" * 40 + "╝")
     
     try:
         # Seção de cadastro
-        print("\n\033[1mDados Pessoais\033[0m".center(40))
-        print("─" * 40)
+        print("\033[1mDados Pessoais\033[0m".center(50))
+        print("─" * 42)
         
         # Validação do username
         while True:
@@ -74,11 +74,11 @@ def main():
         # Confirmação final
         limpar_tela()
         print("╔" + "═" * 38 + "╗")
-        print("║" + "🔍  CONFIRA SEUS DADOS  🔍".center(38) + "║")
+        print("║" + "🔍  CONFIRA SEUS DADOS  🔍".center(36) + "║")
         print("╟" + "─" * 38 + "╢")
-        print(f"│ ► Usuário: \033[34m{username}\033[0m")
-        print(f"│ ► E-mail: \033[34m{email}\033[0m")
-        print(f"│ ► CPF: \033[34m{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}\033[0m")
+        print("║"+f"  Usuário: \033[34m{username}\033[0m".center(47) + "║")
+        print("║"+f"  E-mail: \033[34m{email}\033[0m".center(47) + "║")
+        print("║"+f"  CPF: \033[34m{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}\033[0m".center(47) + "║")
         print("╚" + "═" * 38 + "╝")
         
         confirmacao = input("\n│ ❓ Confirmar cadastro? (S/N): ").upper()
