@@ -53,9 +53,9 @@ def exibir_grafico(usuario, categoria, periodo):
     Se a categoria for "transporte", exibe uma tabela textual.
     """
     limpar_tela()
-    print("\n" + "═" * 50)
-    print(f" RELATÓRIO DE {categoria.upper()} ({periodo.upper()}) ".center(50, '─'))
-    print("═" * 50)
+    print("\n" + "═" * 90)
+    print(f" RELATÓRIO DE {categoria.upper()} ({periodo.upper()}) ".center(90, '─'))
+    print("═" * 90)
 
     # Carregar os dados do usuário
     dados = carregar_dados_usuario(usuario)
@@ -67,7 +67,7 @@ def exibir_grafico(usuario, categoria, periodo):
     # Caso a categoria seja "transporte", exibir uma tabela textual
     if categoria == "transportes":
         print(f"\n{'Categoria':<15}{'Data':<20}{'Classificação':<30}{'Meio':<15}{'Viagens':<10}")
-        print("-" * 80)
+        print("-" * 90)
 
         for registro in dados:
             data = registro["data_hora"].split(" ")[0]
@@ -77,7 +77,7 @@ def exibir_grafico(usuario, categoria, periodo):
                 classificacao = transporte["classificacao"]
                 print(f"{'Transporte':<15}{data:<20}{classificacao:<30}{meio:<15}{viagens:<10}")
 
-        print("-" * 80)
+        print("-" * 90)
         input("\nPressione Enter para voltar...")
         return
 

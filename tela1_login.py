@@ -13,7 +13,7 @@ def executar_fluxo_login():
     print("=" * 70)
     print("\t\t\t[1]  Fazer Login ")
     print("\t\t\t[2]  Novo Cadastro ")
-    print("=" * 70 + "\n")
+    print("=" * 70)
     
     # Seleção da opção
     while True:

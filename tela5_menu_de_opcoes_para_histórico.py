@@ -23,26 +23,26 @@ def exibir_tabela(categoria, dados):
     Exibe os da1dos do usuário em formato de tabela para a categoria escolhida.
     """
     limpar_tela()
-    print("\n" + "═" * 50)
-    print(f" HISTÓRICO DE {categoria.upper()} ".center(50, '─'))
-    print("═" * 50)
-    print(f"{'Categoria':<15}{'Data e Hora':<20}{'Classificação':<15}")
-    print("─" * 50)
+    print("\n" + "═" * 70)
+    print(f" HISTÓRICO DE {categoria.upper()} ".center(70, '─'))
+    print("═" * 70)
+    print(f"{'Categoria':<20}{'Data e Hora':<30}{'Classificação':<25}")
+    print("─" * 70)
 
     encontrou_dados = False
     for registro in dados:
         if categoria == "água":
-            print(f"{'Água':<15}{registro['data_hora']:<20}{registro['agua']['classificacao']:<25}")
+            print(f"{'Água':<20}{registro['data_hora']:<25}{registro['agua']['classificacao']:<25}")
             encontrou_dados = True
         elif categoria == "energia":
-            print(f"{'Energia':<15}{registro['data_hora']:<20}{registro['energia']['classificacao']:<25}")
+            print(f"{'Energia':<20}{registro['data_hora']:<25}{registro['energia']['classificacao']:<25}")
             encontrou_dados = True
         elif categoria == "resíduos":
-            print(f"{'Resíduos':<15}{registro['data_hora']:<20}{registro['residuos']['classificacao']:<25}")
+            print(f"{'Resíduos':<20}{registro['data_hora']:<25}{registro['residuos']['classificacao']:<25}")
             encontrou_dados = True
         elif categoria == "transporte":
             for transporte in registro["transportes"]:
-                print(f"{'Transporte':<15}{registro['data_hora']:<20}{transporte['classificacao']:<25}")
+                print(f"{'Transporte':<20}{registro['data_hora']:<25}{transporte['classificacao']:<25}")
                 encontrou_dados = True
 
     if not encontrou_dados:
@@ -59,23 +59,23 @@ def exibir_todas_categorias(dados):
     print("\n" + "═" * 70)
     print(" HISTÓRICO DE TODAS AS CATEGORIAS ".center(70, '─'))
     print("═" * 70)
-    print(f"{'Categoria':<15}{'Data e Hora':<20}{'Classificação':<15}")
+    print(f"{'Categoria':<20}{'Data e Hora':<30}{'Classificação':<25}")
     print("─" * 70)
 
     encontrou_dados = False
     for registro in dados:
         # Água
-        print(f"{'Água':<15}{registro['data_hora']:<20}{registro['agua']['classificacao']:<25}")
+        print(f"{'Água':<20}{registro['data_hora']:<25}{registro['agua']['classificacao']:<25}")
         encontrou_dados = True
         # Energia
-        print(f"{'Energia':<15}{registro['data_hora']:<20}{registro['energia']['classificacao']:<25}")
+        print(f"{'Energia':<20}{registro['data_hora']:<25}{registro['energia']['classificacao']:<25}")
         encontrou_dados = True
         # Resíduos
-        print(f"{'Resíduos':<15}{registro['data_hora']:<20}{registro['residuos']['classificacao']:<25}")
+        print(f"{'Resíduos':<20}{registro['data_hora']:<25}{registro['residuos']['classificacao']:<25}")
         encontrou_dados = True
         # Transportes
         for transporte in registro["transportes"]:
-            print(f"{'Transporte':<15}{registro['data_hora']:<20}{transporte['classificacao']:<25}")
+            print(f"{'Transporte':<20}{registro['data_hora']:<25}{transporte['classificacao']:<25}")
             encontrou_dados = True
 
     if not encontrou_dados:
@@ -93,12 +93,12 @@ def mostrar_menu(usuario_logado):
         print("\n" + "═" * 50)
         print(f" HISTÓRICO DO USUÁRIO: {usuario_logado.upper()} ".center(50, '─'))
         print("═" * 50)
-        print(f"{'1. Histórico de Água':<38}")
-        print(f"{'2. Histórico de Energia':<38}")
-        print(f"{'3. Histórico de Transporte':<38}")
-        print(f"{'4. Histórico de Resíduos':<38}")
-        print(f"{'5. Todas as Categorias':<38}")
-        print(f"{'6. Sair':<38}")
+        print(f"{'1. Histórico de Água':<38}".center(70))
+        print(f"{'2. Histórico de Energia':<38}".center(70))
+        print(f"{'3. Histórico de Transporte':<38}".center(70))
+        print(f"{'4. Histórico de Resíduos':<38}".center(70))
+        print(f"{'5. Todas as Categorias':<38}".center(70))
+        print(f"{'6. Sair':<38}".center(70))
         print("═" * 50)
 
         opcao = input("Escolha o histórico desejado (1-6): ").strip()
