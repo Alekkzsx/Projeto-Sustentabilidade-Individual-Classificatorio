@@ -48,7 +48,7 @@ def exibir_tabela(categoria, dados):
     if not encontrou_dados:
         print(f"\nNenhum dado encontrado para a categoria {categoria.capitalize()}.")
 
-    print("═" * 50)
+    print("═" * 70)
     input("\nPressione Enter para voltar ao menu...")
 
 def exibir_todas_categorias(dados):
@@ -110,14 +110,19 @@ def mostrar_menu(usuario_logado):
             return
 
         if opcao == "1":
+            limpar_tela()
             exibir_tabela("água", dados)
         elif opcao == "2":
+            limpar_tela()
             exibir_tabela("energia", dados)
         elif opcao == "3":
+            limpar_tela()
             exibir_tabela("transporte", dados)
         elif opcao == "4":
+            limpar_tela()
             exibir_tabela("resíduos", dados)
         elif opcao == "5":
+            limpar_tela()
             exibir_todas_categorias(dados)
         elif opcao == "6":
             print("\nSaindo do histórico...")
