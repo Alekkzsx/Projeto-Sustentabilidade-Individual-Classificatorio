@@ -58,6 +58,7 @@ def main(usuario_logado):
         print("\t\t\t    [2] Acessar Histórico")
         print("\t\t\t    [3] Relatório de boas práticas")
         print("\t\t\t    [4] Acessar Gráficos")
+        print("\t\t\t    [5] Editar Dados Cadastrados")
         print("\t\t\t    [5] Sair do sistema")
         print("─" * 79)
 
