@@ -59,7 +59,7 @@ def main(usuario_logado):
         print("\t\t\t    [3] Relatório de boas práticas")
         print("\t\t\t    [4] Acessar Gráficos")
         print("\t\t\t    [5] Editar Dados Cadastrados")
-        print("\t\t\t    [5] Sair do sistema")
+        print("\t\t\t    [6] Sair do sistema")
         print("─" * 79)
 
         choice = input("\t\t\t▶ Escolha uma opção (1/2/3/4/5): ")
@@ -196,6 +196,9 @@ def main(usuario_logado):
             import tela6_gráficos_verticais
             tela6_gráficos_verticais.menu_principal(usuario_logado)
         elif choice == '5':
+            import tela7_tela_de_edicao_dados_user
+            tela7_tela_de_edicao_dados_user.main(usuario_logado)
+        elif choice == '6':
             break
         else:
             print("Opção inválida! Tente novamente.")
