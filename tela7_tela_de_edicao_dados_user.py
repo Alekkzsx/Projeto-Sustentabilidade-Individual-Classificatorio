@@ -35,21 +35,21 @@ def exibir_registro(registro):
     """Exibe os detalhes de um registro em formato de tabela."""
     limpar_tela()
     print("\n" + "═" * 70)
-    print(" DETALHES DO REGISTRO ".center(50, ' '))
+    print(" DETALHES DO REGISTRO ".center(70, ' '))
     print("═" * 70)
-    print(f"\t\t📅 Data/Hora: {registro['data_hora']}")
+    print(f"📅 Data/Hora: {registro['data_hora']}".center(70))
     print("═" * 70)
-    print(f"🌊 Água:".ljust(20) + f"{registro['agua']['valor']}L".ljust(15) + f"{registro['agua']['classificacao']}")
-    print(f"💡 Energia:".ljust(20) + f"{registro['energia']['valor']}kWh".ljust(15) + f"{registro['energia']['classificacao']}")
-    print(f"♻️ Resíduos:".ljust(20) + f"  {registro['residuos']['valor']}%".ljust(15) + f"{registro['residuos']['classificacao']}")
+    print(f"🌊 Água:".ljust(25) + f"{registro['agua']['valor']}L".ljust(15) + f"{registro['agua']['classificacao']}")
+    print(f"💡 Energia:".ljust(25) + f"{registro['energia']['valor']}kWh".ljust(15) + f"{registro['energia']['classificacao']}")
+    print(f"♻️ Resíduos:".ljust(25) + f"  {registro['residuos']['valor']}%".ljust(15) + f"  {registro['residuos']['classificacao']}")
     print("═" * 70)
-    print("🚦 Transportes:".center(50))
+    print("🚦 Transportes:".center(70))
     print("═" * 70)
-    print(f"{'Índice':<8}{'Meio':<20}{'Viagens':<10}{'Classificação':<15}")
+    print(f"{'Índice':<8}{'Meio':<15}{'Viagens':<20}{'Classificação':<15}")
     print("─" * 70)
     for i, transporte in enumerate(registro["transportes"]):
-        print(f"{i:<8}{transporte['meio']:<20}{transporte['viagens']:<10}{transporte['classificacao']:<15}")
-    print("═" * 50)
+        print(f"{i:<8}{transporte['meio']:<16}{transporte['viagens']:<18}{transporte['classificacao']:<20}")
+    print("═" * 70)
 
 def editar_registro(usuario, indice, dados):
     """Edita um registro específico de um usuário."""
