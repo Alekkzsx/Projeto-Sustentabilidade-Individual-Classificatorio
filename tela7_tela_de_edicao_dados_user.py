@@ -92,7 +92,7 @@ def editar_registro(usuario, indice, dados):
             registro["residuos"]["valor"] = float(novo_residuos)
     except ValueError:
         print("Valor inválido para resíduos. Mantendo o valor atual.")
-
+    limpar_tela()
     # Editar transportes
     while True:
         print("\nTransportes:")
