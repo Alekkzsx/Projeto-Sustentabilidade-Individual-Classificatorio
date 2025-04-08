@@ -1,4 +1,4 @@
-from BancoDados_UsuarioSenha import database_usuarios, salvar_dados
+from db_manager import inserir_usuario
 import re
 import os
 
@@ -34,10 +34,8 @@ def main():
         # Validação do username
         while True:
             username = input("│ ► Nome de Usuário: ").strip()
-            if username in database_usuarios:
-                print("│ ⚠️  \033[31mUsuário já existe! Tente outro.\033[0m")
-                print("├" + "─" * 38)
-                continue
+            # Aqui podemos opcionalmente consultar no banco se já existe
+            # Para simplificar, vamos validar apenas a quantidade de caracteres.
             if len(username) < 3:
                 print("│ ⚠️  \033[31mNome deve ter pelo menos 3 caracteres!\033[0m")
                 print("├" + "─" * 38)
@@ -60,6 +58,8 @@ def main():
                 print("│ ⚠️  \033[31mCPF inválido! Digite 11 números válidos.\033[0m")
                 print("├" + "─" * 38)
                 continue
+            # Formata o CPF para o padrão 000.000.000-00
+            cpf_formatado = f"{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}"
             break
 
         # Validação da senha
@@ -72,13 +72,13 @@ def main():
             break
 
         # Confirmação final
-        limpar_tela()
+        
         print("╔" + "═" * 38 + "╗")
         print("║" + "🔍  CONFIRA SEUS DADOS  🔍".center(36) + "║")
         print("╟" + "─" * 38 + "╢")
-        print("║"+f"  Usuário: \033[34m{username}\033[0m".center(47) + "║")
-        print("║"+f"  E-mail: \033[34m{email}\033[0m".center(47) + "║")
-        print("║"+f"  CPF: \033[34m{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}\033[0m".center(47) + "║")
+        print("║" + f"  Usuário: \033[34m{username}\033[0m".center(47) + "║")
+        print("║" + f"  E-mail: \033[34m{email}\033[0m".center(47) + "║")
+        print("║" + f"  CPF: \033[34m{cpf_formatado}\033[0m".center(47) + "║")
         print("╚" + "═" * 38 + "╝")
         
         confirmacao = input("\n│ ❓ Confirmar cadastro? (S/N): ").upper()
@@ -86,19 +86,18 @@ def main():
             print("\n\033[31m✖  Cadastro cancelado!\033[0m")
             return False
 
-        # Salva no banco de dados
-        database_usuarios[username] = {
-            "nome": username,
-            "cpf": f"{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}",
-            "email": email,
-            "senha": senha
-        }
-        salvar_dados()
+        # Insere os dados do usuário no banco de dados.
+        # Note que, por simplicidade, estamos utilizando o mesmo valor para username e nome.
+        sucesso = inserir_usuario(username, username, cpf_formatado, email, senha)
         
-        print("\n\033[32m╔══════════════════════════════════════╗")
-        print("║ ✅  CADASTRO REALIZADO COM SUCESSO!  ║")
-        print("╚══════════════════════════════════════╝\033[0m")
-        return True
+        if sucesso:
+            print("\n\033[32m╔══════════════════════════════════════╗")
+            print("║ ✅  CADASTRO REALIZADO COM SUCESSO!  ║")
+            print("╚══════════════════════════════════════╝\033[0m")
+            return True
+        else:
+            print("\n\033[31m✖  Ocorreu um erro ao cadastrar o usuário!\033[0m")
+            return False
 
     except KeyboardInterrupt:
         print("\n\033[33m⚠️  Operação interrompida pelo usuário!\033[0m")
