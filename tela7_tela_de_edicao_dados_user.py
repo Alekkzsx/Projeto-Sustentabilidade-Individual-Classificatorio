@@ -63,36 +63,60 @@ def editar_registro(usuario, indice, dados):
         if not nova_data_hora:
             break  # Mantém o valor atual
         try:
-            datetime.strptime(nova_data_hora, "%d/%m/%Y %H:%M")
-            registro["data_hora"] = nova_data_hora
-            break
+            nova_data_hora_formatada = datetime.strptime(nova_data_hora, "%d/%m/%Y %H:%M")
+            if nova_data_hora != registro["data_hora"]:
+                registro["data_hora"] = nova_data_hora
+                break
+            else:
+                print("A nova data/hora deve ser diferente da atual.")
         except ValueError:
             print("Formato inválido! Insira a data/hora no formato DIA/MES/ANO HORARIO.")
 
     # Editar consumo de água
-    try:
-        novo_agua = input("Novo consumo de água (L) (deixe em branco para manter): ").strip()
-        if novo_agua:
-            registro["agua"]["valor"] = float(novo_agua)
-    except ValueError:
-        print("Valor inválido para água. Mantendo o valor atual.")
+    while True:
+        try:
+            novo_agua = input("Novo consumo de água (L) (deixe em branco para manter): ").strip()
+            if not novo_agua:
+                break  # Mantém o valor atual
+            novo_agua = float(novo_agua)
+            if novo_agua != registro["agua"]["valor"]:
+                registro["agua"]["valor"] = novo_agua
+                break
+            else:
+                print("O novo consumo de água deve ser diferente do atual.")
+        except ValueError:
+            print("Valor inválido para água. Por favor, insira um número válido.")
 
     # Editar consumo de energia
-    try:
-        novo_energia = input("Novo consumo de energia (kWh) (deixe em branco para manter): ").strip()
-        if novo_energia:
-            registro["energia"]["valor"] = float(novo_energia)
-    except ValueError:
-        print("Valor inválido para energia. Mantendo o valor atual.")
+    while True:
+        try:
+            novo_energia = input("Novo consumo de energia (kWh) (deixe em branco para manter): ").strip()
+            if not novo_energia:
+                break  # Mantém o valor atual
+            novo_energia = float(novo_energia)
+            if novo_energia != registro["energia"]["valor"]:
+                registro["energia"]["valor"] = novo_energia
+                break
+            else:
+                print("O novo consumo de energia deve ser diferente do atual.")
+        except ValueError:
+            print("Valor inválido para energia. Por favor, insira um número válido.")
 
     # Editar resíduos
-    try:
-        novo_residuos = input("Novo percentual de resíduos (%) (deixe em branco para manter): ").strip()
-        if novo_residuos:
-            registro["residuos"]["valor"] = float(novo_residuos)
-    except ValueError:
-        print("Valor inválido para resíduos. Mantendo o valor atual.")
-    limpar_tela()
+    while True:
+        try:
+            novo_residuos = input("Novo percentual de resíduos (%) (deixe em branco para manter): ").strip()
+            if not novo_residuos:
+                break  # Mantém o valor atual
+            novo_residuos = float(novo_residuos)
+            if novo_residuos != registro["residuos"]["valor"]:
+                registro["residuos"]["valor"] = novo_residuos
+                break
+            else:
+                print("O novo percentual de resíduos deve ser diferente do atual.")
+        except ValueError:
+            print("Valor inválido para resíduos. Por favor, insira um número válido.")
+
     # Editar transportes
     while True:
         print("\nTransportes:")
@@ -105,26 +129,44 @@ def editar_registro(usuario, indice, dados):
         opcao = input("Escolha uma opção: ").strip().upper()
 
         if opcao == "A":
-            meio = input("Meio de transporte: ").strip()
-            try:
-                viagens = float(input("Quantidade de viagens: ").strip())
-                registro["transportes"].append({"meio": meio, "viagens": viagens})
-            except ValueError:
-                print("Valor inválido para viagens. Transporte não adicionado.")
+            while True:
+                meio = input("Meio de transporte: ").strip().lower()
+                if meio:
+                    try:
+                        viagens = float(input("Quantidade de viagens: ").strip())
+                        registro["transportes"].append({"meio": meio, "viagens": viagens})
+                        break
+                    except ValueError:
+                        print("Valor inválido para viagens. Por favor, insira um número válido.")
+                else:
+                    print("O meio de transporte não pode ser vazio.")
         elif opcao == "E":
             try:
                 indice_transporte = int(input("Índice do transporte a editar: ").strip())
                 if 0 <= indice_transporte < len(registro["transportes"]):
                     transporte = registro["transportes"][indice_transporte]
-                    novo_meio = input(f"Novo meio de transporte (atual: {transporte['meio']}, deixe em branco para manter): ").strip()
-                    if novo_meio:
-                        transporte["meio"] = novo_meio
-                    try:
-                        novas_viagens = input(f"Nova quantidade de viagens (atual: {transporte['viagens']}, deixe em branco para manter): ").strip()
-                        if novas_viagens:
-                            transporte["viagens"] = float(novas_viagens)
-                    except ValueError:
-                        print("Valor inválido para viagens. Mantendo o valor atual.")
+                    while True:
+                        novo_meio = input(f"Novo meio de transporte (atual: {transporte['meio']}, deixe em branco para manter): ").strip().lower()
+                        if novo_meio and novo_meio != transporte["meio"]:
+                            transporte["meio"] = novo_meio
+                            break
+                        elif not novo_meio:
+                            break
+                        else:
+                            print("O novo meio de transporte deve ser diferente do atual.")
+                    while True:
+                        try:
+                            novas_viagens = input(f"Nova quantidade de viagens (atual: {transporte['viagens']}, deixe em branco para manter): ").strip()
+                            if not novas_viagens:
+                                break
+                            novas_viagens = float(novas_viagens)
+                            if novas_viagens != transporte["viagens"]:
+                                transporte["viagens"] = novas_viagens
+                                break
+                            else:
+                                print("A nova quantidade de viagens deve ser diferente da atual.")
+                        except ValueError:
+                            print("Valor inválido para viagens. Por favor, insira um número válido.")
                 else:
                     print("Índice inválido.")
             except ValueError:
@@ -151,25 +193,6 @@ def editar_registro(usuario, indice, dados):
     registro["agua"]["classificacao"] = "🟢 Meio Ambiente Agradece" if agua < 100 else "🟡 Alta Sustentabilidade" if agua <= 150 else "🟠 Moderada Sustentabilidade" if agua <= 200 else "🔴 Baixa Sustentabilidade"
     registro["energia"]["classificacao"] = "🟢 Meio Ambiente Agradece" if energia < 2.5 else "🟡 Alta Sustentabilidade" if energia <= 5 else "🟠 Moderada Sustentabilidade" if energia <= 10 else "🔴 Baixa Sustentabilidade"
     registro["residuos"]["classificacao"] = "🟢 Meio Ambiente Agradece" if residuos < 20 else "🟡 Alta Sustentabilidade" if residuos <= 50 else "🟠 Moderada Sustentabilidade" if residuos <= 60 else "🔴 Baixa Sustentabilidade"
-
-    transporte_categorias = {
-            'transporte_eco': ["bicicleta", "a pé", "caminhada", "patinete", "skate", "monociclo", "triciclo", "bicicleta elétrica", "patinete elétrico", "triciclo elétrico", "segway", "hoverboard", "ciclomóvel", "pedalinho", "remo", "caiaque", "canoagem", "velocípede", "pedestre", "ciclo-táxi", "bicicross", "bicicleta dobrável", "bicicleta de carga", "bicicleta de montanha", "bicicleta de estrada", "bicicleta urbana", "bicicleta híbrida", "bicicleta tandem", "bicicleta infantil", "motocicleta elétrica", "scooter elétrica", "scooter", "caminhada rápida", "trilha a pé", "corrida", "trote", "bicicleta de estrada elétrica", "bicicleta de montanha elétrica", "patins", "roller", "skate elétrico", "skate freestyle", "monociclo elétrico", "bicicleta de trial", "bicicleta off-road", "bicicleta de pista", "bicicleta retrô", "ciclismo", "pedalar", "passo a passo", "movimento sustentável", "transporte ativo", "ciclo urbano", "ciclo popular", "eco pedal", "eco caminho", "ciclovia", "pista ciclável", "rua compartilhada", "corrida sustentável", "caminhada ecológica", "andando a pé", "pedal ecológico", "movimento a pé", "caminho natural", "eco rol", "pedal urbano", "bicicleta solidária", "carona solidária", "carona sustentável", "carona ecológica", "transporte colaborativo", "bicicleta colaborativa", "pedalar juntos", "caminhada coletiva", "movimento coletivo", "eco locomoção", "locomoção sustentável", "locomoção ativa", "caminho ativo", "passeio ativo", "passeio a pé", "passeio de bicicleta", "passeio ecológico", "cicloturismo", "turismo de bicicleta", "turismo a pé", "rota sustentável", "rota ecológica", "rota ativa", "via ativa", "via sustentável", "pedal rotativo", "eco viagem", "viagem a pé", "viagem de bicicleta", "pedalada noturna", "caminhada noturna", "corrida noturna", "eco pedalada", "ciclo sustentável", "bicicleta de passeio", "bicicleta de lazer", "bicicleta recreativa", "caminhada recreativa", "trilha ecológica", "trilha sustentável", "caminhada meditativa", "passeio sustentável", "cicloaventura", "aventura a pé", "eco aventura", "expedição a pé", "expedição ciclística", "pedal aventureiro", "ciclo explorador", "caminhada exploratória", "via verde", "rota verde", "ciclo verde", "pedal verde", "eco viagem urbana", "viagem verde", "transporte verde", "locomoção verde", "movimento verde", "verde a pé", "verde de bicicleta", "bicicleta ecológica", "patinete ecológico", "triciclo ecológico", "veículo ecológico", "transporte humanizado", "caminhada humanizada", "pedal humanizado", "ciclo solidário", "locomoção solidária", "caminhada consciente", "pedalada consciente", "eco consciência", "movimento consciente", "locomoção consciente", "transporte consciente", "eco friendly", "amigo do ambiente", "eco mobilidade", "mobilidade ativa", "mobilidade sustentável", "mobilidade ecológica", "mobilidade urbana sustentável", "rota ciclável sustentável", "ciclo comunitário", "pedal comunitário", "caminhada comunitária", "via comunitária", "eco percurso", "percurso sustentável", "percurso ecológico", "percurso ativo", "ciclo viagem", "pedal viagem", "viagem ativa", "trânsito sustentável", "trânsito ecológico", "trânsito ativo", "via sustentável ativa", "caminhada diária", "pedalada diária", "ciclo diário", "locomoção diária", "movimento diário", "passo diário", "viagem diária", "rota diária", "ciclo de bairro", "pedal de bairro", "caminhada de bairro", "rota de bairro", "trilha de bairro", "eco bairro", "mobilidade local", "transporte local", "ciclo local", "pedal local", "caminhada local", "rota local", "via local", "ciclo intermunicipal", "pedal intermunicipal", "caminhada intermunicipal", "rota intermunicipal", "eco intermunicipal", "mobilidade intermunicipal", "transporte intermunicipal", "ciclo de aventura", "pedalada de aventura", "caminhada de aventura", "rota de aventura", "eco expedição", "ciclo expedição", "pedal expedição"],
-            'transporte_sustentavel': ["carro elétrico", "patinete elétrico", "bicicleta elétrica", "ônibus elétrico", "trem elétrico", "veículo híbrido", "carro híbrido", "motocicleta elétrica", "van elétrica", "micro-ônibus elétrico", "caminhão elétrico", "scooter elétrica", "triciclo elétrico", "bonde elétrico", "barco elétrico", "ferry elétrico", "veículo solar", "carro solar", "ônibus solar", "trem solar", "veículo movido a hidrogênio", "carro movido a hidrogênio", "ônibus movido a hidrogênio", "trem movido a hidrogênio", "veículo híbrido plug-in", "carro híbrido plug-in", "ônibus híbrido plug-in", "van híbrida plug-in", "motocicleta híbrida", "scooter híbrida", "bicicleta compartilhada elétrica", "patinete compartilhado elétrico", "carro compartilhado elétrico", "van compartilhada elétrica", "micro-ônibus compartilhado elétrico", "trem leve elétrico", "monotrilho elétrico", "metrô elétrico", "transporte público elétrico", "veículo autônomo elétrico", "carro elétrico compacto", "carro elétrico sedã", "carro elétrico de luxo", "carro elétrico utilitário", "carro elétrico esportivo", "carro elétrico SUV", "carro elétrico hatch", "carro elétrico conversível", "carro elétrico perua", "carro elétrico off-road", "carro elétrico econômico", "carro elétrico urbano", "carro elétrico de alta performance", "ônibus elétrico urbano", "ônibus elétrico intermunicipal", "ônibus elétrico articulado", "ônibus elétrico biarticulado", "ônibus elétrico escolar", "ônibus elétrico executivo", "trem elétrico urbano", "trem elétrico regional", "trem elétrico intermunicipal", "trem elétrico de alta velocidade", "trem elétrico de baixa velocidade", "veículo híbrido urbano", "veículo híbrido intermunicipal", "carro híbrido urbano", "carro híbrido intermunicipal", "motocicleta elétrica urbana", "motocicleta elétrica esportiva", "van elétrica compacta", "van elétrica familiar", "micro-ônibus elétrico urbano", "caminhão elétrico de carga leve", "caminhão elétrico de carga pesada", "caminhão elétrico de distribuição", "scooter elétrica urbana", "scooter elétrica compacta", "triciclo elétrico urbano", "bonde elétrico moderno", "barco elétrico urbano", "ferry elétrico regional", "veículo solar urbano", "veículo solar intermunicipal", "carro solar urbano", "carro solar de luxo", "ônibus solar urbano", "ônibus solar intermunicipal", "trem solar regional", "veículo movido a hidrogênio urbano", "veículo movido a hidrogênio intermunicipal", "carro movido a hidrogênio urbano", "carro movido a hidrogênio de luxo", "ônibus movido a hidrogênio urbano", "trem movido a hidrogênio regional", "veículo híbrido plug-in urbano", "carro híbrido plug-in urbano", "ônibus híbrido plug-in urbano", "van híbrida plug-in urbana", "motocicleta híbrida urbana", "scooter híbrida urbana", "bicicleta elétrica dobrável", "bicicleta elétrica de montanha", "bicicleta elétrica de estrada", "bicicleta elétrica urbana", "bicicleta elétrica de carga", "bicicleta elétrica esportiva", "bicicleta elétrica compacta", "bicicleta elétrica infantil", "bicicleta elétrica tandem", "patinete elétrico compacto", "patinete elétrico de alta performance", "patinete elétrico urbano", "patinete elétrico off-road", "patinete elétrico para crianças", "carro compartilhado elétrico urbano", "carro compartilhado elétrico executivo", "van compartilhada elétrica urbana", "van compartilhada elétrica familiar", "micro-ônibus compartilhado elétrico urbano", "micro-ônibus compartilhado elétrico escolar", "trem leve elétrico urbano", "monotrilho elétrico urbano", "metrô elétrico moderno", "transporte público elétrico urbano", "veículo autônomo elétrico urbano", "carro elétrico com tecnologia autônoma", "ônibus elétrico com tecnologia autônoma", "trem elétrico autônomo", "veículo híbrido com tecnologia autônoma", "carro híbrido com tecnologia autônoma", "motocicleta elétrica autônoma", "van elétrica autônoma", "micro-ônibus elétrico autônomo", "caminhão elétrico autônomo", "scooter elétrica autônoma", "triciclo elétrico autônomo", "bonde elétrico autônomo", "veículo solar com tecnologia autônoma", "carro solar autônomo", "ônibus solar autônomo", "trem solar autônomo", "veículo movido a hidrogênio autônomo", "carro movido a hidrogênio autônomo", "ônibus movido a hidrogênio autônomo", "trem movido a hidrogênio autônomo", "veículo híbrido plug-in autônomo", "carro híbrido plug-in autônomo", "ônibus híbrido plug-in autônomo", "van híbrida plug-in autônoma", "motocicleta híbrida autônoma", "scooter híbrida autônoma", "bicicleta elétrica autônoma", "patinete elétrico autônomo", "carro elétrico com conectividade", "ônibus elétrico com conectividade", "trem elétrico com conectividade", "veículo híbrido com conectividade", "carro híbrido com conectividade", "motocicleta elétrica com conectividade", "van elétrica com conectividade", "micro-ônibus elétrico com conectividade", "caminhão elétrico com conectividade", "scooter elétrica com conectividade", "triciclo elétrico com conectividade", "bonde elétrico com conectividade", "veículo solar com conectividade", "carro solar com conectividade", "ônibus solar com conectividade", "trem solar com conectividade", "veículo movido a hidrogênio com conectividade", "carro movido a hidrogênio com conectividade", "ônibus movido a hidrogênio com conectividade", "trem movido a hidrogênio com conectividade", "veículo híbrido plug-in com conectividade", "carro híbrido plug-in com conectividade", "ônibus híbrido plug-in com conectividade", "van híbrida plug-in com conectividade", "motocicleta híbrida com conectividade", "scooter híbrida com conectividade", "bicicleta elétrica com conectividade", "patinete elétrico com conectividade", "transporte sustentável urbano", "transporte sustentável intermunicipal", "transporte sustentável regional", "mobilidade sustentável urbana", "mobilidade sustentável intermunicipal", "mobilidade sustentável regional", "veículo sustentável avançado", "carro sustentável avançado", "ônibus sustentável avançado", "trem sustentável avançado", "transporte sustentável autônomo", "veículo sustentável autônomo", "carro sustentável autônomo", "ônibus sustentável autônomo", "trem sustentável autônomo", "mobilidade sustentável autônoma", "sistema de transporte sustentável", "rede de transporte sustentável"],
-            'transporte_baixo': ["ônibus urbano", "ônibus intermunicipal", "ônibus escolar", "ônibus executivo", "ônibus articulado", "ônibus biarticulado", "ônibus de turismo", "ônibus noturno", "ônibus de luxo", "ônibus de alta capacidade", "ônibus de baixa emissão", "metrô", "metrô leve", "metrô intermunicipal", "metrô urbano", "trem", "trem regional", "trem de alta velocidade", "trem de baixa velocidade", "trem metropolitano", "bonde", "bonde moderno", "bonde histórico", "VLT", "monotrilho", "trólebus", "trólebus urbano", "ferry urbano", "ferry intermunicipal", "barca", "barca elétrica", "carruagem elétrica", "van compartilhada", "micro-ônibus", "micro-ônibus elétrico", "trolebus articulado", "ônibus articulado elétrico", "ônibus biarticulado elétrico", "ônibus turístico elétrico", "trem elétrico", "metrô elétrico", "bonde elétrico", "VLT elétrico", "ônibus híbrido", "ônibus sustentável", "metrô sustentável", "trem sustentável", "bonde sustentável", "VLT sustentável", "ônibus a gás", "ônibus a diesel", "trem a diesel", "metrô a diesel", "ônibus híbrido elétrico", "ônibus com conectividade", "ônibus autônomo", "metrô autônomo", "trem autônomo", "bonde autônomo", "VLT autônomo", "ônibus com Wi-Fi", "metrô com Wi-Fi", "trem com Wi-Fi", "bonde com Wi-Fi", "VLT com Wi-Fi", "ônibus com ar-condicionado", "metrô climatizado", "trem climatizado", "bonde climatizado", "VLT climatizado", "ônibus acessível", "metrô acessível", "trem acessível", "bonde acessível", "VLT acessível", "ônibus para pessoas com deficiência", "metrô para pessoas com deficiência", "trem para pessoas com deficiência", "bonde para pessoas com deficiência", "VLT para pessoas com deficiência", "ônibus ecológico", "metrô ecológico", "trem ecológico", "bonde ecológico", "VLT ecológico", "ônibus de passageiros", "metrô de passageiros", "trem de passageiros", "bonde de passageiros", "VLT de passageiros", "ônibus urbano elétrico", "ônibus urbano híbrido", "metrô urbano elétrico", "metrô urbano híbrido", "trem urbano elétrico", "trem urbano híbrido", "bonde urbano elétrico", "bonde urbano híbrido", "VLT urbano elétrico", "VLT urbano híbrido", "ônibus intermunicipal elétrico", "ônibus intermunicipal híbrido", "metrô intermunicipal elétrico", "metrô intermunicipal híbrido", "trem intermunicipal elétrico", "trem intermunicipal híbrido", "bonde intermunicipal elétrico", "bonde intermunicipal híbrido", "VLT intermunicipal elétrico", "VLT intermunicipal híbrido", "ônibus noturno elétrico", "metrô noturno", "trem noturno", "bonde noturno", "VLT noturno", "ônibus executivo elétrico", "ônibus executivo híbrido", "metrô executivo", "trem executivo", "bonde executivo", "VLT executivo", "ônibus articulado sustentável", "ônibus biarticulado sustentável", "metrô articulado", "trem articulado", "bonde articulado", "VLT articulado", "ônibus escolar elétrico", "ônibus escolar híbrido", "metrô escolar", "trem escolar", "bonde escolar", "VLT escolar", "ônibus de turismo elétrico", "ônibus de turismo híbrido", "metrô de turismo", "trem de turismo", "bonde de turismo", "VLT de turismo", "ônibus a combustível alternativo", "metrô a combustível alternativo", "trem a combustível alternativo", "bonde a combustível alternativo", "VLT a combustível alternativo", "ônibus com tecnologia verde", "metrô com tecnologia verde", "trem com tecnologia verde", "bonde com tecnologia verde", "VLT com tecnologia verde", "ônibus de alta capacidade", "ônibus de grande porte", "metrô de alta capacidade", "trem de alta capacidade", "bonde de alta capacidade", "VLT de alta capacidade", "ônibus intermodal", "metrô intermodal", "trem intermodal", "bonde intermodal", "VLT intermodal", "ônibus urbano rápido", "metrô rápido", "trem rápido", "bonde rápido", "VLT rápido", "ônibus com tecnologia smart", "metrô smart", "trem smart", "bonde smart", "VLT smart", "ônibus com eficiência energética", "metrô com eficiência energética", "trem com eficiência energética", "bonde com eficiência energética", "VLT com eficiência energética", "ônibus de baixo impacto", "metrô de baixo impacto", "trem de baixo impacto", "bonde de baixo impacto", "VLT de baixo impacto", "ônibus econômico", "metrô econômico", "trem econômico", "bonde econômico", "VLT econômico", "ônibus de transporte coletivo", "metrô de transporte coletivo", "trem de transporte coletivo", "bonde de transporte coletivo", "VLT de transporte coletivo", "ônibus de sistema integrado", "metrô de sistema integrado", "trem de sistema integrado", "bonde de sistema integrado", "VLT de sistema integrado", "ônibus de mobilidade urbana", "metrô de mobilidade urbana", "trem de mobilidade urbana", "bonde de mobilidade urbana", "VLT de mobilidade urbana"],
-            'transporte_poluente': ["carro", "iate", "moto", "caminhão", "carro a gasolina", "carro a diesel", "carro a etanol", "carro esportivo a gasolina", "carro sedan a gasolina", "carro hatch a gasolina", "carro compacto a gasolina", "carro de luxo a gasolina", "carro familiar a gasolina", "carro conversível a gasolina", "carro cupê a gasolina", "carro perua a diesel", "carro utilitário a diesel", "carro crossover a gasolina", "carro SUV a diesel", "carro off-road a diesel", "carro urbano a gasolina", "carro de corrida a gasolina", "carro antigo a gasolina", "carro esportivo a diesel", "carro sedan a diesel", "carro hatch a diesel", "carro compacto a diesel", "carro de luxo a diesel", "carro familiar a diesel", "carro conversível a diesel", "carro cupê a diesel", "carro perua a gasolina", "carro utilitário a gasolina", "carro crossover a diesel", "carro SUV a gasolina", "carro off-road a gasolina", "carro urbano a diesel", "carro de corrida a diesel", "carro antigo a diesel", "carro esportivo a etanol", "carro sedan a etanol", "carro hatch a etanol", "carro compacto a etanol", "carro de luxo a etanol", "carro familiar a etanol", "carro conversível a etanol", "carro cupê a etanol", "carro perua a etanol", "carro utilitário a etanol", "carro crossover a etanol", "carro SUV a etanol", "carro off-road a etanol", "carro urbano a etanol", "carro de corrida a etanol", "carro antigo a etanol", "moto a gasolina", "moto esportiva a gasolina", "moto scooter a gasolina", "moto custom a gasolina", "moto off-road a gasolina", "moto trail a gasolina", "moto street a gasolina", "moto naked a gasolina", "moto a etanol", "moto esportiva a etanol", "moto scooter a etanol", "moto custom a etanol", "moto off-road a etanol", "moto trail a etanol", "moto street a etanol", "moto naked a etanol", "moto esportiva modificada a gasolina", "moto de competição a gasolina", "moto de corrida a gasolina", "moto de baixa cilindrada a gasolina", "moto de média cilindrada a gasolina", "moto de alta cilindrada a gasolina", "moto esportiva modificada a etanol", "moto de competição a etanol", "moto de corrida a etanol", "moto de baixa cilindrada a etanol", "moto de média cilindrada a etanol", "moto de alta cilindrada a etanol", "caminhão a diesel", "caminhão articulado a diesel", "caminhão basculante a diesel", "caminhão de carga a diesel", "caminhão truck a diesel", "caminhão pesado a diesel", "caminhão leve a diesel", "caminhão rodoviário a diesel", "caminhão logístico a diesel", "caminhão frigorífico a diesel", "caminhão baú a diesel", "caminhão cegonheiro a diesel", "caminhão de lixo a diesel", "caminhão pipa a diesel", "caminhão de bombeiros a diesel", "caminhão tanque a diesel", "caminhão truck a gasolina", "caminhão articulado a gasolina", "caminhão basculante a gasolina", "caminhão de carga a gasolina", "caminhão pesado a gasolina", "caminhão leve a gasolina", "caminhão rodoviário a gasolina", "caminhão logístico a gasolina", "caminhão frigorífico a gasolina", "caminhão baú a gasolina", "caminhão cegonheiro a gasolina", "caminhão de lixo a gasolina", "caminhão pipa a gasolina", "caminhão de bombeiros a gasolina", "caminhão tanque a gasolina", "caminhão a etanol", "caminhão articulado a etanol", "caminhão basculante a etanol", "caminhão de carga a etanol", "caminhão truck a etanol", "caminhão pesado a etanol", "caminhão leve a etanol", "caminhão rodoviário a etanol", "caminhão logístico a etanol", "caminhão frigorífico a etanol", "caminhão baú a etanol", "caminhão cegonheiro a etanol", "caminhão de lixo a etanol", "caminhão pipa a etanol", "caminhão de bombeiros a etanol", "caminhão tanque a etanol", "ônibus a diesel", "ônibus urbano a diesel", "ônibus intermunicipal a diesel", "ônibus escolar a diesel", "ônibus executivo a diesel", "ônibus articulado a diesel", "ônibus biarticulado a diesel", "ônibus a gasolina", "ônibus urbano a gasolina", "ônibus intermunicipal a gasolina", "ônibus escolar a gasolina", "ônibus executivo a gasolina", "ônibus articulado a gasolina", "ônibus biarticulado a gasolina", "ônibus a etanol", "ônibus urbano a etanol", "ônibus intermunicipal a etanol", "ônibus escolar a etanol", "ônibus executivo a etanol", "ônibus articulado a etanol", "ônibus biarticulado a etanol", "van a gasolina", "van a diesel", "van a etanol", "pickup a gasolina", "pickup a diesel", "pickup a etanol", "minivan a gasolina", "minivan a diesel", "minivan a etanol", "jeep a gasolina", "jeep a diesel", "jeep a etanol", "sedã a gasolina", "sedã a diesel", "sedã a etanol", "cupê a gasolina", "cupê a diesel", "cupê a etanol", "perua a gasolina", "perua a diesel", "perua a etanol", "coupé a gasolina", "coupé a diesel", "coupé a etanol", "veículo de passeio a gasolina", "veículo de passeio a diesel", "veículo de passeio a etanol", "automóvel a gasolina", "automóvel a diesel", "automóvel a etanol", "transportadora a diesel", "transportadora a gasolina", "transportadora a etanol", "bugre a gasolina", "bugre a diesel", "bugre a etanol", "limusine a gasolina", "limusine a diesel", "limusine a etanol", "carreta a diesel", "carreta a gasolina", "carreta a etanol", "reboque a diesel", "reboque a gasolina", "reboque a etanol", "trator a diesel", "trator a gasolina", "trator a etanol", "maquinário pesado a diesel", "maquinário pesado a gasolina", "maquinário pesado a etanol", "equipamento de construção a diesel", "equipamento de construção a gasolina"]
-        }
-    for transporte in registro["transportes"]:
-        meio = transporte["meio"].lower()
-        if meio in transporte_categorias['transporte_eco']:
-            transporte["classificacao"] = "🟢 Meio Ambiente Agradece"
-        elif meio in transporte_categorias['transporte_sustentavel']:
-            transporte["classificacao"] = "🟡 Alta Sustentabilidade"
-        elif meio in transporte_categorias['transporte_baixo']:
-            transporte["classificacao"] = "🟠 Moderada Sustentabilidade"
-        elif meio in transporte_categorias['transporte_poluente']:
-            transporte["classificacao"] = "🔴 Baixa Sustentabilidade"
-        else:
-            transporte["classificacao"] = "🔴 Não Classificado"
 
     # Salvar alterações
     dados[usuario][indice] = registro
