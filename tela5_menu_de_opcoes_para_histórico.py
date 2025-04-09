@@ -1,26 +1,22 @@
-import json
 import os
+from db_manager import buscar_gastos_usuario, buscar_transportes_usuario
 
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def carregar_dados_usuario(usuario):
+def carregar_dados_usuario_mysql(id_usuario):
     """
-    Carrega os dados do usuário do arquivo JSON.
+    Carrega os dados do usuário diretamente do banco de dados MySQL.
     """
-    arquivo_json = "gastos_usuarios.json"
-    if not os.path.exists(arquivo_json):
+    dados = buscar_gastos_usuario(id_usuario)
+    if not dados:
         print("Nenhum dado encontrado para o usuário.")
-        return None
+        return []
+    return dados
 
-    with open(arquivo_json, 'r') as f:
-        dados = json.load(f)
-    
-    return dados.get(usuario, [])
-
-def exibir_tabela(categoria, dados):
+def exibir_tabela(categoria, dados, id_usuario):
     """
-    Exibe os da1dos do usuário em formato de tabela para a categoria escolhida.
+    Exibe os dados do usuário em formato de tabela para a categoria escolhida.
     """
     limpar_tela()
     print("\n" + "═" * 70)
@@ -31,18 +27,21 @@ def exibir_tabela(categoria, dados):
 
     encontrou_dados = False
     for registro in dados:
+        data_hora = registro['data_hora']  # Copia diretamente o valor do MySQL
         if categoria == "água":
-            print(f"{'Água':<20}{registro['data_hora']:<25}{registro['agua']['classificacao']:<25}")
+            print(f"{'Água':<15}   {data_hora}      {registro['classificacao_agua']:<25}")
             encontrou_dados = True
         elif categoria == "energia":
-            print(f"{'Energia':<20}{registro['data_hora']:<25}{registro['energia']['classificacao']:<25}")
+            print(f"{'Energia':<15}   {data_hora}      {registro['classificacao_energia']:<25}")
             encontrou_dados = True
         elif categoria == "resíduos":
-            print(f"{'Resíduos':<20}{registro['data_hora']:<25}{registro['residuos']['classificacao']:<25}")
+            print(f"{'Resíduos':<15}   {data_hora}      {registro['classificacao_residuos']:<25}")
             encontrou_dados = True
         elif categoria == "transporte":
-            for transporte in registro["transportes"]:
-                print(f"{'Transporte':<20}{registro['data_hora']:<25}{transporte['classificacao']:<25}")
+            transportes = buscar_transportes_usuario(id_usuario)
+            for transporte in transportes:
+                data_hora_transporte = transporte['data_hora']  # Copia diretamente o valor do MySQL
+                print(f"{'Transporte':<15}   {data_hora_transporte}      {transporte['classificacao_transporte']:<25}")
                 encontrou_dados = True
 
     if not encontrou_dados:
@@ -51,7 +50,7 @@ def exibir_tabela(categoria, dados):
     print("═" * 70)
     input("\nPressione Enter para voltar ao menu...")
 
-def exibir_todas_categorias(dados):
+def exibir_todas_categorias(dados, id_usuario):
     """
     Exibe os dados de todas as categorias em formato de tabela.
     """
@@ -64,18 +63,21 @@ def exibir_todas_categorias(dados):
 
     encontrou_dados = False
     for registro in dados:
+        data_hora = registro['data_hora']  # Copia diretamente o valor do MySQL
         # Água
-        print(f"{'Água':<20}{registro['data_hora']:<25}{registro['agua']['classificacao']:<25}")
+        print(f"{'Água':<15}   {data_hora}      {registro['classificacao_agua']:<25}")
         encontrou_dados = True
         # Energia
-        print(f"{'Energia':<20}{registro['data_hora']:<25}{registro['energia']['classificacao']:<25}")
+        print(f"{'Energia':<15}   {data_hora}      {registro['classificacao_energia']:<25}")
         encontrou_dados = True
         # Resíduos
-        print(f"{'Resíduos':<20}{registro['data_hora']:<25}{registro['residuos']['classificacao']:<25}")
+        print(f"{'Resíduos':<15}   {data_hora}      {registro['classificacao_residuos']:<25}")
         encontrou_dados = True
         # Transportes
-        for transporte in registro["transportes"]:
-            print(f"{'Transporte':<20}{registro['data_hora']:<25}{transporte['classificacao']:<25}")
+        transportes = buscar_transportes_usuario(id_usuario)
+        for transporte in transportes:
+            data_hora_transporte = transporte['data_hora']  # Copia diretamente o valor do MySQL
+            print(f"{'Transporte':<15}   {data_hora_transporte}      {transporte['classificacao_transporte']:<25}")
             encontrou_dados = True
 
     if not encontrou_dados:
@@ -84,9 +86,9 @@ def exibir_todas_categorias(dados):
     print("═" * 70)
     input("\nPressione Enter para voltar ao menu...")
 
-def mostrar_menu(usuario_logado):
+def mostrar_menu(usuario_logado, id_usuario):
     """
-    Exibe o menu principal para escolha de históricos
+    Exibe o menu principal para escolha de históricos.
     """
     while True:
         limpar_tela()
@@ -103,7 +105,7 @@ def mostrar_menu(usuario_logado):
 
         opcao = input("Escolha o histórico desejado (1-6): ").strip()
 
-        dados = carregar_dados_usuario(usuario_logado)
+        dados = carregar_dados_usuario_mysql(id_usuario)
         if not dados:
             print("\nNenhum dado encontrado para o usuário.")
             input("Pressione Enter para voltar...")
@@ -111,25 +113,22 @@ def mostrar_menu(usuario_logado):
 
         if opcao == "1":
             limpar_tela()
-            exibir_tabela("água", dados)
+            exibir_tabela("água", dados, id_usuario)
         elif opcao == "2":
             limpar_tela()
-            exibir_tabela("energia", dados)
+            exibir_tabela("energia", dados, id_usuario)
         elif opcao == "3":
             limpar_tela()
-            exibir_tabela("transporte", dados)
+            exibir_tabela("transporte", dados, id_usuario)
         elif opcao == "4":
             limpar_tela()
-            exibir_tabela("resíduos", dados)
+            exibir_tabela("resíduos", dados, id_usuario)
         elif opcao == "5":
             limpar_tela()
-            exibir_todas_categorias(dados)
+            exibir_todas_categorias(dados, id_usuario)
         elif opcao == "6":
             print("\nSaindo do histórico...")
             break
         else:
             print("\n⚠ Opção inválida! Tente novamente.")
             input("Pressione Enter para continuar...")
-
-if __name__ == "__main__":
-    mostrar_menu(usuario_logado)

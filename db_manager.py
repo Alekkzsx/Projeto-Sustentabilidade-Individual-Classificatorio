@@ -37,6 +37,23 @@ def criar_usuario(username, nome, cpf, email, senha): #Funcionando corretamente
     finally:
         cursor.close()
         conexao.close()
+        
+def buscar_transportes_usuario(id_usuario):
+    conexao = conectar_db()
+    if conexao is None:
+        return None
+
+    try:
+        cursor = conexao.cursor(dictionary=True)
+        query = "SELECT * FROM transportes_usuario WHERE id_usuario = %s ORDER BY data_hora DESC"
+        cursor.execute(query, (id_usuario,))
+        return cursor.fetchall()
+    except mysql.connector.Error as err:
+        print("Erro ao buscar transportes:", err)
+        return None
+    finally:
+        cursor.close()
+        conexao.close()
 
 # --- Funções para Gastos ---
 def registrar_gasto(id_usuario, agua, energia, residuos):

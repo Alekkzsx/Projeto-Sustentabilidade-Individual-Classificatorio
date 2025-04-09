@@ -198,7 +198,7 @@ def main(usuario_logado):
         
         elif choice == '2':
             limpar_tela()
-            tela5_menu_de_opcoes_para_histórico.mostrar_menu(usuario_logado)
+            tela5_menu_de_opcoes_para_histórico.mostrar_menu(usuario_logado, id_usuario)
 
         elif choice == '3':
             limpar_tela()
