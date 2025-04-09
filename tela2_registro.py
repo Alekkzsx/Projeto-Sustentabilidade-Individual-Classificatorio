@@ -1,4 +1,4 @@
-from db_manager import inserir_usuario
+from db_manager import criar_usuario  # Importa a função correta
 import re
 import os
 
@@ -34,8 +34,6 @@ def main():
         # Validação do username
         while True:
             username = input("│ ► Nome de Usuário: ").strip()
-            # Aqui podemos opcionalmente consultar no banco se já existe
-            # Para simplificar, vamos validar apenas a quantidade de caracteres.
             if len(username) < 3:
                 print("│ ⚠️  \033[31mNome deve ter pelo menos 3 caracteres!\033[0m")
                 print("├" + "─" * 38)
@@ -87,8 +85,7 @@ def main():
             return False
 
         # Insere os dados do usuário no banco de dados.
-        # Note que, por simplicidade, estamos utilizando o mesmo valor para username e nome.
-        sucesso = inserir_usuario(username, username, cpf_formatado, email, senha)
+        sucesso = criar_usuario(username, username, cpf_formatado, email, senha)
         
         if sucesso:
             print("\n\033[32m╔══════════════════════════════════════╗")
