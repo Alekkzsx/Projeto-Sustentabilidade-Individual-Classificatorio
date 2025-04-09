@@ -1,51 +1,23 @@
 import datetime
 import os
-import json
 import tela4_relatório_boas_práticas
 import tela5_menu_de_opcoes_para_histórico
+from db_manager import salvar_gastos_no_mysql, salvar_transportes_no_mysql
 
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def salvar_dados_json(usuario, agua, energia, residuos, transportes, classificacoes, periodo):
-    """
-    Salva os dados do usuário em um arquivo JSON chamado 'gastos_usuarios.json'.
-    Se o arquivo não existir, ele será criado.
-    """
-    arquivo_json = "gastos_usuarios.json"
-    
-    # Carrega os dados existentes do arquivo JSON ou cria um dicionário vazio
-    if os.path.exists(arquivo_json):
-        with open(arquivo_json, 'r') as f:
-            try:
-                dados = json.load(f)
-            except json.JSONDecodeError:
-                dados = {}  # Caso o arquivo esteja vazio ou corrompido
-    else:
-        dados = {}
-
-    # Adiciona o usuário se não estiver no arquivo
-    if usuario not in dados:
-        dados[usuario] = []
-
-    # Adiciona o novo registro com data/hora e período
-    registro = {
-        "data_hora": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "periodo": periodo,
-        "agua": {"valor": agua, "classificacao": classificacoes["agua"]},
-        "energia": {"valor": energia, "classificacao": classificacoes["energia"]},
-        "residuos": {"valor": residuos, "classificacao": classificacoes["residuos"]},
-        "transportes": [
-            {"meio": t[0], "viagens": t[1], "classificacao": t[2]} for t in transportes
-        ]
-    }
-    dados[usuario].append(registro)
-    
-    # Salva os dados atualizados no arquivo JSON
-    with open(arquivo_json, 'w') as f:
-        json.dump(dados, f, indent=4)
+from tela1_login import buscar_usuario_por_username
 
 def main(usuario_logado):
+    # Busca o ID do usuário no banco de dados
+    usuario = buscar_usuario_por_username(usuario_logado)
+    if not usuario:
+        print("Erro: Usuário não encontrado no banco de dados!")
+        return
+
+    id_usuario = usuario["id"]  # Obtém o ID do usuário
+    
     while True:
         limpar_tela()
         # Exibe uma mensagem de boas-vindas com o nome do usuário
@@ -163,8 +135,9 @@ def main(usuario_logado):
                 "residuos": "🟢 Meio Ambiente Agradece" if residuos < 20 else "🟡 Alta Sustentabilidade" if residuos <= 50 else "🟠 Moderada Sustentabilidade" if residuos <= 60 else "🔴 Baixa Sustentabilidade"
             }
 
-            # Salvar os dados no arquivo JSON
-            salvar_dados_json(usuario_logado, agua, energia, residuos, transportes, classificacoes, periodo)
+            # Salvar os dados no mySQL
+            
+            
             
             data_hora = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
             print("\n╔" + "═" * 78 + "╗")
@@ -182,6 +155,46 @@ def main(usuario_logado):
             print(f"║ ♻️ Resíduos: {residuos}% - {classificacoes['residuos']}".ljust(79) + "║")
             print("╚" + "═" * 78 + "╝")
             input("\nPressione Enter para continuar...")
+            
+            
+            # Após coletar os dados do usuário
+            data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Formato compatível com MySQL
+
+
+            # Salvar os dados de gastos no MySQL
+            gastos_salvos = salvar_gastos_no_mysql(
+                id_usuario=id_usuario,  # ID do usuário logado
+                agua=agua,
+                classificacao_agua=classificacoes["agua"],
+                energia=energia,
+                classificacao_energia=classificacoes["energia"],
+                residuos=residuos,
+                classificacao_residuos=classificacoes["residuos"],
+                periodo=periodo,
+                data_hora=data_hora
+            )
+
+            if not gastos_salvos:
+                print("Erro ao salvar os dados de gastos no banco de dados.")
+
+            # Salvar os dados de transportes no MySQL
+            transportes_salvos = salvar_transportes_no_mysql(
+                id_usuario=id_usuario,  # ID do usuário logado
+                transportes=[
+                    {"meio": t[0], "viagens": t[1], "classificacao": t[2]} for t in transportes
+                ],
+                periodo=periodo,
+                data_hora=data_hora
+            )
+
+            if not transportes_salvos:
+                print("Erro ao salvar os dados de transportes no banco de dados.")
+
+            # Mensagem de sucesso
+            if gastos_salvos and transportes_salvos:
+                print("\nDados salvos com sucesso no banco de dados!")
+            
+            
         
         elif choice == '2':
             limpar_tela()

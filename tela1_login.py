@@ -1,9 +1,27 @@
-from BancoDados_UsuarioSenha import database_usuarios
+from db_manager import conectar_db
 import tela2_registro
 import os
 
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
+
+def buscar_usuario_por_username(username):
+    """Busca um usuário no banco de dados pelo username."""
+    conexao = conectar_db()
+    if conexao is None:
+        return None
+
+    try:
+        cursor = conexao.cursor(dictionary=True)
+        query = "SELECT * FROM usuarios WHERE username = %s"
+        cursor.execute(query, (username,))
+        return cursor.fetchone()
+    except Exception as err:
+        print("Erro ao buscar usuário:", err)
+        return None
+    finally:
+        cursor.close()
+        conexao.close()
 
 def executar_fluxo_login():
     # Exibe a tela inicial com as opções de Login ou Novo Cadastro
@@ -42,9 +60,10 @@ def executar_fluxo_login():
         print("=" * 70)
         print("🔒 Autenticação de Usuário 🔒".center(70))
         print("=" * 70)
-        usuario = input("Digite o nome de usuário: ").strip()
+        username = input("Digite o nome de usuário: ").strip()
         
-        if usuario in database_usuarios:
+        usuario = buscar_usuario_por_username(username)
+        if usuario:
             usuario_correto = usuario
             break
         else:
@@ -71,12 +90,12 @@ def executar_fluxo_login():
         print("=" * 70)
         senha = input("Digite sua Senha: ").strip()
         
-        if senha == database_usuarios[usuario_correto]["senha"]:
+        if senha == usuario_correto["senha"]:
             limpar_tela()
             print("\n" + "=" * 70)
             print("✅ Login bem-sucedido!")
             print("=" * 70 + "\n")
-            return usuario_correto
+            return usuario_correto["username"]
         else:
             tentativas_senha -= 1
             limpar_tela()
