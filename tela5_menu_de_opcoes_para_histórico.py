@@ -26,6 +26,8 @@ def exibir_tabela(categoria, dados, id_usuario):
     print("─" * 70)
 
     encontrou_dados = False
+    transportes_exibidos = set() 
+    
     for registro in dados:
         data_hora = registro['data_hora']  # Copia diretamente o valor do MySQL
         if categoria == "água":
@@ -39,10 +41,15 @@ def exibir_tabela(categoria, dados, id_usuario):
             encontrou_dados = True
         elif categoria == "transporte":
             transportes = buscar_transportes_usuario(id_usuario)
-            for transporte in transportes:
-                data_hora_transporte = transporte['data_hora']  # Copia diretamente o valor do MySQL
-                print(f"{'Transporte':<15}   {data_hora_transporte}      {transporte['classificacao_transporte']:<25}")
-                encontrou_dados = True
+            transportes_para_exibir = [
+                transporte for transporte in transportes if transporte['data_hora'] == data_hora
+            ]
+            for transporte in transportes_para_exibir:
+                identificador_transporte = (transporte['data_hora'], transporte['tipo_transporte'])
+                if identificador_transporte not in transportes_exibidos:
+                    print(f"{'Transporte':<15}   {transporte['data_hora']}      {transporte['classificacao_transporte']:<28}")
+                    transportes_exibidos.add(identificador_transporte)  # Marca o transporte como exibido
+                    encontrou_dados = True
 
     if not encontrou_dados:
         print(f"\nNenhum dado encontrado para a categoria {categoria.capitalize()}.")
@@ -62,6 +69,8 @@ def exibir_todas_categorias(dados, id_usuario):
     print("─" * 70)
 
     encontrou_dados = False
+    transportes_exibidos = set() 
+    
     for registro in dados:
         data_hora = registro['data_hora']  # Copia diretamente o valor do MySQL
         # Água
@@ -75,11 +84,16 @@ def exibir_todas_categorias(dados, id_usuario):
         encontrou_dados = True
         # Transportes
         transportes = buscar_transportes_usuario(id_usuario)
-        for transporte in transportes:
-            data_hora_transporte = transporte['data_hora']  # Copia diretamente o valor do MySQL
-            print(f"{'Transporte':<15}   {data_hora_transporte}      {transporte['classificacao_transporte']:<25}")
-            encontrou_dados = True
-
+        transportes_para_exibir = [
+            transporte for transporte in transportes if transporte['data_hora'] == data_hora
+        ]
+        for transporte in transportes_para_exibir:
+            identificador_transporte = (transporte['data_hora'], transporte['tipo_transporte'])
+            if identificador_transporte not in transportes_exibidos:
+                print(f"{'Transporte':<15}   {transporte['data_hora']}      {transporte['classificacao_transporte']:<28}")
+                transportes_exibidos.add(identificador_transporte)  # Marca o transporte como exibido
+                encontrou_dados = True
+            
     if not encontrou_dados:
         print("\nNenhum dado encontrado para o usuário.")
 
