@@ -4,10 +4,10 @@ from datetime import datetime
 def conectar_db(): #Funcionando corretamente
     try:
         conexao = mysql.connector.connect(
-            host="localhost", #No SQL puc mudar para as informações da pucc
-            user="root",
-            password="495321",
-            database="pi",  # Nome em maiúsculas
+            host="BD-ACD", #No SQL puc mudar para as informações da pucc
+            user="BD26022511",
+            password="Xgiaz10",
+            database="BD26022511",  # Nome em maiúsculas
             charset="utf8mb4",
             auth_plugin='mysql_native_password'  # Força o uso do plugin antigo
         )
