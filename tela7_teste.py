@@ -77,7 +77,8 @@ def main(id_usuario):
             energia=energia,
             classificacao_energia=classificacoes["energia"],
             residuos=residuos,
-            classificacao_residuos=classificacoes["residuos"]
+            classificacao_residuos=classificacoes["residuos"],
+            data_hora=data_hora  # Adiciona o argumento obrigatório 'data_hora'
         )
 
         if atualizado:
@@ -99,7 +100,9 @@ def main(id_usuario):
             print("[1] Editar transporte existente")
             print("[2] Remover transporte")
             print("[3] Adicionar novo transporte")
-            print("[4] Concluir edição de transportes")
+            print("[4] Alterar data/hora do gasto")
+            print("[5] Concluir edição de transportes")
+            
             opcao = input("Escolha uma opção: ").strip()
 
             if opcao == "1":
@@ -186,7 +189,7 @@ def main(id_usuario):
                 })
                 print("Novo transporte adicionado com sucesso!")
             
-            elif opcao == "4":
+            elif opcao == "5":
                 # Classifica todos os transportes antes de salvar
                 transporte_categorias = {
                     'transporte_eco': ['a pé', 'bicicleta'],
@@ -225,5 +228,46 @@ def main(id_usuario):
                 else:
                     print("Erro ao atualizar transportes no banco de dados.")
                 break
+            elif opcao == "4":
+                # Alterar data e hora
+                try:
+                    print("Digite a nova data e hora (ano, mês, dia, hora, minuto, segundo):")
+                    ano = int(input("► Ano (yyyy): "))
+                    mes = int(input("► Mês (mm): "))
+                    dia = int(input("► Dia (dd): "))
+                    hora = int(input("► Hora (hh): "))
+                    minuto = int(input("► Minuto (mm): "))
+                    segundo = int(input("► Segundo (ss): "))
+                    nova_data_hora = datetime.datetime(ano, mes, dia, hora, minuto, segundo)
+                    nova_data_hora_str = nova_data_hora.strftime("%Y-%m-%d %H:%M:%S")
+                    print(f"Data e hora alteradas para: {nova_data_hora_str}")
+            
+                    # Atualiza a data/hora dos gastos no banco de dados
+                    atualizado_gastos = atualizar_gastos_no_mysql(
+                        id_gasto=id_gasto,
+                        agua=gasto_selecionado['gasto_agua'],
+                        classificacao_agua=gasto_selecionado['classificacao_agua'],
+                        energia=gasto_selecionado['gasto_energia'],
+                        classificacao_energia=gasto_selecionado['classificacao_energia'],
+                        residuos=gasto_selecionado['gasto_residuos'],
+                        classificacao_residuos=gasto_selecionado['classificacao_residuos'],
+                        data_hora=nova_data_hora_str  # Atualiza a data/hora
+                    )
+            
+                    # Atualiza a data/hora dos transportes no banco de dados
+                    transportes_atualizados = atualizar_transportes_no_mysql(
+                        id_usuario=id_usuario,
+                        transportes=transportes_relacionados,
+                        periodo=gasto_selecionado['periodo'],
+                        data_hora=nova_data_hora_str  # Atualiza a data/hora
+                    )
+            
+                    if atualizado_gastos and transportes_atualizados:
+                        print("Data/hora atualizada com sucesso em todas as categorias!")
+                    else:
+                        print("Erro ao atualizar a data/hora no banco de dados.")
+                except ValueError:
+                    print("Entrada inválida! Certifique-se de inserir valores numéricos válidos.")
+                    continue
 
         input("\nPressione Enter para continuar...")
