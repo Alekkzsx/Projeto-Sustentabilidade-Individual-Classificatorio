@@ -1,4 +1,4 @@
-from db_manager import buscar_gastos_usuario, atualizar_gastos_no_mysql, buscar_transportes_usuario, atualizar_transportes_no_mysql
+from db_manager import buscar_gastos_usuario, atualizar_gastos_no_mysql, buscar_transportes_usuario, atualizar_transportes_no_mysql, conectar_db
 import datetime
 
 def limpar_tela():
@@ -77,8 +77,7 @@ def main(id_usuario):
             energia=energia,
             classificacao_energia=classificacoes["energia"],
             residuos=residuos,
-            classificacao_residuos=classificacoes["residuos"],
-            data_hora=data_hora  # Adiciona o argumento obrigatório 'data_hora'
+            classificacao_residuos=classificacoes["residuos"]
         )
 
         if atualizado:
@@ -100,9 +99,8 @@ def main(id_usuario):
             print("[1] Editar transporte existente")
             print("[2] Remover transporte")
             print("[3] Adicionar novo transporte")
-            print("[4] Alterar data/hora do gasto")
-            print("[5] Concluir edição de transportes")
-            
+            print("[4] Editar data/hora")
+            print("[5] Salvar e sair")
             opcao = input("Escolha uma opção: ").strip()
 
             if opcao == "1":
@@ -189,6 +187,68 @@ def main(id_usuario):
                 })
                 print("Novo transporte adicionado com sucesso!")
             
+            
+            elif opcao == "4":
+                try:
+                    # Solicita a nova data/hora ao usuário, parte por parte
+                    print("Digite a nova data e hora:")
+                    ano = int(input("► Ano (yyyy): "))
+                    mes = int(input("► Mês (mm): "))
+                    dia = int(input("► Dia (dd): "))
+                    hora = int(input("► Hora (hh): "))
+                    minuto = int(input("► Minuto (mm): "))
+                    segundo = int(input("► Segundo (ss): "))
+            
+                    # Valida e formata a nova data/hora
+                    try:
+                        nova_data_hora = datetime.datetime(ano, mes, dia, hora, minuto, segundo)
+                        nova_data_hora_str = nova_data_hora.strftime("%Y-%m-%d %H:%M:%S")
+                    except ValueError:
+                        print("Data/hora inválida! Certifique-se de inserir valores válidos.")
+                        continue
+            
+                    # Conecta ao banco de dados
+                    conexao = conectar_db()
+                    if conexao is None:
+                        print("Erro ao conectar ao banco de dados. Tente novamente.")
+                        continue
+            
+                    try:
+                        cursor = conexao.cursor()
+            
+                        # Atualiza a data/hora na tabela de gastos
+                        query_gastos = """UPDATE gastos_usuarios
+                                          SET data_hora = %s
+                                          WHERE id = %s"""
+                        cursor.execute(query_gastos, (nova_data_hora_str, id_gasto))
+            
+                        # Atualiza a data/hora na tabela de transportes
+                        query_transportes = """UPDATE transportes_usuario
+                                               SET data_hora = %s
+                                               WHERE id_usuario = %s AND data_hora = %s"""
+                        cursor.execute(query_transportes, (nova_data_hora_str, id_usuario, data_hora))
+            
+                        # Confirma as alterações no banco de dados
+                        conexao.commit()
+                        print("Data/hora atualizada com sucesso para todas as categorias!")
+            
+                        # Atualiza a variável local `data_hora` para refletir a nova data/hora
+                        data_hora = nova_data_hora_str
+            
+                    except mysql.connector.Error as err:
+                        print("Erro ao atualizar a data/hora no banco de dados:", err)
+                        conexao.rollback()
+                    finally:
+                        cursor.close()
+                        conexao.close()
+            
+                except ValueError:
+                    print("Entrada inválida! Certifique-se de inserir valores numéricos válidos.")
+                    continue
+                
+                
+            
+            
             elif opcao == "5":
                 # Classifica todos os transportes antes de salvar
                 transporte_categorias = {
@@ -228,46 +288,5 @@ def main(id_usuario):
                 else:
                     print("Erro ao atualizar transportes no banco de dados.")
                 break
-            elif opcao == "4":
-                # Alterar data e hora
-                try:
-                    print("Digite a nova data e hora (ano, mês, dia, hora, minuto, segundo):")
-                    ano = int(input("► Ano (yyyy): "))
-                    mes = int(input("► Mês (mm): "))
-                    dia = int(input("► Dia (dd): "))
-                    hora = int(input("► Hora (hh): "))
-                    minuto = int(input("► Minuto (mm): "))
-                    segundo = int(input("► Segundo (ss): "))
-                    nova_data_hora = datetime.datetime(ano, mes, dia, hora, minuto, segundo)
-                    nova_data_hora_str = nova_data_hora.strftime("%Y-%m-%d %H:%M:%S")
-                    print(f"Data e hora alteradas para: {nova_data_hora_str}")
-            
-                    # Atualiza a data/hora dos gastos no banco de dados
-                    atualizado_gastos = atualizar_gastos_no_mysql(
-                        id_gasto=id_gasto,
-                        agua=gasto_selecionado['gasto_agua'],
-                        classificacao_agua=gasto_selecionado['classificacao_agua'],
-                        energia=gasto_selecionado['gasto_energia'],
-                        classificacao_energia=gasto_selecionado['classificacao_energia'],
-                        residuos=gasto_selecionado['gasto_residuos'],
-                        classificacao_residuos=gasto_selecionado['classificacao_residuos'],
-                        data_hora=nova_data_hora_str  # Atualiza a data/hora
-                    )
-            
-                    # Atualiza a data/hora dos transportes no banco de dados
-                    transportes_atualizados = atualizar_transportes_no_mysql(
-                        id_usuario=id_usuario,
-                        transportes=transportes_relacionados,
-                        periodo=gasto_selecionado['periodo'],
-                        data_hora=nova_data_hora_str  # Atualiza a data/hora
-                    )
-            
-                    if atualizado_gastos and transportes_atualizados:
-                        print("Data/hora atualizada com sucesso em todas as categorias!")
-                    else:
-                        print("Erro ao atualizar a data/hora no banco de dados.")
-                except ValueError:
-                    print("Entrada inválida! Certifique-se de inserir valores numéricos válidos.")
-                    continue
 
         input("\nPressione Enter para continuar...")
