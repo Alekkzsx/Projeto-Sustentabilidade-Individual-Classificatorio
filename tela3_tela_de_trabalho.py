@@ -31,7 +31,8 @@ def main(usuario_logado):
         print("\t\t\t    [3] Relatório de boas práticas")
         print("\t\t\t    [4] Acessar Gráficos")
         print("\t\t\t    [5] Editar Dados Cadastrados")
-        print("\t\t\t    [6] Sair do sistema")
+        print("\t\t\t    [6] Calendário de registros")
+        print("\t\t\t    [7] Sair do sistema")
         print("─" * 79)
 
         choice = input("\t\t\t▶ Escolha uma opção (1/2/3/4/5): ")
@@ -213,7 +214,7 @@ def main(usuario_logado):
             tela7_teste.main(id_usuario)
         elif choice == '6':
             import tela8_calender
-            tela8_calender.main(id_usuario)
+            tela8_calender.exibir_calendario(id_usuario)
         elif choice == '7':
             break
         else:
