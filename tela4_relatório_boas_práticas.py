@@ -1,104 +1,87 @@
-import json
 import random
 import os
+from db_manager import conectar_db, buscar_gastos_usuario, buscar_transportes_usuario
 
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# Textos de recomendações para cada categoria
+# Textos de recomendações e boas práticas
 recomendacoes = {
     "agua": [
         "Reduza o tempo no banho para economizar água e energia. Pequenas mudanças fazem uma grande diferença!",
         "Conserte vazamentos em torneiras e encanamentos. Um pequeno gotejamento pode desperdiçar litros de água por dia.",
-        # ... Adicione mais 38 textos aqui ...
     ],
     "energia": [
         "Desligue aparelhos eletrônicos quando não estiverem em uso. Isso ajuda a economizar energia e reduzir custos.",
         "Troque lâmpadas incandescentes por LED. Elas consomem menos energia e duram mais.",
-        # ... Adicione mais 38 textos aqui ...
     ],
     "residuos": [
         "Separe o lixo reciclável do orgânico. Isso facilita a reciclagem e reduz o impacto ambiental.",
         "Evite o uso de plásticos descartáveis. Prefira alternativas reutilizáveis, como garrafas e sacolas.",
-        # ... Adicione mais 38 textos aqui ...
     ],
     "transportes": [
         "Considere usar bicicleta ou caminhar para trajetos curtos. Isso reduz emissões e melhora sua saúde.",
         "Use transporte público sempre que possível. É uma alternativa mais sustentável e econômica.",
-        # ... Adicione mais 38 textos aqui ...
     ]
 }
 
-# Textos de boas práticas para cada categoria
 boas_praticas = {
     "agua": [
         "Parabéns por economizar água! Continue reduzindo o consumo e inspire outras pessoas a fazerem o mesmo.",
         "Seu consumo de água está excelente! Pequenas ações como a sua ajudam a preservar recursos naturais.",
-        # ... Adicione mais 38 textos aqui ...
     ],
     "energia": [
         "Ótimo trabalho economizando energia! Continue desligando aparelhos e usando fontes renováveis.",
         "Seu consumo de energia está exemplar! Isso ajuda a reduzir emissões de carbono e proteger o planeta.",
-        # ... Adicione mais 38 textos aqui ...
     ],
     "residuos": [
         "Parabéns por reciclar! Sua contribuição é essencial para reduzir o impacto ambiental.",
         "Seu esforço em separar resíduos é admirável. Continue assim para um futuro mais sustentável.",
-        # ... Adicione mais 38 textos aqui ...
     ],
     "transportes": [
         "Ótima escolha ao usar transportes sustentáveis! Isso faz uma grande diferença para o meio ambiente.",
         "Seu uso de bicicleta ou caminhada é inspirador. Continue promovendo a mobilidade sustentável.",
-        # ... Adicione mais 38 textos aqui ...
     ]
 }
 
-# Textos para a média geral
 textos_media_geral = {
     "alta": [
         "Sua média geral é excelente! Continue com suas práticas sustentáveis e inspire outras pessoas a fazerem o mesmo.",
         "Parabéns! Sua média geral mostra que você está no caminho certo para um estilo de vida sustentável.",
-        # ... Adicione mais textos aqui ...
     ],
     "moderada": [
         "Sua média geral é boa, mas há espaço para melhorias. Continue se esforçando!",
         "Você está indo bem, mas pode melhorar em algumas áreas. Pequenas mudanças fazem a diferença.",
-        # ... Adicione mais textos aqui ...
     ],
     "baixa": [
         "Sua média geral está baixa. Considere adotar práticas mais sustentáveis para melhorar.",
         "Há espaço para melhorias. Comece com pequenas mudanças para reduzir seu impacto ambiental.",
-        # ... Adicione mais textos aqui ...
     ]
 }
 
-def carregar_dados_usuario(usuario):
+def carregar_dados_usuario(id_usuario):
     """
-    Carrega os dados do usuário do arquivo JSON.
+    Carrega os dados do usuário do banco de dados MySQL.
     """
-    arquivo_json = "gastos_usuarios.json"
-    if not os.path.exists(arquivo_json):
-        print("Nenhum dado encontrado para o usuário.")
+    gastos = buscar_gastos_usuario(id_usuario)
+    transportes = buscar_transportes_usuario(id_usuario)
+    if not gastos and not transportes:
         return None
 
-    with open(arquivo_json, 'r') as f:
-        dados = json.load(f)
-    
-    return dados.get(usuario, [])
-
-def verificar_usuario_logado(usuario_logado):
-    """
-    Verifica se o usuário logado existe no arquivo usuarios.json.
-    """
-    arquivo_usuarios = "usuarios.json"
-    if not os.path.exists(arquivo_usuarios):
-        print("Arquivo de usuários não encontrado.")
-        return False
-
-    with open(arquivo_usuarios, 'r') as f:
-        usuarios = json.load(f)
-    
-    return usuario_logado in usuarios
+    dados = []
+    for gasto in gastos:
+        registro = {
+            "agua": {"classificacao": gasto["classificacao_agua"]},
+            "energia": {"classificacao": gasto["classificacao_energia"]},
+            "residuos": {"classificacao": gasto["classificacao_residuos"]},
+            "transportes": []
+        }
+        for transporte in transportes:
+            registro["transportes"].append({
+                "classificacao": transporte["classificacao_transporte"]
+            })
+        dados.append(registro)
+    return dados
 
 def calcular_media_classificacao(dados):
     """
@@ -170,7 +153,7 @@ def exibir_boas_praticas(dados):
 
 def exibir_media_geral(dados):
     """
-    Exibe a média geral das classificações do usuário
+    Exibe a média geral das classificações do usuário.
     """
     media = calcular_media_classificacao(dados)
     if media >= 3.5:
@@ -183,9 +166,10 @@ def exibir_media_geral(dados):
     print(f"\nSua média geral é: {media:.2f}")
     print(texto)
 
-def main(usuario_logado):
-    if not verificar_usuario_logado(usuario_logado):
-        print("Usuário não encontrado. Verifique suas credenciais.")
+def main(id_usuario):
+    dados = carregar_dados_usuario(id_usuario)
+    if not dados:
+        print("Nenhum dado encontrado para o usuário.")
         return
 
     while True:
@@ -200,12 +184,6 @@ def main(usuario_logado):
         print("╚" + "═" * 78 + "╝")
 
         choice = input("▶ Escolha uma opção: ")
-        dados = carregar_dados_usuario(usuario_logado)
-
-        if not dados:
-            print("\nNenhum dado encontrado para o usuário.")
-            input("Pressione Enter para voltar...")
-            return
 
         if choice == '1':
             exibir_recomendacoes(dados)
@@ -219,6 +197,3 @@ def main(usuario_logado):
             print("Opção inválida! Tente novamente.")
         
         input("\nPressione Enter para continuar...")
-        
-if __name__ == "__main__":
-    main()
