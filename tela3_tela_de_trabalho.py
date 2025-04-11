@@ -207,7 +207,7 @@ def main(usuario_logado):
         elif choice == '4':
             limpar_tela()
             import tela6_gráficos_verticais
-            tela6_gráficos_verticais.menu_principal(usuario_logado)
+            tela6_gráficos_verticais.menu_principal(id_usuario)
         elif choice == '5':
             import tela7_teste
             tela7_teste.main(id_usuario)
