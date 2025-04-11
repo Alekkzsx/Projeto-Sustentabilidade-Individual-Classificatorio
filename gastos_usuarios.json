@@ -26,16 +26,16 @@
             "data_hora": "25/02/2006 23:10",
             "periodo": "mensal",
             "agua": {
-                "valor": 10.0,
-                "classificacao": "🟢 Meio Ambiente Agradece"
+                "valor": 999.0,
+                "classificacao": "🔴 Baixa Sustentabilidade"
             },
             "energia": {
-                "valor": 8.0,
-                "classificacao": "🟠 Moderada Sustentabilidade"
+                "valor": 56.0,
+                "classificacao": "🔴 Baixa Sustentabilidade"
             },
             "residuos": {
-                "valor": 98.0,
-                "classificacao": "🔴 Baixa Sustentabilidade"
+                "valor": 34.0,
+                "classificacao": "🟡 Alta Sustentabilidade"
             },
             "transportes": [
                 {
@@ -44,8 +44,8 @@
                     "classificacao": "🟢 Meio Ambiente Agradece"
                 },
                 {
-                    "meio": "caminhada",
-                    "viagens": 6.0,
+                    "meio": "carro",
+                    "viagens": 9.0,
                     "classificacao": "🟢 Meio Ambiente Agradece"
                 }
             ]

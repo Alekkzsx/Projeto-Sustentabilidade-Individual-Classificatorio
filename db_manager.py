@@ -178,3 +178,61 @@ def salvar_transportes_no_mysql(id_usuario, transportes, periodo, data_hora):
     finally:
         cursor.close()
         conexao.close()
+        
+def atualizar_gastos_no_mysql(id_gasto, agua, classificacao_agua, energia, classificacao_energia, residuos, classificacao_residuos):
+    conexao = conectar_db()
+    if conexao is None:
+        return False
+
+    try:
+        cursor = conexao.cursor()
+        query = """UPDATE gastos_usuarios
+                   SET gasto_agua = %s, classificacao_agua = %s,
+                       gasto_energia = %s, classificacao_energia = %s,
+                       gasto_residuos = %s, classificacao_residuos = %s
+                   WHERE id = %s"""
+        valores = (agua, classificacao_agua, energia, classificacao_energia, residuos, classificacao_residuos, id_gasto)
+        cursor.execute(query, valores)
+        conexao.commit()
+        return cursor.rowcount > 0  # Retorna True se algum registro foi atualizado
+    except mysql.connector.Error as err:
+        print("Erro ao atualizar gastos no MySQL:", err)
+        return False
+    finally:
+        cursor.close()
+        conexao.close()
+
+def atualizar_transportes_no_mysql(id_usuario, transportes, periodo, data_hora):
+    conexao = conectar_db()
+    if conexao is None:
+        return False
+
+    try:
+        cursor = conexao.cursor()
+        # Remove os transportes existentes para o mesmo usuário e data_hora
+        delete_query = """DELETE FROM transportes_usuario 
+                          WHERE id_usuario = %s AND data_hora = %s"""
+        cursor.execute(delete_query, (id_usuario, data_hora))
+
+        # Insere os novos transportes
+        insert_query = """INSERT INTO transportes_usuario 
+                          (id_usuario, tipo_transporte, quantidade, classificacao_transporte, periodo, data_hora) 
+                          VALUES (%s, %s, %s, %s, %s, %s)"""
+        for transporte in transportes:
+            valores = (
+                id_usuario,
+                transporte['tipo_transporte'],  # Corrigido para usar a chave correta
+                transporte['quantidade'],      # Corrigido para usar a chave correta
+                transporte['classificacao_transporte'],  # Corrigido para usar a chave correta
+                periodo,
+                data_hora
+            )
+            cursor.execute(insert_query, valores)
+        conexao.commit()
+        return True
+    except mysql.connector.Error as err:
+        print("Erro ao atualizar transportes no MySQL:", err)
+        return False
+    finally:
+        cursor.close()
+        conexao.close()

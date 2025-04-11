@@ -209,8 +209,8 @@ def main(usuario_logado):
             import tela6_gráficos_verticais
             tela6_gráficos_verticais.menu_principal(usuario_logado)
         elif choice == '5':
-            import tela7_tela_de_edicao_dados_user
-            tela7_tela_de_edicao_dados_user.main(usuario_logado)
+            import tela7_teste
+            tela7_teste.main(id_usuario)
         elif choice == '6':
             break
         else:
