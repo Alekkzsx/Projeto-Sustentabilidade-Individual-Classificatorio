@@ -202,7 +202,7 @@ def main(usuario_logado):
 
         elif choice == '3':
             limpar_tela()
-            tela4_relatório_boas_práticas.main(usuario_logado)
+            tela4_relatório_boas_práticas.main(id_usuario)
 
         elif choice == '4':
             limpar_tela()
