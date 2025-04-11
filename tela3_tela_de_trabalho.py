@@ -212,6 +212,9 @@ def main(usuario_logado):
             import tela7_teste
             tela7_teste.main(id_usuario)
         elif choice == '6':
+            import tela8_calender
+            tela8_calender.main(id_usuario)
+        elif choice == '7':
             break
         else:
             print("Opção inválida! Tente novamente.")
