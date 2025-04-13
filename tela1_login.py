@@ -44,10 +44,7 @@ def executar_fluxo_login():
             limpar_tela()
             tela2_registro.main()
             limpar_tela()
-            # Redisplay da tela inicial após o cadastro
-            print("\n" + "=" * 70)
-            print("🌿 Faça Seu Login 🌿")
-            print("=" * 70 + "\n")
+            executar_fluxo_login()
         else:
             print("\n⚠ Opção inválida!")
             limpar_tela()
