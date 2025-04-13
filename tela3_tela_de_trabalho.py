@@ -35,7 +35,7 @@ def main(usuario_logado):
         print("\t\t\t    [7] Sair do sistema")
         print("─" * 79)
 
-        choice = input("\t\t\t▶ Escolha uma opção (1/2/3/4/5): ")
+        choice = input("\t\t\t▶ Escolha uma opção (1/2/3/4/5/6/7): ")
         
         if choice == '1':
             limpar_tela()
@@ -137,9 +137,7 @@ def main(usuario_logado):
             }
 
             # Salvar os dados no mySQL
-            
-            
-            
+    
             data_hora = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
             print("\n╔" + "═" * 78 + "╗")
             print("║" + " DADOS REGISTRADOS ".center(78, '─') + "║")
