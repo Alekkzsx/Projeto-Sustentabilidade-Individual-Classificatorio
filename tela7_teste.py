@@ -23,9 +23,9 @@ def main(id_usuario):
         print("\nGastos cadastrados:")
         for i, gasto in enumerate(gastos):
             print(f"[{i}] ID: {gasto['id']}, Data/Hora: {gasto['data_hora']}, Categoria: {gasto['periodo']}")
-            print(f"    Água: {gasto['gasto_agua']}L ({gasto['classificacao_agua']}), "
-                  f"Energia: {gasto['gasto_energia']}kWh ({gasto['classificacao_energia']}), "
-                  f"Resíduos: {gasto['gasto_residuos']}% ({gasto['classificacao_residuos']})")
+            print(f"    Água: {gasto['gasto_agua']}L ({gasto['classificacao_agua']}), \n"
+                  f"    Energia: {gasto['gasto_energia']}kWh ({gasto['classificacao_energia']}), \n"
+                  f"    Resíduos: {gasto['gasto_residuos']}% ({gasto['classificacao_residuos']})")
 
         # Solicita ao usuário escolher um índice para editar
         try:
