@@ -92,12 +92,26 @@ def calcular_media_classificacao(dados):
     count = 0
 
     for registro in dados:
-        total += classificacoes[registro["agua"]["classificacao"][0]]
-        total += classificacoes[registro["energia"]["classificacao"][0]]
-        total += classificacoes[registro["residuos"]["classificacao"][0]]
+        # Validação para água
+        if registro["agua"]["classificacao"][0] in classificacoes:
+            total += classificacoes[registro["agua"]["classificacao"][0]]
+            count += 1
+
+        # Validação para energia
+        if registro["energia"]["classificacao"][0] in classificacoes:
+            total += classificacoes[registro["energia"]["classificacao"][0]]
+            count += 1
+
+        # Validação para resíduos
+        if registro["residuos"]["classificacao"][0] in classificacoes:
+            total += classificacoes[registro["residuos"]["classificacao"][0]]
+            count += 1
+
+        # Validação para transportes
         for transporte in registro["transportes"]:
-            total += classificacoes[transporte["classificacao"][0]]
-        count += 3 + len(registro["transportes"])
+            if transporte["classificacao"][0] in classificacoes:
+                total += classificacoes[transporte["classificacao"][0]]
+                count += 1
 
     return total / count if count > 0 else 0
 
