@@ -193,8 +193,6 @@ def main(usuario_logado):
             if gastos_salvos and transportes_salvos:
                 print("\nDados salvos com sucesso no banco de dados!")
             
-            
-        
         elif choice == '2':
             limpar_tela()
             tela5_menu_de_opcoes_para_histórico.mostrar_menu(usuario_logado, id_usuario)
@@ -206,7 +204,7 @@ def main(usuario_logado):
         elif choice == '4':
             limpar_tela()
             import tela6_gráficos_verticais
-            tela6_gráficos_verticais.menu_principal(id_usuario)
+            tela6_gráficos_verticais.menu_principal(usuario_logado, id_usuario)
         elif choice == '5':
             import tela7_teste
             tela7_teste.main(id_usuario)
