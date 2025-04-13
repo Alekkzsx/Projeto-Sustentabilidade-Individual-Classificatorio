@@ -88,13 +88,15 @@ def main(id_usuario):
         # Busca os transportes relacionados à mesma data/hora
         transportes = buscar_transportes_usuario(id_usuario)
         transportes_relacionados = [t for t in transportes if t['data_hora'] == data_hora]
-
-        if transportes_relacionados:
+        
+        limpar_tela()
+    
+        while True:
+            limpar_tela()
             print("\nTransportes relacionados:")
             for i, transporte in enumerate(transportes_relacionados):
-                print(f"[{i}] Meio: {transporte['tipo_transporte']}, Viagens: {transporte['quantidade']}, Classificação: {transporte['classificacao_transporte']}")
-
-        while True:
+                print(f"[{i}] Meio: {transporte['tipo_transporte']}, Viagens: {transporte['quantidade']}, Classificação: {transporte['classificacao_transporte']}")            
+            
             print("\nOpções para transportes:")
             print("[1] Editar transporte existente")
             print("[2] Remover transporte")
