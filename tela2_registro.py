@@ -70,7 +70,7 @@ def main():
             break
 
         # Confirmação final
-        
+        limpar_tela()
         print("╔" + "═" * 38 + "╗")
         print("║" + "🔍  CONFIRA SEUS DADOS  🔍".center(36) + "║")
         print("╟" + "─" * 38 + "╢")
@@ -88,12 +88,18 @@ def main():
         sucesso = criar_usuario(username, username, cpf_formatado, email, senha)
         
         if sucesso:
+            limpar_tela()
             print("\n\033[32m╔══════════════════════════════════════╗")
             print("║ ✅  CADASTRO REALIZADO COM SUCESSO!  ║")
             print("╚══════════════════════════════════════╝\033[0m")
+            input(print("Pressione ENTER para seguir..."))
             return True
         else:
+            limpar_tela()
             print("\n\033[31m✖  Ocorreu um erro ao cadastrar o usuário!\033[0m")
+            print("\033[31m✖  Seu Email, CPF ou Username já cadastrados! \033[0m")
+            print("\033[31m✖  Tente novamente com outro email ou CPF.\033[0m")
+            input(print("Pressione ENTER para seguir..."))
             return False
 
     except KeyboardInterrupt:
