@@ -35,6 +35,7 @@ def executar_fluxo_login():
     
     # Seleção da opção
     while True:
+        
         opcao = input("Escolha uma opção (1/2): ").strip()
         
         if opcao == '1':
@@ -43,7 +44,8 @@ def executar_fluxo_login():
         elif opcao == '2':
             limpar_tela()
             tela2_registro.main()
-            limpar_tela()
+            limpar_tela()       
+            break
         else:
             print("\n⚠ Opção inválida!")
             limpar_tela()
