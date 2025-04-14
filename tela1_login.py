@@ -44,7 +44,6 @@ def executar_fluxo_login():
             limpar_tela()
             tela2_registro.main()
             limpar_tela()
-            executar_fluxo_login()
         else:
             print("\n⚠ Opção inválida!")
             limpar_tela()
