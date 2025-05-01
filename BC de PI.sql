@@ -1,11 +1,11 @@
 -- Criação do banco com charset utf8mb4
-CREATE DATABASE IF NOT EXISTS BD26022511 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS pi CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 -- Configuração segura do usuário root (substitua a senha)
-ALTER USER 'BD26022511' IDENTIFIED WITH mysql_native_password BY 'Xgiaz10';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '495321';
 FLUSH PRIVILEGES;
 
-USE BD26022511;
+USE pi;
 
 -- Tabela de usuários
 CREATE TABLE IF NOT EXISTS usuarios (
