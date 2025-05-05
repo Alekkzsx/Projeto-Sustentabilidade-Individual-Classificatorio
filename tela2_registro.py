@@ -56,7 +56,8 @@ def main():
 
         # Validação do CPF
         while True:
-            cpf = input("\n│ ► CPF (apenas números): ").strip()
+            cpf1 = input("\n│ ► CPF (apenas números): ").strip()
+            cpf = cpf1.replace('.','').replace('-','').replace('/','')
             if not validar_cpf(cpf):
                 print("│ ⚠️  \033[31mCPF inválido! Digite 11 números válidos.\033[0m")
                 print("├" + "─" * 38)
