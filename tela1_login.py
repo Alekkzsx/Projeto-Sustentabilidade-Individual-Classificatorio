@@ -121,10 +121,10 @@ def executar_fluxo_login():
                  print("\nVoltando ao menu principal...")
                  return executar_fluxo_login() # Reinicia o fluxo de login/registro
             # Se o registro foi OK, continua para a tela de login
-            break # Sai do loop de opção e vai para a autenticação
+            return executar_fluxo_login() # Sai do loop de opção e vai para a autenticação
         elif opcao == '3':
             redefinir_senha()
-            
+            return executar_fluxo_login()
         else:
             print("\n⚠ Opção inválida!")
             # Não limpa a tela aqui para o usuário ver a mensagem
