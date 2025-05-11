@@ -51,12 +51,23 @@ def main(id_usuario):
         try:
             agua = input(f"► Consumo de água atual ({gasto_selecionado['gasto_agua']}L): ").strip()
             agua = float(agua) if agua else gasto_selecionado['gasto_agua']
-
+        
             energia = input(f"► Consumo de energia atual ({gasto_selecionado['gasto_energia']}kWh): ").strip()
             energia = float(energia) if energia else gasto_selecionado['gasto_energia']
-
-            residuos = input(f"► Resíduos não recicláveis atuais ({gasto_selecionado['gasto_residuos']}%): ").strip()
-            residuos = float(residuos) if residuos else gasto_selecionado['gasto_residuos']
+        
+            while True:
+                residuos = input(f"► Resíduos não recicláveis atuais ({gasto_selecionado['gasto_residuos']}%): ").strip()
+                if not residuos:
+                    residuos = gasto_selecionado['gasto_residuos']
+                    break
+                try:
+                    residuos = float(residuos)
+                    if 0 <= residuos <= 100:
+                        break
+                    else:
+                        print("ERRO: Por favor, insira um valor entre 0 e 100 para os resíduos não recicláveis.")
+                except ValueError:
+                    print("ERRO: Por favor, insira um número válido para os resíduos não recicláveis.")
         except ValueError:
             print("Entrada inválida! Certifique-se de inserir números válidos.")
             input("\nPressione Enter para continuar...")
