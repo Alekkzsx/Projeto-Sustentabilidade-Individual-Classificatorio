@@ -29,7 +29,68 @@ def buscar_usuario_por_username(username):
              if 'cursor' in locals() and cursor: # Verifica se o cursor foi criado
                  cursor.close()
              conexao.close()
+             
+def redefinir_senha():
+    """Permite ao usuário redefinir sua senha após validação de username e CPF."""
+    limpar_tela()
+    print("\n" + "=" * 70)
+    print("🔑 Redefinição de Senha 🔑".center(70))
+    print("=" * 70)
 
+    username = input("Digite seu nome de usuário: ").strip()
+    cpf_formatado = input("Digite seu CPF (apenas números): ").strip().replace('.', '').replace('-', '').replace('/', '')
+    cpf = f"{cpf_formatado[:3]}.{cpf_formatado[3:6]}.{cpf_formatado[6:9]}-{cpf_formatado[9:]}"
+
+    # Busca o usuário no banco de dados pelo username e CPF
+    conexao = conectar_db()
+    if conexao is None:
+        print("\n⚠ Erro ao conectar ao banco de dados. Tente novamente mais tarde.")
+        return
+
+    try:
+        cursor = conexao.cursor(dictionary=True)
+        query = "SELECT * FROM usuarios WHERE username = %s AND cpf = %s"
+        cursor.execute(query, (username, cpf))
+        usuario = cursor.fetchone()
+
+        if usuario:
+            print("\n✅ Usuário validado com sucesso!")
+            nova_senha = input("Digite sua nova senha: ").strip()
+            confirmar_senha = input("Confirme sua nova senha: ").strip()
+
+            if nova_senha != confirmar_senha:
+                print("\n⚠ As senhas não coincidem. Tente novamente.")
+                return
+
+            # Criptografa a nova senha usando a lógica da cifra de Hill e codifica em Base64
+            from hill_cipher_logic import encrypt as hill_encrypt
+            import base64
+
+            try:
+                print("\n🔒 Criptografando senha...")
+                senha_criptografada_raw = hill_encrypt(nova_senha)
+                senha_criptografada_b64 = base64.b64encode(senha_criptografada_raw.encode('latin-1')).decode('utf-8')
+                print("🔑 Senha processada com sucesso.")
+            except Exception as e:
+                print(f"\n⚠ Erro ao criptografar a senha: {e}")
+                return
+
+            # Atualiza a senha no banco de dados
+            update_query = "UPDATE usuarios SET senha = %s WHERE id = %s"
+            cursor.execute(update_query, (senha_criptografada_b64, usuario["id"]))
+            conexao.commit()
+
+            print("\n✅ Senha redefinida com sucesso!")
+        else:
+            print("\n❌ Nome de usuário ou CPF inválido. Tente novamente.")
+            input("Pressione ENTER...")
+    except Exception as err:
+        print("\n⚠ Erro ao redefinir senha:", err)
+    finally:
+        if 'cursor' in locals() and cursor:
+            cursor.close()
+        if conexao and conexao.is_connected():
+            conexao.close()
 
 def executar_fluxo_login():
     # Exibe a tela inicial com as opções de Login ou Novo Cadastro
@@ -39,12 +100,13 @@ def executar_fluxo_login():
     print("=" * 70)
     print("\t\t\t[1]  Fazer Login ")
     print("\t\t\t[2]  Novo Cadastro ")
+    print("\t\t\t[3]  Esqueci Minha Senha ")
     print("=" * 70)
 
     # Seleção da opção
     while True:
 
-        opcao = input("Escolha uma opção (1/2): ").strip()
+        opcao = input("Escolha uma opção (1/2/3): ").strip()
 
         if opcao == '1':
             limpar_tela()
@@ -60,6 +122,9 @@ def executar_fluxo_login():
                  return executar_fluxo_login() # Reinicia o fluxo de login/registro
             # Se o registro foi OK, continua para a tela de login
             break # Sai do loop de opção e vai para a autenticação
+        elif opcao == '3':
+            redefinir_senha()
+            
         else:
             print("\n⚠ Opção inválida!")
             # Não limpa a tela aqui para o usuário ver a mensagem
