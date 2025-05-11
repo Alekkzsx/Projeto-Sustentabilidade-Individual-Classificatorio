@@ -123,10 +123,12 @@ def main(usuario_logado):
             while True:
                 try:
                     residuos = float(input("\n► Resíduos não recicláveis (%): "))
+                    if residuos < 0 or residuos > 100:
+                        print("ERRO: Por favor, insira um valor entre 0 e 100 para os resíduos não recicláveis.")
+                        continue
                     break
                 except ValueError:
                     print("ERRO: Por favor, insira um número válido para os resíduos não recicláveis.")
-
             limpar_tela()
 
             # Classificação dos dados
