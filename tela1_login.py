@@ -127,6 +127,8 @@ def executar_fluxo_login():
             return executar_fluxo_login()
         else:
             print("\n⚠ Opção inválida!")
+            return executar_fluxo_login()
+            limpar_tela()
             # Não limpa a tela aqui para o usuário ver a mensagem
             # limpar_tela() # Removido
 
