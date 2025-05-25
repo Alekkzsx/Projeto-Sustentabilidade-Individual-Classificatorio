@@ -55,12 +55,18 @@ def redefinir_senha():
 
         if usuario:
             print("\n✅ Usuário validado com sucesso!")
-            nova_senha = input("Digite sua nova senha: ").strip()
-            confirmar_senha = input("Confirme sua nova senha: ").strip()
-
-            if nova_senha != confirmar_senha:
-                print("\n⚠ As senhas não coincidem. Tente novamente.")
-                return
+            
+            while True:
+                nova_senha = input("Digite sua nova senha (mínimo 6 caracteres): ").strip()
+                if len(nova_senha) < 6:
+                    print("\n⚠ A senha deve ter pelo menos 6 caracteres. Tente novamente.")
+                    continue
+                
+                confirmar_senha = input("Confirme sua nova senha: ").strip()
+                if nova_senha != confirmar_senha:
+                    print("\n⚠ As senhas não coincidem. Tente novamente.")
+                else:
+                    break
 
             # Criptografa a nova senha usando a lógica da cifra de Hill e codifica em Base64
             from hill_cipher_logic import encrypt as hill_encrypt
