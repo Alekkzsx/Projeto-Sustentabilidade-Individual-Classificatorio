@@ -22,7 +22,10 @@ def extended_gcd(a, b):
         return (gcd, x, y)
 
 def modInverse(a, m):
-    """Retorna o inverso modular de a % m"""
+    """Retorna o inverso modular de a % m
+        a: O número para o qual queremos encontrar o inverso modular.
+        m: O módulo em relação ao qual o inverso será calculado.
+    """
     gcd, x, y = extended_gcd(a, m)
     if gcd != 1:
         raise Exception(f'O inverso modular não existe para {a} mod {m}')
