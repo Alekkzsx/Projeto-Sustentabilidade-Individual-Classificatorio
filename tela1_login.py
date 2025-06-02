@@ -2,9 +2,8 @@
 from db_manager import conectar_db
 import tela2_registro
 import os
-# --- Importar a lógica da Cifra de Hill e Base64 ---
+# --- Importar a lógica da Cifra de Hill ---
 from hill_cipher_logic import decrypt as hill_decrypt
-import base64
 # --- Fim da importação ---
 
 def limpar_tela():
@@ -68,14 +67,12 @@ def redefinir_senha():
                 else:
                     break
 
-            # Criptografa a nova senha usando a lógica da cifra de Hill e codifica em Base64
+            # Criptografa a nova senha usando a lógica da cifra de Hill
             from hill_cipher_logic import encrypt as hill_encrypt
-            import base64
 
             try:
                 print("\n🔒 Criptografando senha...")
-                senha_criptografada_raw = hill_encrypt(nova_senha)
-                senha_criptografada_b64 = base64.b64encode(senha_criptografada_raw.encode('latin-1')).decode('utf-8')
+                senha_criptografada = hill_encrypt(nova_senha)
                 print("🔑 Senha processada com sucesso.")
             except Exception as e:
                 print(f"\n⚠ Erro ao criptografar a senha: {e}")
@@ -83,7 +80,7 @@ def redefinir_senha():
 
             # Atualiza a senha no banco de dados
             update_query = "UPDATE usuarios SET senha = %s WHERE id = %s"
-            cursor.execute(update_query, (senha_criptografada_b64, usuario["id"]))
+            cursor.execute(update_query, (senha_criptografada, usuario["id"]))
             conexao.commit()
 
             print("\n✅ Senha redefinida com sucesso!")
@@ -169,8 +166,8 @@ def executar_fluxo_login():
     # Se chegou aqui, o usuário foi encontrado (usuario_correto não é None)
     # Autenticação de senha
     tentativas_senha = 3
-    # Pega a senha cifrada (em Base64) do banco de dados a partir do dicionário 'usuario_correto'
-    senha_cifrada_b64_do_db = usuario_correto["senha"] # Certifique-se que a chave do dicionário é "senha"
+    # Pega a senha cifrada do banco de dados a partir do dicionário 'usuario_correto'
+    senha_cifrada_do_db = usuario_correto["senha"] # Certifique-se que a chave do dicionário é "senha"
 
     while tentativas_senha > 0:
         print("=" * 70)
@@ -181,16 +178,12 @@ def executar_fluxo_login():
         # --- Descriptografar a senha do DB e Comparar ---
         try:
             print("\n🔄 Verificando credenciais...") # Mensagem opcional
-            # 1. Decodificar Base64 (obtendo os bytes da senha cifrada original)
-            # Usa 'latin-1' para reverter o processo do registro
-            ciphertext_bytes = base64.b64decode(senha_cifrada_b64_do_db)
-            ciphertext_recovered = ciphertext_bytes.decode('latin-1')
 
-            # 2. Descriptografar com Hill Cipher
-            senha_decifrada_do_db = hill_decrypt(ciphertext_recovered)
+            # Descriptografar com Hill Cipher
+            senha_decifrada_do_db = hill_decrypt(senha_cifrada_do_db)
             print("✅ Credenciais processadas.") # Mensagem opcional
 
-            # 3. Comparar a senha decifrada do DB com a senha digitada AGORA
+            # Comparar a senha decifrada do DB com a senha digitada AGORA
             if senha_digitada == senha_decifrada_do_db:
                 limpar_tela()
                 print("\n" + "=" * 70)
@@ -206,14 +199,6 @@ def executar_fluxo_login():
                 print("❌ Senha incorreta!".center(70))
                 print(f"Tentativas restantes: {tentativas_senha}".center(70))
 
-        except base64.binascii.Error:
-             # Erro ao decodificar Base64 (senha no DB pode estar corrompida ou não ser Base64)
-             limpar_tela()
-             print("\n" + "=" * 70)
-             print("⚠️ Erro interno ao verificar senha (formato inválido no DB).".center(70))
-             print("Contacte o administrador.".center(70))
-             tentativas_senha -= 1 # Penaliza a tentativa
-             print(f"Tentativas restantes: {tentativas_senha}".center(70))
         except Exception as e:
             # Outro erro (ex: descriptografia falhou, talvez caractere inválido ou erro na lógica Hill)
             limpar_tela()
