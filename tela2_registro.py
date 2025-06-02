@@ -2,9 +2,8 @@
 from db_manager import criar_usuario  # Importa a função correta
 import re
 import os
-# --- Importar a lógica da Cifra de Hill e Base64 ---
+# --- Importar a lógica da Cifra de Hill ---
 from hill_cipher_logic import encrypt as hill_encrypt
-import base64
 # --- Fim da importação ---
 
 def limpar_tela():
@@ -95,10 +94,7 @@ def main():
         # --- Criptografar a senha com Hill Cipher antes de salvar ---
         try:
             print("\n🔒 Criptografando senha...") # Mensagem opcional
-            senha_cifrada_raw = hill_encrypt(senha_plana)
-            # Codificar em Base64 para armazenamento seguro no DB
-            # Usa 'latin-1' para garantir que todos os bytes 0-255 sejam preservados
-            senha_cifrada_b64 = base64.b64encode(senha_cifrada_raw.encode('latin-1')).decode('utf-8')
+            senha_cifrada = hill_encrypt(senha_plana)
             print("🔑 Senha processada.") # Mensagem opcional
         except Exception as e:
             print(f"\n\033[31m✖ Erro CRÍTICO ao criptografar a senha: {e}\033[0m")
@@ -108,10 +104,7 @@ def main():
         # --- Fim da Criptografia ---
 
         # Insere os dados do usuário no banco de dados.
-        # AGORA envia a senha criptografada em Base64
-        # **IMPORTANTE**: Certifique-se que o campo 'senha' no seu DB (tabela 'usuarios')
-        # pode armazenar uma string longa (VARCHAR(100+), TEXT, etc).
-        sucesso = criar_usuario(username, username, cpf_formatado, email, senha_cifrada_b64)
+        sucesso = criar_usuario(username, username, cpf_formatado, email, senha_cifrada)
 
         if sucesso:
             limpar_tela()
